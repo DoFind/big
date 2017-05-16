@@ -1,0 +1,213 @@
+/* 清除原生样式reset */
+
+header,
+nav,
+section,
+aside,
+footer {
+    display: block;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+dl,
+dd,
+ul,
+ol,
+form,
+input,
+textarea,
+th,
+td,
+select {
+    margin: 0;
+    padding: 0;
+}
+
+em {
+    font-style: normal;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    border: none;
+    vertical-align: top;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+input,
+textarea {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+
+body {
+    font-size: 12px;
+    font-family: "微软雅黑";
+}
+
+/*通用格式*/
+
+.colMint {
+    color: #48c5a3 !important;
+}
+.colDark {
+    color: #363c40 !important;
+}
+.textRight {
+    text-align: right;
+}
+.textLeft {
+    text-align: left;
+}
+.textCenter {
+    text-align: center;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+
+
+body {
+    padding-top: 80px;
+}
+
+/*导航栏nav 样式重写*/
+
+.navbar-brand img {
+    width: 90px;
+    height:50px;
+}
+
+
+/*登录 注册*/
+
+#login, #register {
+
+    position: fixed;
+    left: 50%;
+    margin-left: -260px;
+    width:520px;
+    z-index: 100;
+    display: none;
+}
+
+
+/*内容区域*/
+
+
+/*宣传栏*/
+
+#ad {
+    position: relative;
+    width: 960px;
+    height: 480px;
+    margin: 0 auto;
+}
+
+#ad .prev,
+#ad .next {
+    position: absolute;
+    display: block;
+    width: 480px;
+    height: 480px;
+    /*background: gray;*/
+}
+
+#ad .next {
+    right: 0;
+}
+
+#ad .picList li,
+#ad .picList img {
+    width: 960px;
+    height: 480px;
+}
+
+#ad h3,
+#ad p {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    color: #333;
+    margin: 0;
+    height: 30px;
+    line-height: 30px;
+}
+
+#ad h3 {
+    left: 10px;
+    width: 100px;
+    font-size: 18px;
+}
+
+#ad p {
+    left: 120px;
+    font-size: 12px;
+}
+
+#ad .bg {
+    position: absolute;
+    top: 0;
+    width: 960px;
+    height: 30px;
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+    background: #fff;
+    z-index: 2;
+}
+
+#ad .stateList {
+	position: absolute;
+	right: 20px;
+	top: 0;
+    margin:0;
+    padding:10px 0;
+	width: 100px;
+	height: 30px;
+}
+
+#ad .stateList li{
+
+    float: left;
+	z-index: 3;
+	width: 10px;
+	height: 10px;
+	margin-left: 5px;
+	border: 2px solid black;
+	border-radius: 50%;
+}
+
+/*页脚*/
+footer {
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    margin-top: 20px;
+    height: 50px;
+    line-height: 50px;
+    background: black;
+    color: white;
+    text-align: center;
+}

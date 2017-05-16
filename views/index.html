@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>白二爷的专属空间</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
+    <script src="/public/js/jquery-3.1.1.js"></script>
+    <script src="/public/js/bootstrap.js"></script>
+    <script src="/public/js/main.js"></script>
+    <!-- 		网站标签页图标
+    <link href="img/100du.ico" rel="shortcut icon" />
+     -->
+     
+</head>
+
+<body>
+
+    <!--导航栏，始终显示-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="javascript:;" class="navbar-brand"><img src="/public/img/0.png"></a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">在路上</a></li>
+                <li><a href="#">影视白</a></li>
+                <li><a href="#">综艺白</a></li>
+                <li><a href="#">rap白</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" id="loginBtn">登录</a></li>
+                <li><a href="#" id="registerBtn">注册</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--页面弹出框部分  登录、注册页面-->
+
+    <div class="wrap">
+        <div id="login" class="container">
+            <br>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Login
+                    <button class="fr exit"><img src="/public/img/close.png" alt=""></button>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>用户名:</label><input type="text" class="form-control username">
+                        <label>密码:</label><input type="password" class="form-control password">
+                    </div>
+                    <!--<a href="#" class="text-info">忘记密码?</a>-->
+                    <label class="alert-danger colWarning"></label>
+                    <input type="button" value="登录" class="btn btn-primary pull-right login">
+                </div>
+            </div>
+        </div>
+
+        <div id="register" class="container">
+            <br>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Register
+                    <button class="fr exit"><img src="/public/img/close.png" alt=""></button>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>用户名:</label><input type="text" class="form-control username">
+                        <!--<div class="alert alert-warning">用户名不能为空！</div>-->
+                        <label>密码:</label><input type="password" class="form-control password">
+                        <label>确认:</label><input type="password" class="form-control repassword">
+                    </div>
+                    <label class="alert-danger colWarning"></label>
+                    <input type="button" value="注册" class="btn btn-primary pull-right register">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--内容部分-->
+    <div id="content">
+
+            <!--宣传栏-->
+			<div id="ad">
+				<a href="javascript:;" class="prev"></a>
+				<a href="javascript:;" class="next"></a>
+				<ul class = "picList">
+			    	<li class="active"><a href="#"></a><img src="/public/img/1.jpg" alt="1"></a></li>
+			    	<li><a href="#"></a><img src="/public/img/2.jpg" alt="1"></a></li>
+			    	<li><a href="#"></a><img src="/public/img/3.jpg" alt="1"></a></li>
+			    	<li><a href="#"></a><img src="/public/img/4.jpg" alt="1"></a></li>
+			    	<li><a href="#"></a><img src="/public/img/5.jpg" alt="1"></a></li>
+			    </ul>
+			    <h3>来一个title</h3>
+			    <p>我是图片描述</p>
+			    <div class="bg"></div>
+			    <ul class="stateList">
+			    	<li></li>
+			    	<li></li>
+			    	<li></li>
+			    	<li></li>
+			    	<li></li>
+			    </ul>
+			</div>
+    </div>
+
+    <!--页脚-->
+    <footer>
+        友情链接：白小爷微博
+    </footer>
+</body>
+
+</html>
