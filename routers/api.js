@@ -69,6 +69,17 @@ router.post('/user/register', function(req, res, next) {
         return user.save();
     }).then(function (newUserInfo) {
         responseData.msg = '注册成功';
+
+        responseData.userInfo = {
+            _id: newUserInfo._id,
+            username: newUserInfo.username
+        }
+        // 发送cookies信息
+        // 刷新页面时，会把cookies信息放在头信息Request Headers中发送给服务端
+        req.cookies.set('userInfo', JSON.stringify({
+            _id: newUserInfo._id,
+            username: newUserInfo.username
+        }));
         res.json(responseData);
         return;
     });
@@ -102,9 +113,26 @@ router.post('/user/login', function (req, res, next) {
             return;
         }
         responseData.msg = '登录成功';
+        responseData.userInfo = {
+            _id: userInfo._id,
+            username: userInfo.username
+        }
+        // 发送cookies信息
+        // 刷新页面时，会把cookies信息放在头信息Request Headers中发送给服务端
+        req.cookies.set('userInfo', JSON.stringify({
+            _id: userInfo._id,
+            username: userInfo.username
+        }));
         res.json(responseData);
         return;
     });
+})
+
+// 退出登录
+router.get('/user/logout', function (req, res, next) {
+    responseData.msg = '退出成功';
+    req.cookies.set('userInfo', {});
+    res.json(responseData);
 })
 
 module.exports = router;

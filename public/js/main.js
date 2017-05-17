@@ -1,13 +1,21 @@
 $(function() {
 
+    /*
+    * 用户信息相关： 注册、登录、退出登录
+    * */
     $loginBox = $('#login');
     $registerBox = $('#register');
-    
-    $('#loginBtn').on('click', function () {
-        $loginBox.show();
-    });
+    $rightNav = $('#rightNav');
 
-    $loginBox.find('.exit').on('click', function () {
+
+    /*
+     * 登录
+     * */
+    $rightNav.find('.login').on('click', function () {
+        $loginBox.show();
+    })
+
+    $loginBox.find('.close').on('click', function () {
         $loginBox.hide();
     })
     $loginBox.find('.login').on('click', function () {
@@ -25,8 +33,16 @@ $(function() {
                 $loginBox.find('.colWarning').html(res.msg);
 
                 if (!res.code) {
+                    /*
+                    $rightNav.find('.login').hide();
+                    $rightNav.find('.register').hide();
+                    $rightNav.find('.userinfo').show();
+
+                    // 显示用户信息
+                    $rightNav.find('.userinfo>a').html(res.userInfo.username);*/
+
                     $loginBox.hide();
-                    // window.location.reload();
+                    window.location.reload();
                 }
             }
         })
@@ -34,11 +50,13 @@ $(function() {
     })
 
 
-
-    $('#registerBtn').on('click', function () {
+    /*
+    * 注册
+    * */
+    $rightNav.find('.register').on('click', function () {
         $registerBox.show();
     });
-    $registerBox.find('.exit').on('click', function () {
+    $registerBox.find('.close').on('click', function () {
         $registerBox.hide();
     })
     $registerBox.find('.register').on('click', function () {
@@ -59,18 +77,34 @@ $(function() {
 
                 if (!res.code) {
                     //注册成功
-                    setTimeout(function() {
-                        $loginBox.show();
-                        $registerBox.hide();
-                    }, 500);
+                    $registerBox.hide();
+                    window.location.reload();
                 }
 
             }
         });
     });
 
+    /*
+     * 退出登录
+     * */
+    $rightNav.find('.logout').on('click', function () {
+        $.ajax({
+            type: 'get',
+            url: '/api/user/logout',
+            success: function (res) {
 
+                if (!res.code) {
+                    window.location.reload();
+                }
+            }
+        });
+    })
 
+    /*
+    * 主页内容相关
+    *
+    * */
     var ad = $('#ad');
 
     var pic = ad.find('.picList').find('li');

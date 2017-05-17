@@ -32,22 +32,38 @@
                 <li><a href="#">综艺白</a></li>
                 <li><a href="#">rap白</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" id="loginBtn">登录</a></li>
-                <li><a href="#" id="registerBtn">注册</a></li>
+            <ul class="nav navbar-nav navbar-right" id="rightNav">
+
+                {% if userInfo._id %}
+                <li class="nav nav-pills">
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{userInfo.username}} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="admin"><a href="javascript:;">管理</a></li>
+                            <li class="logout"><a href="javascript:;">退出</a></li>
+                            <!--<li role="separator" class="divider"></li>-->
+                        </ul>
+                    </li>
+                </li>
+                {% else %}
+                <li class="login"><a href="javascript:;">登录</a></li>
+                <li class="register"><a href="javascript:;">注册</a></li>
+                {% endif %}
+
             </ul>
         </div>
     </nav>
 
     <!--页面弹出框部分  登录、注册页面-->
-
     <div class="wrap">
         <div id="login" class="container">
             <br>
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Login
-                    <button class="fr exit"><img src="/public/img/close.png" alt=""></button>
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
@@ -66,7 +82,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Register
-                    <button class="fr exit"><img src="/public/img/close.png" alt=""></button>
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">

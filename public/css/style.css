@@ -101,6 +101,10 @@ body {
     height:50px;
 }
 
+.dropdown-menu li a {
+    text-align: right;
+}
+
 
 /*登录 注册*/
 

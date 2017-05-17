@@ -12,6 +12,8 @@ var swig = require('swig');
 var mongoose = require('mongoose');
 // 加载body-parser，用来处理post提交数据
 var bodyParser = require('body-parser');
+// 加载cookies
+var Cookies = require('cookies');
 // 创建app应用 => NodeJs  Http.createServer()
 var app = express();
 
@@ -47,6 +49,26 @@ app.use('/public',express.static(__dirname+'/public'));
 // req中会增加一个body属性，ajax提交的data
 // 誒，写在模块划分之前啊！！！！！！！！！！！！！！！！
 app.use( bodyParser.urlencoded({extended: true}) );
+
+// 配置cookies
+app.use(function(req, res, next){
+
+    req.cookies = new Cookies(req, res);
+
+    // 解析登录用户的cookies信息，全局可用
+    req.userInfo = {};
+    if(req.cookies.get('userInfo')){
+        try {
+            req.userInfo = JSON.parse(req.cookies.get('userInfo'));
+            next();
+        }catch (e){
+            next();
+        }
+    }
+    else{
+        next();
+    }
+})
 
 
 /*

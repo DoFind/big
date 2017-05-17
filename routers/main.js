@@ -12,9 +12,10 @@ router.get('/', function (req, res, next) {
         参数1  模板的文件 相对于views目录 views/index.html
         参数2  传递给模板使用的数据
     */
-    res.render('index');
+    res.render('main/index', {
+        userInfo: req.userInfo
+    });
 
-    //res.send('Hello');
 
 })
 
