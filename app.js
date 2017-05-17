@@ -66,6 +66,7 @@ app.use(function(req, res, next){
             req.userInfo = JSON.parse(req.cookies.get('userInfo'));
 
             // 获取当前用户是否为管理员，全局使用，但是不可以放在cookies中
+            // next（） 进入下一个中间件？
             User.findById( req.userInfo._id ).then(function (userInfo) {
                 req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
                 next();
