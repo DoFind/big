@@ -41,7 +41,9 @@
                             {{userInfo.username}} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
+                            {% if userInfo.isAdmin %}
                             <li class="admin"><a href="javascript:;">管理</a></li>
+                            {% endif %}
                             <li class="logout"><a href="javascript:;">退出</a></li>
                             <!--<li role="separator" class="divider"></li>-->
                         </ul>

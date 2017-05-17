@@ -14,8 +14,12 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 // 加载cookies
 var Cookies = require('cookies');
+// 引入数据库User啊 不是 (..models) 文件夹与app.js是同级目录
+var User = require('./models/user');
+
 // 创建app应用 => NodeJs  Http.createServer()
 var app = express();
+
 
 /*
 * 配置模板引擎
@@ -60,7 +64,12 @@ app.use(function(req, res, next){
     if(req.cookies.get('userInfo')){
         try {
             req.userInfo = JSON.parse(req.cookies.get('userInfo'));
-            next();
+
+            // 获取当前用户是否为管理员，全局使用，但是不可以放在cookies中
+            User.findById( req.userInfo._id ).then(function (userInfo) {
+                req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+                next();
+            })
         }catch (e){
             next();
         }
