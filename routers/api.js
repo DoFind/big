@@ -6,8 +6,8 @@
 
 var express = require('express');
 var router = express.Router();
-var responseData;
 var User = require('../models/user');
+var responseData;
 
 // 设置统一返回格式
 router.use(function (req, res, next) {

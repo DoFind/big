@@ -33,13 +33,6 @@ $(function() {
                 $loginBox.find('.colWarning').html(res.msg);
 
                 if (!res.code) {
-                    /*
-                    $rightNav.find('.login').hide();
-                    $rightNav.find('.register').hide();
-                    $rightNav.find('.userinfo').show();
-
-                    // 显示用户信息
-                    $rightNav.find('.userinfo>a').html(res.userInfo.username);*/
 
                     $loginBox.hide();
                     window.location.reload();
@@ -101,14 +94,15 @@ $(function() {
         });
     })
 
+
     /*
     * 主页内容相关
-    *
+    * 宣传栏： 自动轮播
     * */
-    var ad = $('#ad');
+    var $ad = $('#ad');
 
-    var pic = ad.find('.picList').find('li');
-    var state = ad.find('.stateList').find('li');
+    var pic = $ad.find('.picList').find('li');
+    var state = $ad.find('.stateList').find('li');
 
     var index = 0;
     var len = 5;
@@ -120,7 +114,7 @@ $(function() {
     state.eq(0).css('background', 'red');
 
     //prev
-    ad.find('.prev').on('click', function() {
+    $ad.find('.prev').on('click', function() {
 
         index--;
         if (index < 0) index = 4;
@@ -132,7 +126,7 @@ $(function() {
 
     });
 
-    ad.find('.next').on('click', function() {
+    $ad.find('.next').on('click', function() {
         index++;
         if (index >= len) index = 0;
         pic.hide();

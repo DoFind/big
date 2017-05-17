@@ -1,0 +1,31 @@
+
+{% extends 'layout.html' %}
+
+{% block main %}
+{% include 'page.html' %}
+
+<div class="jumbotron">
+
+    <table class="table table-bordered">
+
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>是否管理员</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{user._id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.password}}</td>
+            <td>{{user.isAdmin}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% include 'page.html' %}
+
+{% endblock %}

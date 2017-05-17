@@ -38,14 +38,13 @@
                 <li class="nav nav-pills">
                     <li role="presentation" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            {{userInfo.username}} <span class="caret"></span>
+                            {{userInfo.username}}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             {% if userInfo.isAdmin %}
                             <li class="admin"><a href="/admin">管理</a></li>
                             {% endif %}
                             <li class="logout"><a href="javascript:;">退出</a></li>
-                            <!--<li role="separator" class="divider"></li>-->
                         </ul>
                     </li>
                 </li>
