@@ -50,7 +50,7 @@ swig.setDefaults({cache: false});
 app.use('/public',express.static(__dirname+'/public'));
 
 // bodyParser设置
-// req中会增加一个body属性，ajax提交的data
+// req中会增加一个body属性
 // 誒，写在模块划分之前啊！！！！！！！！！！！！！！！！
 app.use( bodyParser.urlencoded({extended: true}) );
 

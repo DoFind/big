@@ -1,0 +1,22 @@
+
+{% extends 'layout.html' %}
+
+{%block main%}
+
+<div class="jumbotron">
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{successMsg}}</h3>
+        </div>
+        <div class="panel-body">
+            {% if url %}
+            <a href="{{url}}">点击这里跳转</a>
+            {% else %}
+            <a href="javascript: window.history.back()">返回上一步</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{%endblock%}

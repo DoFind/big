@@ -25,10 +25,6 @@ router.post('/user/register', function(req, res, next) {
     var password = req.body.password;
     var repassword = req.body.repassword;
 
-    console.log(username);
-    console.log(password);
-    console.log(repassword);
-
     if (username == ''){
         responseData.code = 1;
         responseData.msg = '用户名不能为空';

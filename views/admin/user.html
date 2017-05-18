@@ -17,7 +17,7 @@
 
         {% for user in users %}
         <tr>
-            <td>{{user._id}}</td>
+            <td>{{user._id.toString()}}</td>
             <td>{{user.username}}</td>
             <td>{{user.password}}</td>
             <td>{{user.isAdmin}}</td>
