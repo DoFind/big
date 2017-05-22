@@ -1,0 +1,28 @@
+
+{% extends 'layout.html' %}
+
+{% block main %}
+
+<div class="page-header">
+    <h3>图片管理 <small>慎删</small></h3>
+</div>
+
+<div class="row">
+
+    {% for item in resources %}
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+            <img src="/public/img/{{item.contents}}">
+            <div class="caption">
+                <h4>[{{item.category.name}}]{{item.title}}</h4>
+                <p>{{item.time|date('Y-m-d')}}</p>
+                <p>{{item.desc}}</p>
+                <p><a href="#" class="btn btn-primary" role="button">修改</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -6,11 +6,15 @@
     <title>白二爷的专属空间</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="/public/css/style.css">
-    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
     <script src="/public/js/jquery-3.1.1.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/main.js"></script>
+
     <!-- 		网站标签页图标
     <link href="img/100du.ico" rel="shortcut icon" />
      -->
@@ -26,11 +30,21 @@
                 <a href="javascript:;" class="navbar-brand"><img src="/public/img/0.png"></a>
             </div>
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">在路上</a></li>
-                <li><a href="#">影视白</a></li>
-                <li><a href="#">综艺白</a></li>
-                <li><a href="#">rap白</a></li>
+
+                {% if category %}
+                <li><a href="/" class="navFocus">首页</a></li>
+                {% else %}
+                <li><a href="/">首页</a></li>
+                {% endif %}
+
+
+                {% for cate in categories %}
+                    {% if category == cate.id %}
+                    <li><a href="/?category = {{cate.id}}" class="navFocus">{{cate.name}}</a></li>
+                    {% else %}
+                    <li><a href="/?category = {{cate.id}}">{{cate.name}}</a></li>
+                    {% endif %}
+                {% endfor %}
             </ul>
             <ul class="nav navbar-nav navbar-right" id="rightNav">
 
@@ -110,7 +124,7 @@
 				<a href="javascript:;" class="next"></a>
 				<ul class = "picList">
 			    	<li class="active"><a href="#"></a><img src="/public/img/1.jpg" alt="1"></a></li>
-			    	<li><a href="#"></a><img src="/public/img/2.jpg" alt="1"></a></li>
+			    	<li><a href="#"></a><img src="/public/img/2.jpg"  alt="1"></a></li>
 			    	<li><a href="#"></a><img src="/public/img/3.jpg" alt="1"></a></li>
 			    	<li><a href="#"></a><img src="/public/img/4.jpg" alt="1"></a></li>
 			    	<li><a href="#"></a><img src="/public/img/5.jpg" alt="1"></a></li>

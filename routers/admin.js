@@ -6,6 +6,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Category = require('../models/category');
+var Resource = require('../models/resource');
 
 router.use(function (req, res, next) {
     if(!req.userInfo.isAdmin){
@@ -24,7 +25,6 @@ router.get('/', function (req, res) {
     res.render('admin/index', {
         userInfo: req.userInfo
     })
-
 })
 
 /*
@@ -311,6 +311,172 @@ router.get('/category/delete', function (req, res) {
     })
 })
 
+
+/*
+* 图片管理 -- 返回所有图片信息
+* */
+router.get('/pic', function (req, res) {
+
+    Resource.find({
+        resType: 'pic'
+    }).populate(['category']).sort({ time: -1}).then(function (resources) {
+
+        res.render('admin/pic_index', {
+            userInfo: req.userInfo,
+            resources: resources
+        });
+    })
+})
+
+/*
+* 图片上传页面
+* */
+router.get('/pic/add', function (req, res) {
+
+    Category.find().sort({_id: -1}).then(function (categories) {
+
+        res.render('admin/pic_add', {
+            userInfo: req.userInfo,
+            categories: categories
+        });
+    })
+})
+
+router.post('/pic/add', function (req, res){
+
+    var data = req.body;
+
+    var title = data.title || '';
+    var desc = data.desc || '';
+    var time = data.time || null;
+    var category = data.category || '';
+    var contents = data.pic ||'';
+
+    //信息非空验证
+    if(title == '' || desc == '' || time == null || category == '' || contents == ''){
+
+        res.render('admin/error', {
+            userInfo: req.userInfo,
+            message: '请填写全部信息..'
+        });
+        return;
+    }
+
+    // 信息保存
+    // 单条信息保存
+
+    Resource.findOne({
+        title: title
+    }).then(function (re) {
+        if(re) {
+            res.render('admin/error', {
+                userInfo: req.userInfo,
+                message: '该图集信息已存在..'
+            });
+            return Promise.reject();;
+        }
+        else {
+            return new Resource({
+                title: title,
+                desc: desc,
+                time: time,
+                resType: 'pic',
+                category: category,
+                contents: contents
+            }).save();
+        }
+    }).then(function () {
+        res.render('admin/success', {
+            userInfo: req.userInfo,
+            message: '图片上传成功',
+            url: '/admin/pic'
+        });
+    })
+
+})
+
+/*
+ * 视频管理
+ * */
+router.get('/vedio', function (req, res) {
+
+    Resource.find({
+        resType: 'vedio'
+    }).populate(['category']).sort({ time: -1}).then(function (resources) {
+
+        res.render('admin/vedio_index', {
+            userInfo: req.userInfo,
+            resources: resources
+        });
+    })
+
+})
+
+/*
+ * 视频上传页面
+ * */
+router.get('/vedio/add', function (req, res) {
+
+    Category.find().sort({_id: -1}).then(function (categories) {
+
+        res.render('admin/vedio_add', {
+            userInfo: req.userInfo,
+            categories: categories
+        });
+    })
+})
+
+router.post('/vedio/add', function (req, res){
+
+    var data = req.body;
+
+    var title = data.title || '';
+    var desc = data.desc || '';
+    var time = data.time || null;
+    var category = data.category || '';
+    var contents = data.vedio ||'';
+
+    //信息非空验证
+    if(title == '' || desc == '' || time == null || category == '' || contents == ''){
+
+        res.render('admin/error', {
+            userInfo: req.userInfo,
+            message: '请填写全部信息..'
+        });
+        return;
+    }
+
+    // 信息保存
+    // 单条信息保存
+
+    Resource.findOne({
+        title: title
+    }).then(function (re) {
+        if(re) {
+            res.render('admin/error', {
+                userInfo: req.userInfo,
+                message: '该视频信息已存在..'
+            });
+            return Promise.reject();;
+        }
+        else {
+            return new Resource({
+                title: title,
+                desc: desc,
+                time: time,
+                resType: 'vedio',
+                category: category,
+                contents: contents
+            }).save();
+        }
+    }).then(function () {
+        res.render('admin/success', {
+            userInfo: req.userInfo,
+            message: '视频上传成功',
+            url: '/admin/vedio'
+        });
+    })
+})
 
 // 对外暴露
 module.exports = router;

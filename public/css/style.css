@@ -67,34 +67,19 @@ body {
 
 /*通用格式*/
 
-.colMint {
-    color: #48c5a3 !important;
-}
-.colDark {
-    color: #363c40 !important;
-}
-.textRight {
-    text-align: right;
-}
-.textLeft {
-    text-align: left;
-}
-.textCenter {
-    text-align: center;
-}
-.fl {
-    float: left;
-}
-.fr {
-    float: right;
-}
-
-
 body {
     padding-top: 80px;
 }
 
+.page-header {
+    margin:0 0 20px;
+}
+
 /*导航栏nav 样式重写*/
+
+.navFocus {
+    color: #fff;
+}
 
 .navbar-brand img {
     width: 90px;
@@ -105,6 +90,10 @@ body {
     text-align: right;
 }
 
+
+.list-group-item {
+    display: inline-block;
+}
 
 /*登录 注册*/
 
