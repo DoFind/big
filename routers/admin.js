@@ -347,13 +347,13 @@ router.post('/pic/add', function (req, res){
     var data = req.body;
 
     var title = data.title || '';
-    var desc = data.desc || '';
+    var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
-    var contents = data.pic ||'';
+    var path = data.path ||'';
 
     //信息非空验证
-    if(title == '' || desc == '' || time == null || category == '' || contents == ''){
+    if(title == '' || summary == '' || time == null || category == '' || path == ''){
 
         res.render('admin/error', {
             userInfo: req.userInfo,
@@ -378,11 +378,11 @@ router.post('/pic/add', function (req, res){
         else {
             return new Resource({
                 title: title,
-                desc: desc,
+                summary: summary,
                 time: time,
                 resType: 'pic',
                 category: category,
-                contents: contents
+                path: path
             }).save();
         }
     }).then(function () {
@@ -430,18 +430,26 @@ router.post('/vedio/add', function (req, res){
 
     var data = req.body;
 
+    // 标题、简介
     var title = data.title || '';
-    var desc = data.desc || '';
+    var summary = data.summary || '';
+    // 资源时间
     var time = data.time || null;
+    // 所属分类
     var category = data.category || '';
-    var contents = data.vedio ||'';
+    // 海报地址  如果是图集，可以为空
+    var poster = data.poster || '';
+    // 片源通用地址
+    var path = data.path ||'';
+    // 片源flash地址
+    var flash = data.flash || '';
 
     //信息非空验证
-    if(title == '' || desc == '' || time == null || category == '' || contents == ''){
+    if(title == '' || summary == '' || time == null || category == '' || poster == '' || path == '' || flash == ''){
 
         res.render('admin/error', {
             userInfo: req.userInfo,
-            message: '请填写全部信息..'
+            message: '请填写完整信息..'
         });
         return;
     }
@@ -457,22 +465,134 @@ router.post('/vedio/add', function (req, res){
                 userInfo: req.userInfo,
                 message: '该视频信息已存在..'
             });
-            return Promise.reject();;
+            return Promise.reject();
         }
         else {
             return new Resource({
                 title: title,
-                desc: desc,
+                summary: summary,
                 time: time,
                 resType: 'vedio',
                 category: category,
-                contents: contents
+                poster: poster,
+                path: path,
+                flash: flash
             }).save();
         }
     }).then(function () {
         res.render('admin/success', {
             userInfo: req.userInfo,
             message: '视频上传成功',
+            url: '/admin/vedio'
+        });
+    })
+})
+
+/*
+* 视频修改页面
+* */
+router.get('/vedio/edit', function (req, res) {
+
+    var id = req.query.id || '';
+
+    if(id == ''){
+        res.render('admin/error',{
+            userInfo: req.userInfo,
+            message: '修改的视频不存在'
+        })
+        return;
+    }
+
+    var categories = [];
+
+    Category.find().then(function (re){
+
+        categories = re;
+        return Resource.findOne({
+            _id: id
+        }).populate('category');
+    }).then(function (vedio) {
+
+        if(vedio){
+            res.render('admin/vedio_edit', {
+                userInfo: req.userInfo,
+                categories: categories,
+                vedio: vedio
+            });
+        }
+        else{
+            res.render('admin/error',{
+                userInfo: req.userInfo,
+                message: '修改的视频不存在'
+            })
+        }
+    })
+})
+
+router.post('/vedio/edit', function (req, res) {
+
+    var data = req.body;
+    var id = req.query.id;
+
+    // 标题、简介
+    // var title = data.title || '';
+    var summary = data.summary || '';
+    // 资源时间
+    var time = data.time || null;
+    // 所属分类
+    var category = data.category || '';
+    // 海报地址  如果是图集，可以为空
+    var poster = data.poster || '';
+    // 片源通用地址
+    var path = data.path ||'';
+    // 片源flash地址
+    var flash = data.flash || '';
+
+    //信息非空验证
+    if(summary == '' || time == null || category == '' || poster == '' || path == '' || flash == ''){
+
+        res.render('admin/error', {
+            userInfo: req.userInfo,
+            message: '请填写完整信息..'
+        });
+        return;
+    }
+
+    Resource.update({
+        _id: id
+    }, {
+        //title: title,
+        summary: summary,
+        time: time,
+        resType: 'vedio',
+        category: category,
+        poster: poster,
+        path: path,
+        flash: flash
+    }).then(function () {
+        res.render('admin/success', {
+            userInfo: req.userInfo,
+            message: '视频修改成功',
+            url: '/admin/vedio'
+        });
+    })
+})
+
+/*
+* 视频删除
+* */
+router.get('/vedio/delete', function (req, res) {
+
+    var id = req.query.id || '';
+
+    //获取要修改的分类信息
+    Resource.remove({
+        _id: id
+    }).then(function () {
+
+        res.render('admin/success', {
+            userInfo: req.userInfo,
+            message: '成功删除视频',
             url: '/admin/vedio'
         });
     })

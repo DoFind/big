@@ -1,0 +1,29 @@
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <!--通用代码-->
+            <iframe height=500 width=720 src='{{vedio.path}}' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>
+            <!--html代码-->
+            <!--<embed src="{{vedio.path}}" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>-->
+
+        </div>
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+                <dt>视频标题</dt>
+                <dd>{{vedio.title}}</dd>
+                <dt>时间</dt>
+                <dd>{{vedio.time|date('Y-m-d')}}</dd>
+                <dt>简介</dt>
+                <dd>{{vedio.summary}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

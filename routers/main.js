@@ -20,43 +20,56 @@ router.use(function (req, res, next) {
     });
 })
 
-/*router.get('/', function (req, res, next) {
-
-    /!*
-        读取views目录下的指定文件，解析并返回给客户端
-        参数1  模板的文件 相对于views目录 views/index.html
-        参数2  传递给模板使用的数据
-    *!/
-    res.render('main/index', {
-        userInfo: req.userInfo
-    });
-})*/
-
+/*
+* 访问主页 - 不同分页
+* */
 router.get('/', function (req, res, next) {
 
-    // { 'category ': ' 591febd0738e72120c6cceaa' }
+    /*// { 'category ': ' 591febd0738e72120c6cceaa' }
     console.log(req.query);
-    // undefined
-    console.log(req.query.category);
 
-    data.category = req.query.category || '';
+    data.category = req.query.category
+    console.log(data.category);
+*/
+    // var id = req.query.id || '';
+    // undefined
+    //console.log(req.query.category);
+
+    //data.category = req.query.category || '';
 
     // 查询条件
-    var where = {};
+    /*var where = {};
     if (data.category){
         where.categroy = data.category;
-    }
+    }*/
 
     // 查询数据
-    Resource.where(where).find().populate(['category']).sort({ time: -1}).then(function (re) {
+    Resource.find().populate('category').sort({ time: -1}).then(function (re) {
 
-        data.res = re;
+        data.resources = re;
 
-        //console.log(data);
         res.render('main/index', data);
     })
-
 })
+
+
+/*
+* 访问视频详情，新页面打开
+* */
+router.get('/main/vedio', function (req, res) {
+
+    var id = req.query.id;
+
+
+    Resource.findOne({
+        _id: id
+    }).then(function (vedio) {
+
+        data.vedio = vedio;
+        res.render('main/vedio_detail', data);
+    })
+})
+
 
 module.exports = router;
 

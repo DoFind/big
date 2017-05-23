@@ -9,7 +9,8 @@ var mongoose = require('mongoose');
 module.exports = new mongoose.Schema({
 
     title: String,
-    desc: {
+    // 简介/摘要 summary
+    summary: {
         type: String,
         default: ''
     },
@@ -30,7 +31,18 @@ module.exports = new mongoose.Schema({
         //引用
         ref: 'Category'
     },
-    contents: {
+    // 海报
+    poster: {
+        type: String,
+        default: ''
+    },
+    // 资源通用地址
+    path: {
+        type: String,
+        default: ''
+    },
+    // 资源flash地址
+    flash: {
         type: String,
         default: ''
     },

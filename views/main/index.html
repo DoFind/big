@@ -1,124 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>白二爷的专属空间</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'layout.html' %}
 
+{% block content %}
 
-    <link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="/public/css/bootstrap-theme.min.css" type="text/css" />
-    <link rel="stylesheet" href="/public/css/style.css">
-    <script src="/public/js/jquery-3.1.1.js"></script>
-    <script src="/public/js/bootstrap.min.js"></script>
-    <script src="/public/js/main.js"></script>
-
-    <!-- 		网站标签页图标
-    <link href="img/100du.ico" rel="shortcut icon" />
-     -->
-     
-</head>
-
-<body>
-
-    <!--导航栏，始终显示-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="javascript:;" class="navbar-brand"><img src="/public/img/0.png"></a>
+<!--页面弹出框部分  登录、注册页面-->
+<div class="wrap">
+    <div id="login" class="container">
+        <br>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Login
+                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <ul class="nav navbar-nav navbar-left">
-
-                {% if category %}
-                <li><a href="/" class="navFocus">首页</a></li>
-                {% else %}
-                <li><a href="/">首页</a></li>
-                {% endif %}
-
-
-                {% for cate in categories %}
-                    {% if category == cate.id %}
-                    <li><a href="/?category = {{cate.id}}" class="navFocus">{{cate.name}}</a></li>
-                    {% else %}
-                    <li><a href="/?category = {{cate.id}}">{{cate.name}}</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right" id="rightNav">
-
-                {% if userInfo._id %}
-                <li class="nav nav-pills">
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            {{userInfo.username}}<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if userInfo.isAdmin %}
-                            <li class="admin"><a href="/admin">管理</a></li>
-                            {% endif %}
-                            <li class="logout"><a href="javascript:;">退出</a></li>
-                        </ul>
-                    </li>
-                </li>
-                {% else %}
-                <li class="login"><a href="javascript:;">登录</a></li>
-                <li class="register"><a href="javascript:;">注册</a></li>
-                {% endif %}
-
-            </ul>
-        </div>
-    </nav>
-
-    <!--页面弹出框部分  登录、注册页面-->
-    <div class="wrap">
-        <div id="login" class="container">
-            <br>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Login
-                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>用户名:</label><input type="text" class="form-control username">
+                    <label>密码:</label><input type="password" class="form-control password">
                 </div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>用户名:</label><input type="text" class="form-control username">
-                        <label>密码:</label><input type="password" class="form-control password">
-                    </div>
-                    <!--<a href="#" class="text-info">忘记密码?</a>-->
-                    <label class="alert-danger colWarning"></label>
-                    <input type="button" value="登录" class="btn btn-primary pull-right login">
-                </div>
-            </div>
-        </div>
-
-        <div id="register" class="container">
-            <br>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Register
-                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>用户名:</label><input type="text" class="form-control username">
-                        <!--<div class="alert alert-warning">用户名不能为空！</div>-->
-                        <label>密码:</label><input type="password" class="form-control password">
-                        <label>确认:</label><input type="password" class="form-control repassword">
-                    </div>
-                    <label class="alert-danger colWarning"></label>
-                    <input type="button" value="注册" class="btn btn-primary pull-right register">
-                </div>
+                <!--<a href="#" class="text-info">忘记密码?</a>-->
+                <label class="alert-danger colWarning"></label>
+                <input type="button" value="登录" class="btn btn-primary pull-right login">
             </div>
         </div>
     </div>
 
+    <div id="register" class="container">
+        <br>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Register
+                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>用户名:</label><input type="text" class="form-control username">
+                    <!--<div class="alert alert-warning">用户名不能为空！</div>-->
+                    <label>密码:</label><input type="password" class="form-control password">
+                    <label>确认:</label><input type="password" class="form-control repassword">
+                </div>
+                <label class="alert-danger colWarning"></label>
+                <input type="button" value="注册" class="btn btn-primary pull-right register">
+            </div>
+        </div>
+    </div>
+</div>
 
+<!--正文部分 返回的视频和图片资源-->
+<div class="container">
 
-    <!--内容部分-->
+    <div class="row">
+
+        {% for item in resources %}
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <a href="/main/vedio?id={{item._id.toString()}}"><img src="/public/img/1.jpg" alt="..."></a>
+                <div class="caption">
+                    <h4>[{{item.category.name}}]{{item.title}}</h4>
+                    <p>{{item.time|date('Y-m-d')}}</p>
+                    <p><a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-primary" role="button">一睹为快</a></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+<!--
     <div id="content">
 
-            <!--宣传栏-->
+            &lt;!&ndash;宣传栏&ndash;&gt;
 			<div id="ad">
 				<a href="javascript:;" class="prev"></a>
 				<a href="javascript:;" class="next"></a>
@@ -141,11 +92,7 @@
 			    </ul>
 			</div>
     </div>
-
-    <!--页脚-->
-    <footer>
-        友情链接：白小爷微博
-    </footer>
 </body>
 
 </html>
+-->

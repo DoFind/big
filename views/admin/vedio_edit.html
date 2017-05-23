@@ -4,22 +4,23 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>视频上传 <small>标题不可重复--这不对，我知道</small></h3>
+    <h3>视频修改 <small>标题不可重复--这不对，我知道</small></h3>
 </div>
 
 <div class="jumbotron">
 
     <form class="form-horizontal" method="post">
+        <input type="text" hidden value="{{vedio._id}}">
         <div class="form-group form-group-lg">
-            <label for="title" class="col-sm-2 control-label">视频标题</label>
+            <label class="col-sm-2 control-label">视频标题</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" name="title" placeholder="请输入这组视频的标题" required>
+                <p class="form-control-static">{{vedio.title}}</p>
             </div>
         </div>
         <div class="form-group">
             <label for="time" class="col-sm-2 control-label">时间</label>
             <div class="col-sm-10">
-                <input type="date" class="form-control" id="time" name="time" placeholder="请输入这组视频的拍摄（公布）时间" required>
+                <input type="date" class="form-control" id="time" name="time" value="{{vedio.time|date('Y-m-d')}}" placeholder="请输入这组视频的拍摄（公布）时间" required>
             </div>
         </div>
 
@@ -27,8 +28,12 @@
             <label for="category" class="col-sm-2 control-label">分类</label>
             <div class="col-sm-10">
                 <select name="category" id="category" class="form-control" required>
-                    {%for category in categories%}
-                    <option value="{{category.id}}">{{category.name}}</option>
+                    {%for item in categories%}
+                        {% if item._id.toString() == vedio.category._id.toString() %}
+                        <option value="{{item.id}}" selected>{{item.name}}</option>
+                        {% else %}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                        {% endif %}
                     {%endfor%}
                 </select>
             </div>
@@ -37,25 +42,25 @@
         <div class="form-group">
             <label for="poster" class="col-sm-2 control-label">海报地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="poster" name="poster" placeholder="请输入海报地址">
+                <input type="url" class="form-control" id="poster" name="poster" value="{{vedio.poster}}" placeholder="请输入海报地址">
             </div>
         </div>
         <div class="form-group">
             <label for="path" class="col-sm-2 control-label">片源通用地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="path" name="path" placeholder="请输入片源通用地址" required>
+                <input type="url" class="form-control" id="path" name="path" value="{{vedio.path}}" placeholder="请输入片源通用地址" required>
             </div>
         </div>
         <div class="form-group">
             <label for="flash" class="col-sm-2 control-label">片源flash地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="flash" name="flash" placeholder="请输入片源flash地址" required>
+                <input type="url" class="form-control" id="flash" name="flash" value="{{vedio.flash}}" placeholder="请输入片源flash地址" required>
             </div>
         </div>
         <div class="form-group">
             <label for="summary" class="col-sm-2 control-label">视频简介</label>
             <div class="col-sm-10">
-                <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required></textarea>
+                <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required>{{vedio.summary}}</textarea>
             </div>
         </div>
 

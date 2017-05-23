@@ -7,22 +7,28 @@
     <h3>视频管理 <small>慎删</small></h3>
 </div>
 
-<div class="row">
-
+<table class="table table-bordered">
+    <tr>
+        <th>名字</th>
+        <th>时间</th>
+        <th>所属分类</th>
+        <th>海报</th>
+        <th>操作</th>
+    </tr>
     {% for item in resources %}
-    <div class="col-sm-6 col-md-3">
-        <div class="thumbnail">
-            <a href="{{item.contents}}"><img src="/public/img/1.jpg" alt="..."></a>
-            <div class="caption">
-                <h4>[{{item.category.name}}]{{item.title}}</h4>
-                <p>{{item.time|date('Y-m-d')}}</p>
-                <p>{{item.desc}}</p>
-                <p><a href="#" class="btn btn-primary" role="button">修改</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
-            </div>
-        </div>
-    </div>
+    <tr>
+        <td hidden>{{item._id.toString()}}</td>
+        <td>{{item.title}}</td>
+        <td>{{item.time|date('Y-m-d')}}</td>
+        <td>{{item.category.name}}</td>
+        <td><img src="/public/img/3.jpg" alt="poster" style="height: 80px"></td><!--{{item.poster}}-->
+        <td>
+            <a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            <a href="/admin/vedio/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>
+            <a href="/admin/vedio/delete?id={{item._id.toString()}}" class="btn btn-danger" role="button">删除</a>
+        </td>
+    </tr>
     {% endfor %}
-
-</div>
+</table>
 
 {% endblock %}
