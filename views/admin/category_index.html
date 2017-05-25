@@ -2,6 +2,11 @@
 {% extends 'layout.html' %}
 
 {% block main %}
+
+<div class="page-header">
+    <h3>分类一览 <small>当前所有分类</small></h3>
+</div>
+
 {% include 'page.html' %}
 
 <div class="jumbotron">
@@ -23,6 +28,7 @@
         <tr>
             <th>ID</th>
             <th>分类名</th>
+            <th>资源类型</th>
             <th>操作</th>
         </tr>
 
@@ -30,6 +36,7 @@
         <tr>
             <td>{{category._id.toString()}}</td>
             <td>{{category.name}}</td>
+            <td>{{category.resType}}</td>
             <td>
                 <a href="/admin/category/edit?id={{category._id.toString()}}">修改</a> |
                 <a href="/admin/category/delete?id={{category._id.toString()}}">删除</a>

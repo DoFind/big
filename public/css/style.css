@@ -95,18 +95,6 @@ body {
     display: inline-block;
 }
 
-/*登录 注册*/
-
-#login, #register {
-
-    position: fixed;
-    left: 50%;
-    margin-left: -260px;
-    width:520px;
-    z-index: 100;
-    display: none;
-}
-
 
 /*内容区域*/
 

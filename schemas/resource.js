@@ -19,7 +19,7 @@ module.exports = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    // 视频1， 图片2
+    // 视频vedio， 图片pic
     resType: {
         type: String,
         default: 'vedio'
@@ -31,11 +31,19 @@ module.exports = new mongoose.Schema({
         //引用
         ref: 'Category'
     },
-    // 海报
+    // 海报，保存上传后图片的本地路径
     poster: {
         type: String,
         default: ''
     },
+
+    // 图片资源相关字段
+    picPath: {
+        type: Array,
+        default: []
+    },
+
+    // 视频资源相关信息字段
     // 资源通用地址
     path: {
         type: String,
@@ -46,8 +54,13 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
-    // 相关视频
+
+    // 相关视频 这个路径是不是也得存俩啊
     next: {
+        type: String,
+        default: ''
+    },
+    pre: {
         type: String,
         default: ''
     }

@@ -5,16 +5,11 @@ $(function() {
     * */
     $loginBox = $('#login');
     $registerBox = $('#register');
-    $rightNav = $('#rightNav');
 
 
     /*
      * 登录
      * */
-    $rightNav.find('.login').on('click', function () {
-        $loginBox.show();
-    })
-
     $loginBox.find('.close').on('click', function () {
         $loginBox.hide();
     })
@@ -46,9 +41,6 @@ $(function() {
     /*
     * 注册
     * */
-    $rightNav.find('.register').on('click', function () {
-        $registerBox.show();
-    });
     $registerBox.find('.close').on('click', function () {
         $registerBox.hide();
     })
@@ -81,7 +73,7 @@ $(function() {
     /*
      * 退出登录
      * */
-    $rightNav.find('.logout').on('click', function () {
+    $('#logout').on('click', function () {
         $.ajax({
             type: 'get',
             url: '/api/user/logout',
@@ -93,7 +85,6 @@ $(function() {
             }
         });
     })
-
 
     /*
     * 主页内容相关

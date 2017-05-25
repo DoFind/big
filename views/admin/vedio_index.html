@@ -21,7 +21,7 @@
         <td>{{item.title}}</td>
         <td>{{item.time|date('Y-m-d')}}</td>
         <td>{{item.category.name}}</td>
-        <td><img src="/public/img/3.jpg" alt="poster" style="height: 80px"></td><!--{{item.poster}}-->
+        <td><img src="/public/img/poster/{{item.poster}}" alt="poster" style="height: 80px"></td><!--{{item.poster}}-->
         <td>
             <a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-default">查看</a>
             <a href="/admin/vedio/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>

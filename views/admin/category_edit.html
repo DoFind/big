@@ -4,6 +4,10 @@
 {% block main %}
 {% include 'page.html' %}
 
+<div class="page-header">
+    <h3>编辑分类 <small>hhhh</small></h3>
+</div>
+
 <div class="jumbotron">
 
     {% if bShow %}
@@ -23,6 +27,26 @@
             <label for="name" class="col-sm-2 control-label">分类名称</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="name" name="name" value="{{category.name}}" placeholder="请输入修改分类名称" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">资源类型</label>
+            <div class="col-sm-10">
+                {% if category.resType == 'vedio' %}
+                <label class="radio-inline">
+                    <input type="radio" name="resType" value="vedio" checked required> 视频
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="resType" value="pic"> 图册
+                </label>
+                {% else %}
+                <label class="radio-inline">
+                    <input type="radio" name="resType" value="vedio" required> 视频
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="resType" value="pic" checked> 图册
+                </label>
+                {% endif %}
             </div>
         </div>
         <div class="form-group">

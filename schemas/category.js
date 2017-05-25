@@ -8,5 +8,11 @@ var mongoose = require('mongoose');
 
 module.exports = new mongoose.Schema({
 
-    name: String
+    name: String,
+
+    // 视频vedio， 图片pic
+    resType: {
+        type: String,
+        default: ''
+    }
 });

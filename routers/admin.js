@@ -4,6 +4,9 @@
 
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+var multiparty = require('multiparty');
+var path = require('path');
 var User = require('../models/user');
 var Category = require('../models/category');
 var Resource = require('../models/resource');
@@ -138,6 +141,7 @@ router.get('/category/add', function (req, res) {
 router.post('/category/add', function (req, res) {
 
     var name = req.body.name.replace(/(^\s*)|(\s*$)/g, "") || '';
+    var resType = req.body.resType;
 
     if (name == '') {
         res.render('admin/category_add', {
@@ -151,7 +155,8 @@ router.post('/category/add', function (req, res) {
 
     //分类名称是否已存在
     Category.findOne({
-        name: name
+        name: name,
+        resType: resType
     }).then(function (category) {
         if(category) {
             res.render('admin/category_add', {
@@ -164,7 +169,8 @@ router.post('/category/add', function (req, res) {
         }
         else {
             return new Category({
-                name: name
+                name: name,
+                resType: resType
             }).save();
         }
     }).then(function () {
@@ -215,13 +221,14 @@ router.post('/category/edit', function (req, res) {
 
     //获取post提交过来的名称 body拿到的是表单中 name='name' 的value！！！！！！！
     var name = req.body.name.replace(/(^\s*)|(\s*$)/g, "") || '';
+    var resType = req.body.resType;
 
-    if (name == '') {
+    if (name == '' || resType == '') {
         res.render('admin/category_edit', {
             userInfo: req.userInfo,
             bShow: true,
             isSuc: false,
-            message: '分类名称不能为空..'
+            message: '分类信息不能为空..'
         });
         return;
     }
@@ -242,7 +249,7 @@ router.post('/category/edit', function (req, res) {
         }
         else {
 
-            if (name == category.name) {
+            if (name == category.name && resType == category.resType) {
 
                 // 这么调用没有反应
                 // getCategory(req, res, true, true, '分类名称修改成功');
@@ -250,7 +257,7 @@ router.post('/category/edit', function (req, res) {
                     userInfo: req.userInfo,
                     bShow: true,
                     isSuc: false,
-                    message: '分类名称不曾改变..'
+                    message: '分类信息不曾改变..'
                 });
                 return Promise.reject();
             }
@@ -259,7 +266,8 @@ router.post('/category/edit', function (req, res) {
                 //查询看看 修改后的分类名称是否已经存在
                 return Category.findOne({
                     _id: {$ne: id},
-                    name: name
+                    name: name,
+                    resType: resType
                 });
             }
         }
@@ -276,16 +284,11 @@ router.post('/category/edit', function (req, res) {
         }
         else {
             // update  参数1 要修改谁； 参数2 改成什么
-            return Category.update({ _id: id },{ name: name });
+            return Category.update({ _id: id },{ name: name, resType: resType });
         }
     }).then(function () {
 
         getCategory(req, res, true, true, '分类名称修改成功');
-        /*res.render('admin/category_index', {
-            userInfo: req.userInfo,
-            isSuc: true,
-            message: '分类名称修改成功'
-        });*/
     })
 })
 
@@ -333,7 +336,7 @@ router.get('/pic', function (req, res) {
 * */
 router.get('/pic/add', function (req, res) {
 
-    Category.find().sort({_id: -1}).then(function (categories) {
+    Category.find({resType: 'pic'}).sort({_id: -1}).then(function (categories) {
 
         res.render('admin/pic_add', {
             userInfo: req.userInfo,
@@ -417,7 +420,7 @@ router.get('/vedio', function (req, res) {
  * */
 router.get('/vedio/add', function (req, res) {
 
-    Category.find().sort({_id: -1}).then(function (categories) {
+    Category.find({resType: 'vedio'}).sort({_id: -1}).then(function (categories) {
 
         res.render('admin/vedio_add', {
             userInfo: req.userInfo,
@@ -426,9 +429,43 @@ router.get('/vedio/add', function (req, res) {
     })
 })
 
-router.post('/vedio/add', function (req, res){
+router.post('/vedio/add', function(req, res, next){
 
-    var data = req.body;
+    // 生成multiparty对象，配置上传目标路径
+    var form = new multiparty.Form({uploadDir: './public/img/poster/'});
+
+    form.parse(req, function (err, fields, files) {
+
+        if( files.poster.length > 0 ){
+
+            var posterData = files.poster[0];
+            var originalFilename = posterData.originalFilename;
+            var uploadedPath = posterData.path;
+            var dstPath = './public/img/poster/' + originalFilename;
+
+            //重命名文件名
+            fs.rename(uploadedPath, dstPath, function(err) {
+                if(err){
+                        req.fields = fields;
+                        console.log('rename error: ' + err);
+                        next();
+                    } else {
+                        req.poster = originalFilename;
+                        req.fields = fields;
+                        console.log('rename ok');
+                        next();
+                    }
+                });
+        }
+        else{
+            req.fields = fields;
+            console.log('no files');
+            next();
+        }
+    })
+}, function(req, res){
+
+    var data = req.fields;
 
     // 标题、简介
     var title = data.title || '';
@@ -438,14 +475,14 @@ router.post('/vedio/add', function (req, res){
     // 所属分类
     var category = data.category || '';
     // 海报地址  如果是图集，可以为空
-    var poster = data.poster || '';
+    var poster = req.poster || '';
     // 片源通用地址
     var path = data.path ||'';
     // 片源flash地址
     var flash = data.flash || '';
 
     //信息非空验证
-    if(title == '' || summary == '' || time == null || category == '' || poster == '' || path == '' || flash == ''){
+    if(title == '' || summary == '' || time == null || category == '' || path == '' || flash == ''){ //poster == '' ||
 
         res.render('admin/error', {
             userInfo: req.userInfo,
@@ -505,7 +542,7 @@ router.get('/vedio/edit', function (req, res) {
 
     var categories = [];
 
-    Category.find().then(function (re){
+    Category.find({resType: 'vedio'}).then(function (re){
 
         categories = re;
         return Resource.findOne({
