@@ -318,13 +318,13 @@ router.get('/category/delete', function (req, res) {
 /*
 * 图片管理 -- 返回所有图片信息
 * */
-router.get('/pic', function (req, res) {
+router.get('/album', function (req, res) {
 
     Resource.find({
-        resType: 'pic'
+        resType: 'album'
     }).populate(['category']).sort({ time: -1}).then(function (resources) {
 
-        res.render('admin/pic_index', {
+        res.render('admin/album_index', {
             userInfo: req.userInfo,
             resources: resources
         });
@@ -334,29 +334,72 @@ router.get('/pic', function (req, res) {
 /*
 * 图片上传页面
 * */
-router.get('/pic/add', function (req, res) {
+router.get('/album/add', function (req, res) {
 
-    Category.find({resType: 'pic'}).sort({_id: -1}).then(function (categories) {
+    Category.find({resType: 'album'}).sort({_id: -1}).then(function (categories) {
 
-        res.render('admin/pic_add', {
+        res.render('admin/album_add', {
             userInfo: req.userInfo,
             categories: categories
         });
     })
 })
 
-router.post('/pic/add', function (req, res){
+router.post('/album/add', function(req, res, next){
 
-    var data = req.body;
+    // 生成multiparty对象，配置上传目标路径
+    var dirpath = './public/img/photobook/';
+    var form = new multiparty.Form({uploadDir: dirpath});
 
+    form.parse(req, function (err, fields, files) {
+
+        var paths = files.path;
+
+        if( paths.length > 0 ){
+
+            var filenames = [];
+            var len = paths.length;
+            var index = 0;
+
+            for(var i=0; i<len; i++){
+
+                var posterData = paths[i];
+                var filename = Date.now() + '-' + posterData.originalFilename;
+                filenames.push(filename);
+
+                //重命名文件名
+                fs.rename(posterData.path, dirpath + filename, function(err) {
+                    if(err){
+                        console.log('rename failed');
+                    }
+                    else{
+                        console.log('rename ok');
+                    }
+                });
+            }
+            req.albumPath = filenames;
+            req.fields = fields;
+            next();
+        }
+        else{
+            req.fields = fields;
+            console.log('no files');
+            next();
+        }
+    })
+
+},
+    function(req, res){
+
+    var data = req.fields;
     var title = data.title || '';
-    var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
-    var path = data.path ||'';
+    var summary = data.summary || '';
+    var albumPath = req.albumPath || [];
 
     //信息非空验证
-    if(title == '' || summary == '' || time == null || category == '' || path == ''){
+    if(title == '' || summary == '' || time == null || category == '' || albumPath.length == 0){
 
         res.render('admin/error', {
             userInfo: req.userInfo,
@@ -383,19 +426,89 @@ router.post('/pic/add', function (req, res){
                 title: title,
                 summary: summary,
                 time: time,
-                resType: 'pic',
+                resType: 'album',
                 category: category,
-                path: path
+                albumPath: albumPath
             }).save();
         }
     }).then(function () {
         res.render('admin/success', {
             userInfo: req.userInfo,
             message: '图片上传成功',
-            url: '/admin/pic'
+            url: '/admin/album'
         });
     })
+})
 
+/*
+* 图片修改
+* */
+router.get('/album/edit', function (req, res) {
+
+    var id = req.query.id || '';
+
+    if(id == ''){
+        res.render('admin/error',{
+            userInfo: req.userInfo,
+            message: '修改的相册不存在'
+        })
+        return;
+    }
+
+    var categories = [];
+
+    Category.find({resType: 'album'}).then(function (re){
+
+        categories = re;
+        return Resource.findOne({
+            _id: id
+        }).populate('category');
+    }).then(function (album) {
+
+        if(album){
+            res.render('admin/album_edit', {
+                userInfo: req.userInfo,
+                categories: categories,
+                album: album
+            });
+        }
+        else{
+            res.render('admin/error',{
+                userInfo: req.userInfo,
+                message: '修改的相册不存在'
+            })
+        }
+    })
+})
+
+router.post('/album/edit', function (req, res) {
+
+    // 上传为上， 修改自己注意吧  别传错啊
+    var data = req.body;
+    var id = req.query.id;
+
+})
+
+/*
+* 图片删除
+* */
+router.get('/album/delete', function (req, res) {
+
+    var id = req.query.id || '';
+    console.log('delete album');
+    console.log(id);
+
+    //获取要修改的分类信息
+    Resource.remove({
+        _id: id
+    }).then(function () {
+
+        res.render('admin/success', {
+            userInfo: req.userInfo,
+            message: '成功删除图片',
+            url: '/admin/album'
+        });
+    })
 })
 
 /*
@@ -439,18 +552,17 @@ router.post('/vedio/add', function(req, res, next){
         if( files.poster.length > 0 ){
 
             var posterData = files.poster[0];
-            var originalFilename = posterData.originalFilename;
-            var uploadedPath = posterData.path;
-            var dstPath = './public/img/poster/' + originalFilename;
+            var filename = Date.now() + '-' + posterData.originalFilename;
+            var newPath = './public/img/poster/' + filename;
 
             //重命名文件名
-            fs.rename(uploadedPath, dstPath, function(err) {
+            fs.rename(posterData.path, newPath, function(err) {
                 if(err){
                         req.fields = fields;
                         console.log('rename error: ' + err);
                         next();
                     } else {
-                        req.poster = originalFilename;
+                        req.poster = filename;
                         req.fields = fields;
                         console.log('rename ok');
                         next();
@@ -463,7 +575,8 @@ router.post('/vedio/add', function(req, res, next){
             next();
         }
     })
-}, function(req, res){
+},
+    function(req, res){
 
     var data = req.fields;
 

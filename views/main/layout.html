@@ -27,29 +27,36 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="javascript:;" class="navbar-brand"><img src="/public/img/0.png"></a>
+                <button class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="javascript:;" class="navbar-brand">小白</a>
             </div>
-            <ul class="nav navbar-nav navbar-left">
 
-                {% if category %}
-                <li><a href="/" class="navFocus">首页</a></li>
-                {% else %}
-                <li><a href="/">首页</a></li>
-                {% endif %}
+            <div id="menu" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+
+                    {% if category %}
+                    <li><a href="/" class="navFocus">首页</a></li>
+                    {% else %}
+                    <li><a href="/">首页</a></li>
+                    {% endif %}
 
 
-                {% for cate in categories %}
-                {% if category == cate.id %}
-                <li><a href="/?category = {{cate.id.toString()}}" class="navFocus">{{cate.name}}</a></li>
-                {% else %}
-                <li><a href="/?category = {{cate.id.toString()}}">{{cate.name}}</a></li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right" id="rightNav">
+                    {% for cate in categories %}
+                    {% if category == cate.id %}
+                    <li><a href="/?category = {{cate.id.toString()}}" class="navFocus">{{cate.name}}</a></li>
+                    {% else %}
+                    <li><a href="/?category = {{cate.id.toString()}}">{{cate.name}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
 
-                {% if userInfo._id %}
-                <li class="nav nav-pills">
+                <ul class="nav navbar-nav navbar-right" id="rightNav">
+                    {% if userInfo._id %}
+                    <li class="nav nav-pills">
                     <li role="presentation" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             {{userInfo.username}}<span class="caret"></span>
@@ -61,14 +68,14 @@
                             <li id="logout"><a href="javascript:;">退出</a></li>
                         </ul>
                     </li>
-                </li>
-                {% else %}
+                    </li>
+                    {% else %}
+                    <li><a data-toggle="modal" data-target="#login">登录</a ></li>
+                    <li><a data-toggle="modal" data-target="#register">注册</a ></li>
+                    {% endif %}
 
-                <li><a data-toggle="modal" data-target="#login">登录</a ></li>
-                <li><a data-toggle="modal" data-target="#register">注册</a ></li>
-                {% endif %}
-
-            </ul>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -127,8 +134,13 @@
 
 
     {% block content %} {% endblock %}
-    <!--<footer>
-        友情链接：白小爷微博
-    </footer>-->
+
+    <!--页脚-->
+    <footer>
+        飞鸽链接：
+        <a href="http://weibo.com/u/2112496475">白小爷微博</a>
+        <span> | </span>
+        <a href="http://weibo.com/u/5648781841">白boss工作室微博</a>
+    </footer>
 </body>
 </html>

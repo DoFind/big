@@ -1,0 +1,28 @@
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="">
+    <div class="container-fluid page-header" style="padding-top: 20px">
+        <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
+        <p>{{album.summary}}</p>
+    </div>
+</div>
+
+
+<div class="container" style="padding-top: 30px; text-align: center;">
+    <div class="row">
+        <div class="col-md-12">
+
+            <ul class="album-body">
+                {% for path in album.albumPath %}
+                <li class="album-row"><img src="/public/img/photobook/{{path}}" alt="bb"></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

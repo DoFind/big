@@ -19,7 +19,7 @@ module.exports = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    // 视频vedio， 图片pic
+    // 视频vedio， 图片album
     resType: {
         type: String,
         default: 'vedio'
@@ -31,19 +31,18 @@ module.exports = new mongoose.Schema({
         //引用
         ref: 'Category'
     },
-    // 海报，保存上传后图片的本地路径
-    poster: {
-        type: String,
-        default: ''
-    },
-
-    // 图片资源相关字段
-    picPath: {
+    // 图片资源相关字段，组图的路径
+    albumPath: {
         type: Array,
         default: []
     },
 
     // 视频资源相关信息字段
+    // 海报，保存上传后图片的本地路径
+    poster: {
+        type: String,
+        default: ''
+    },
     // 资源通用地址
     path: {
         type: String,

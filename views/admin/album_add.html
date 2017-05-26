@@ -9,17 +9,11 @@
 
 <div class="jumbotron">
 
-    <form class="form-horizontal" method="post">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">
         <div class="form-group form-group-lg">
             <label for="title" class="col-sm-2 control-label">标题</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="title" name="title" placeholder="请输入这组图片的标题" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="desc" class="col-sm-2 control-label">描述</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="desc" name="desc" placeholder="请输入这组图片的描述" required>
             </div>
         </div>
         <div class="form-group">
@@ -39,14 +33,18 @@
                 </select>
             </div>
         </div>
-
+        <div class="form-group">
+            <label for="summary" class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="summary" name="summary" placeholder="请输入这组图片的描述" required>
+            </div>
+        </div>
         <div class="form-group">
             <label for="path" class="col-sm-2 control-label">资源上传</label>
             <div class="col-sm-10">
-                <input type="file" id="exampleInputFile" name="path" id="path" multiple="" required>
+                <input type="file" name="path" id="path" multiple="" required>
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">提交</button>

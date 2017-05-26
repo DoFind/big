@@ -108,7 +108,9 @@
     display:none;  
 }
 
-.VivaTimeline dl dd .events .events-body .row, .VivaTimeline dl dd .events .events-body .row img{
+.VivaTimeline dl dd .events .events-body .row,
+.VivaTimeline dl dd .events .events-body .row a,
+.VivaTimeline dl dd .events .events-body .row img{
     height: 150px;
 }
 
@@ -140,7 +142,7 @@
 }
 
 .VivaTimeline dl dd.pos-right .time {
-    margin-left: -100px;
+    margin-left: -150px;
     text-align: right
 }
 

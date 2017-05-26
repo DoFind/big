@@ -3,6 +3,20 @@
 
 {% block content %}
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="VivaTimeline">
+            <div class="events-body">
+                <li class="row"><a href="javascripy:;"><img src="http://pic4.qiyipic.com/common/lego/20170512/13bbff56a7d4406d86e1861c7dd86bf3.jpg" alt="img"></a></li>
+                <li class="row"><a href="javascripy:;"><img src="http://pic5.qiyipic.com/common/lego/20170523/28ff0c7b213d4dec910f7070bd3f2288.jpg?src=focustat_0_20130527_2" alt="img"></a></li>
+                <li class="row"><a href="javascripy:;"><img src="http://pic3.qiyipic.com/common/lego/20170526/9b4b849ba1fc4df0995729ba61aad787.jpg?src=focustat_0_20130527_3" alt="img"></a></li>
+            </div>
+            <div class="events-footer"></div>
+        </div>
+    </div>
+</div>
+
+
 <!--正文部分 返回的视频和图片资源-->
 <div class="container">
     <div class="row">
@@ -10,27 +24,47 @@
             <div class="VivaTimeline">
                 <dl>
                     {% for item in resources %}
-
-                    <dt>{{item.time|date('Y-m-d')}}</dt>
-                    <dd class="pos-left clearfix">
-                        <div class="circ"></div>
-                        <div class="time">{{item.time|date('Y-m-d')}}</div>
-                        <div class="events">
-                            <div class="events-header">{{item.title}}</div>
-                            <div class="events-body">
-                                <!--<li class="row"><a href="javascripy:;"><img class="img-rounded" src="/public/img/cat01.png" alt="img"></a></li>-->
-                                <!--<li class="row"><a href="javascripy:;"><img class="img-rounded" src="/public/img/cat02.png" alt="img"></a></li>-->
-                                <!--<li class="row"><a href="javascripy:;"><img class="img-rounded" src="/public/img/cat03.png" alt="img"></a></li>-->
-                                <li class="row"><a href="/main/vedio?id={{item._id.toString()}}"><img src="/public/img/poster/{{item.poster}}" class="img-rounded" alt="vedio"></a></li>
+                        {% if item.resType == 'vedio' %}
+                        <dt>{{item.category.name}}</dt>
+                        <dd class="pos-left clearfix">
+                            <div class="circ"></div>
+                            <div class="time">{{item.time|date('Y-m-d')}}</div>
+                            <div class="events">
+                                <div class="events-header">{{item.title}}</div>
+                                <div class="events-body">
+                                    <li class="row"><a href="/main/vedio?id={{item._id.toString()}}"><img src="/public/img/poster/{{item.poster}}" class="img-rounded" alt="vedio"></a></li>
+                                </div>
+                                <div class="events-desc">{{item.summary}}</div>
+                                <div class="events-footer"></div>
                             </div>
-                            <div class="events-desc">{{item.summary}}</div>
-                            <div class="events-footer"></div>
-                        </div>
-                    </dd>
+                        </dd>
+                        {% else %}
+                        <dt>{{item.category.name}}</dt>
+                        <dd class="pos-right clearfix">
+                            <div class="circ"></div>
+                            <div class="time">{{item.time|date('Y-m-d')}}</div>
+                            <div class="events">
+                                <div class="events-header">{{item.title}}</div>
+                                <div class="events-body" data-toggle="" data-target="#album">
+                                    {% for album in item.albumPath %}
+                                    <li class="row"><a href="/main/album?id={{item._id.toString()}}"><img class="img-rounded" src="/public/img/photobook/{{album}}" alt="img"></a></li>
+                                    {% endfor %}
+                                </div>
+                                <div class="events-desc">{{item.summary}}</div>
+                                <div class="events-footer"></div>
+                            </div>
+                        </dd>
+                        {% endif %}
                     {% endfor %}
                 </dl>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="album" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
     </div>
 </div>
 
@@ -56,7 +90,7 @@
 			<div id="ad">
 				<a href="javascript:;" class="prev"></a>
 				<a href="javascript:;" class="next"></a>
-				<ul class = "picList">
+				<ul class = "albumList">
 			    	<li class="active"><a href="#"></a><img src="/public/img/1.jpg" alt="1"></a></li>
 			    	<li><a href="#"></a><img src="/public/img/2.jpg"  alt="1"></a></li>
 			    	<li><a href="#"></a><img src="/public/img/3.jpg" alt="1"></a></li>

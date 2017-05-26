@@ -56,7 +56,7 @@ router.get('/', function (req, res, next) {
 /*
 * 访问视频详情，新页面打开
 * */
-router.get('/main/vedio', function (req, res) {
+router.get('/main/vedio', function(req, res) {
 
     var id = req.query.id;
 
@@ -67,6 +67,20 @@ router.get('/main/vedio', function (req, res) {
 
         data.vedio = vedio;
         res.render('main/vedio_detail', data);
+    })
+})
+
+/*
+* 访问相册，新页面打开
+* */
+router.get('/main/album', function(req, res){
+
+    var id = req.query.id;
+
+    Resource.findOne({_id: id}).then(function (album) {
+
+        data.album = album;
+        res.render('main/album_detail', data);
     })
 })
 
