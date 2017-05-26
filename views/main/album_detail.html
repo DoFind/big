@@ -3,26 +3,54 @@
 
 {% block content %}
 
-<div class="">
-    <div class="container-fluid page-header" style="padding-top: 20px">
-        <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
-        <p>{{album.summary}}</p>
-    </div>
+<div class="container-fluid page-header" style="padding-top: 20px">
+    <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
+    <p>{{album.summary}}</p>
 </div>
 
-
-<div class="container" style="padding-top: 30px; text-align: center;">
-    <div class="row">
-        <div class="col-md-12">
-
-            <ul class="album-body">
-                {% for path in album.albumPath %}
-                <li class="album-row"><img src="/public/img/photobook/{{path}}" alt="bb"></li>
-                {% endfor %}
-            </ul>
+<div class="container">
+    <div class="swiper-container gallery-top">
+        <div class="swiper-wrapper" style="transform: translate3d(-2752px, 0px, 0px); transition-duration: 0ms;">
+            {% for path in album.albumPath %}
+            <div class="swiper-slide" style="background: black; width: 1366px; text-align: center;">
+                <img src="/public/img/photobook/{{path}}" alt="img">
+            </div>
+            {% endfor %}
         </div>
+        <!--<div class="swiper-pagination"></div>-->
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button-next swiper-button-white"></div>
     </div>
+
+    <!--<div class="swiper-container gallery-thumbs">
+        <div class="swiper-wrapper" style="transform: translate3d(-200px, 0px, 0px); transition-duration: 0ms;">
+            {% for path in album.albumPath %}
+            <div class="swiper-slide" style="text-align: center; margin: 10px;">
+                <img src="/public/img/photobook/{{path}}" style="height: 80px">
+            </div>
+            {% endfor %}
+        </div>
+    </div>-->
+
 </div>
 
+<script>
+    var galleryTop = new Swiper('.gallery-top', {
+
+        // 循环
+        loop: true,
+        // 翻页按钮
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+    })
+
+//    var galleryThumbs = new Swiper('.gallery-thumbs', {
+//        centeredSlides: true,
+//        slidesPreView: 'auto',
+//        slideToClickedSlide: true,
+//    })
+//    galleryTop.params.control = galleryThumbs;
+//    galleryThumbs.params.control = galleryTop;
+</script>
 
 {% endblock %}

@@ -3,19 +3,36 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="VivaTimeline">
-            <div class="events-body">
-                <li class="row"><a href="javascripy:;"><img src="http://pic4.qiyipic.com/common/lego/20170512/13bbff56a7d4406d86e1861c7dd86bf3.jpg" alt="img"></a></li>
-                <li class="row"><a href="javascripy:;"><img src="http://pic5.qiyipic.com/common/lego/20170523/28ff0c7b213d4dec910f7070bd3f2288.jpg?src=focustat_0_20130527_2" alt="img"></a></li>
-                <li class="row"><a href="javascripy:;"><img src="http://pic3.qiyipic.com/common/lego/20170526/9b4b849ba1fc4df0995729ba61aad787.jpg?src=focustat_0_20130527_3" alt="img"></a></li>
-            </div>
-            <div class="events-footer"></div>
-        </div>
+<div class="swiper-container gallery-top">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="http://pic4.qiyipic.com/common/lego/20170512/13bbff56a7d4406d86e1861c7dd86bf3.jpg" alt="img"></div>
+        <div class="swiper-slide"><img src="http://pic5.qiyipic.com/common/lego/20170523/28ff0c7b213d4dec910f7070bd3f2288.jpg?src=focustat_0_20130527_2" alt="img"></div>
+        <div class="swiper-slide"><img src="http://pic3.qiyipic.com/common/lego/20170526/9b4b849ba1fc4df0995729ba61aad787.jpg?src=focustat_0_20130527_3" alt="img"></div>
     </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev swiper-button-white"></div>
+    <div class="swiper-button-next swiper-button-white"></div>
 </div>
 
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        // 自动播放 3s
+        autoplay: 3000,
+        // 速度，移动设备  鼠标拖拽
+        speed: 500,
+        // 循环
+        loop: true,
+        // 切换效果
+        effect : 'fade',
+        // 翻页按钮
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        // 分页器
+        pagination : '.swiper-pagination',
+        paginationType : 'bullets',
+        paginationClickable : true,
+    })
+</script>
 
 <!--正文部分 返回的视频和图片资源-->
 <div class="container">
