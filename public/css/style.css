@@ -60,19 +60,17 @@ textarea {
     overflow: auto;
 }
 
-body {
-    font-size: 12px;
-    font-family: "微软雅黑";
-}
 
 /*通用格式*/
 
 body {
     padding-top: 50px;
+    font-size: 12px;
+    font-family: "微软雅黑";
 }
 
 .page-header {
-    margin:0 0 20px;
+    margin:20px 0 10px;
 }
 
 /*导航栏nav 样式重写*/
@@ -95,8 +93,6 @@ body {
     display: inline-block;
 }
 
-
-/*内容区域*/
 
 
 /*宣传栏*/

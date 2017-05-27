@@ -34,29 +34,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="javascript:;" class="navbar-brand">小白</a>
+                <a href="/" class="navbar-brand">小白</a>
             </div>
 
             <div id="menu" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
 
-                    {% if category %}
-                    <li><a href="/" class="navFocus">首页</a></li>
-                    {% else %}
-                    <li><a href="/">首页</a></li>
-                    {% endif %}
-
-
                     {% for cate in categories %}
-                    {% if category == cate.id %}
-                    <li><a href="/?category = {{cate.id.toString()}}" class="navFocus">{{cate.name}}</a></li>
-                    {% else %}
-                    <li><a href="/?category = {{cate.id.toString()}}">{{cate.name}}</a></li>
-                    {% endif %}
+                        {% if category == cate.id %}
+                        <li><a href="/?category={{cate.id.toString()}}" class="navFocus">{{cate.name}}</a></li>
+                        {% else %}
+                        <li><a href="/?category={{cate.id.toString()}}">{{cate.name}}</a></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right" id="rightNav">
+                <div class="col-sm-5">
+                    <form action="/search" method="get" class="navbar-btn input-group pull-right">
+                        <input type="text" name="search" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </span>
+                    </form>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
                     {% if userInfo._id %}
                     <li class="nav nav-pills">
                     <li role="presentation" class="dropdown">
@@ -143,6 +145,8 @@
         <a href="http://weibo.com/u/2112496475">白小爷微博</a>
         <span> | </span>
         <a href="http://weibo.com/u/5648781841">白boss工作室微博</a>
+        <span> | </span>
+        <a href="http://space.bilibili.com/56709800/#!/">B站小白官方后援团</a>
     </footer>
 </body>
 </html>

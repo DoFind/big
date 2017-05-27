@@ -7,14 +7,15 @@ var router = express.Router();
 var Category = require('../models/category');
 var Resource = require('../models/resource');
 
+var data;
+
 router.use(function (req, res, next) {
 
     data = {
         userInfo: req.userInfo,
         categories: []
     }
-
-    Category.find().then(function(categories) {
+    Category.find().sort({resType: -1}).then(function(categories) {
         data.categories = categories;
         next();
     });
@@ -25,29 +26,42 @@ router.use(function (req, res, next) {
 * */
 router.get('/', function (req, res, next) {
 
-    /*// { 'category ': ' 591febd0738e72120c6cceaa' }
-    console.log(req.query);
-
-    data.category = req.query.category
-    console.log(data.category);
-*/
-    // var id = req.query.id || '';
-    // undefined
-    //console.log(req.query.category);
-
-    //data.category = req.query.category || '';
+    data.category = req.query.category || '';
+    // data.search = req.query.search || '';
 
     // 查询条件
-    /*var where = {};
+    var where = {};
     if (data.category){
-        where.categroy = data.category;
-    }*/
+        where.category = data.category;
+    }
+    // if (data.search){
+    //     where.title = new RegExp(data.search + '.*', 'i');
+    // }
 
     // 查询数据
-    Resource.find().populate('category').sort({ time: -1}).then(function (re) {
+    Resource.where(where).find().populate('category').sort({ time: -1}).then(function (re) {
 
         data.resources = re;
+        res.render('main/index', data);
+    })
+})
+/*
+* 搜索
+* */
+router.get('/search', function (req, res, next) {
 
+    data.search = req.query.search || '';
+
+    // 查询条件
+    var where = {};
+    if (data.search){
+        where.title = new RegExp(data.search + '.*', 'i');
+    }
+
+    // 查询数据
+    Resource.where(where).find().populate('category').sort({ time: -1}).then(function (re) {
+
+        data.resources = re;
         res.render('main/index', data);
     })
 })

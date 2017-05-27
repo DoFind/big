@@ -31,7 +31,7 @@ module.exports = new mongoose.Schema({
         //引用
         ref: 'Category'
     },
-    // 图片资源相关字段，组图的路径
+    // 图片资源相关字段，相册的路径
     albumPath: {
         type: Array,
         default: []
@@ -54,13 +54,15 @@ module.exports = new mongoose.Schema({
         default: ''
     },
 
-    // 相关视频 这个路径是不是也得存俩啊
-    next: {
+    // 标签
+    tag: {
         type: String,
         default: ''
     },
-    pre: {
-        type: String,
-        default: ''
+
+    // 访问量
+    playCount: {
+        type: Number,
+        default: 0
     }
 });

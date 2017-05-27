@@ -3,11 +3,12 @@
 
 {% block content %}
 
+{% if category == '' && search == '' %}
 <div class="swiper-container gallery-top">
     <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="http://pic4.qiyipic.com/common/lego/20170512/13bbff56a7d4406d86e1861c7dd86bf3.jpg" alt="img"></div>
-        <div class="swiper-slide"><img src="http://pic5.qiyipic.com/common/lego/20170523/28ff0c7b213d4dec910f7070bd3f2288.jpg?src=focustat_0_20130527_2" alt="img"></div>
-        <div class="swiper-slide"><img src="http://pic3.qiyipic.com/common/lego/20170526/9b4b849ba1fc4df0995729ba61aad787.jpg?src=focustat_0_20130527_3" alt="img"></div>
+        <div class="swiper-slide"><img src="/public/img/res/pub01.jpg" alt="欢乐颂"></div>
+        <div class="swiper-slide"><img src="/public/img/res/pub02.jpg" alt="姐姐饿了"></div>
+        <div class="swiper-slide"><img src="/public/img/res/pub03.jpg" alt="奇葩说"></div>
     </div>
     <div class="swiper-pagination"></div>
     <div class="swiper-button-prev swiper-button-white"></div>
@@ -33,11 +34,14 @@
         paginationClickable : true,
     })
 </script>
+{% endif %}
 
 <!--正文部分 返回的视频和图片资源-->
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            {% if resources.length>0 %}
             <div class="VivaTimeline">
                 <dl>
                     {% for item in resources %}
@@ -75,13 +79,8 @@
                     {% endfor %}
                 </dl>
             </div>
+            {% endif %}
         </div>
-    </div>
-</div>
-
-<div id="album" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
-    <div class="modal-dialog">
-
     </div>
 </div>
 
@@ -98,32 +97,3 @@
 
 {% endblock %}
 
-
-
-<!--
-    <div id="content">
-
-            &lt;!&ndash;宣传栏&ndash;&gt;
-			<div id="ad">
-				<a href="javascript:;" class="prev"></a>
-				<a href="javascript:;" class="next"></a>
-				<ul class = "albumList">
-			    	<li class="active"><a href="#"></a><img src="/public/img/1.jpg" alt="1"></a></li>
-			    	<li><a href="#"></a><img src="/public/img/2.jpg"  alt="1"></a></li>
-			    	<li><a href="#"></a><img src="/public/img/3.jpg" alt="1"></a></li>
-			    	<li><a href="#"></a><img src="/public/img/4.jpg" alt="1"></a></li>
-			    	<li><a href="#"></a><img src="/public/img/5.jpg" alt="1"></a></li>
-			    </ul>
-			    <h3>来一个title</h3>
-			    <p>我是图片描述</p>
-			    <div class="bg"></div>
-			    <ul class="stateList">
-			    	<li></li>
-			    	<li></li>
-			    	<li></li>
-			    	<li></li>
-			    	<li></li>
-			    </ul>
-			</div>
-    </div>
--->

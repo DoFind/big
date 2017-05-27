@@ -100,7 +100,7 @@ function getCategory(req, res, bShow, bSuc, message) {
         // 计算skip
         skip = ( page - 1 ) * limit;
 
-        Category.find().sort({_id: -1}).limit(limit).skip(skip).then(function (categories) {
+        Category.find().sort({resType: 1}).limit(limit).skip(skip).then(function (categories) {
 
             res.render('admin/category_index', {
                 userInfo: req.userInfo,
@@ -336,7 +336,7 @@ router.get('/album', function (req, res) {
 * */
 router.get('/album/add', function (req, res) {
 
-    Category.find({resType: 'album'}).sort({_id: -1}).then(function (categories) {
+    Category.find({resType: 'album'}).then(function (categories) {
 
         res.render('admin/album_add', {
             userInfo: req.userInfo,
@@ -412,7 +412,9 @@ router.post('/album/add', function(req, res, next){
     // 单条信息保存
 
     Resource.findOne({
-        title: title
+        title: title,
+        time: time,
+        resType: 'album'
     }).then(function (re) {
         if(re) {
             res.render('admin/error', {
@@ -533,7 +535,7 @@ router.get('/vedio', function (req, res) {
  * */
 router.get('/vedio/add', function (req, res) {
 
-    Category.find({resType: 'vedio'}).sort({_id: -1}).then(function (categories) {
+    Category.find({resType: 'vedio'}).then(function (categories) {
 
         res.render('admin/vedio_add', {
             userInfo: req.userInfo,
@@ -608,7 +610,9 @@ router.post('/vedio/add', function(req, res, next){
     // 单条信息保存
 
     Resource.findOne({
-        title: title
+        title: title,
+        time: time,
+        resType: 'vedio'
     }).then(function (re) {
         if(re) {
             res.render('admin/error', {

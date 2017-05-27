@@ -3,12 +3,13 @@
 
 {% block content %}
 
-<div class="container-fluid page-header" style="padding-top: 20px">
-    <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
-    <p>{{album.summary}}</p>
-</div>
-
 <div class="container">
+
+    <div class="page-header">
+        <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
+        <p>{{album.summary}}</p>
+    </div>
+
     <div class="swiper-container gallery-top">
         <div class="swiper-wrapper" style="transform: translate3d(-2752px, 0px, 0px); transition-duration: 0ms;">
             {% for path in album.albumPath %}
@@ -17,7 +18,7 @@
             </div>
             {% endfor %}
         </div>
-        <!--<div class="swiper-pagination"></div>-->
+        <div class="swiper-pagination"></div>
         <div class="swiper-button-prev swiper-button-white"></div>
         <div class="swiper-button-next swiper-button-white"></div>
     </div>
@@ -42,6 +43,10 @@
         // 翻页按钮
         prevButton:'.swiper-button-prev',
         nextButton:'.swiper-button-next',
+        // 分页器
+        pagination : '.swiper-pagination',
+        paginationType : 'bullets',
+        paginationClickable : true,
     })
 
 //    var galleryThumbs = new Swiper('.gallery-thumbs', {
