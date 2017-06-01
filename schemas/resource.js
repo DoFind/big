@@ -77,7 +77,7 @@ module.exports = new mongoose.Schema({
         default: ''
     },
 
-    // 子视频  vgroup 访问这个 
+    // 子视频  vgroup 访问这个  暂时没用！！
     vediogroup: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Series'

@@ -51,7 +51,7 @@
                             <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">
-                                <div class="events-header">{{item.title}}</div>
+                                <div class="events-header">{{item.title}}..<span class="glyphicon glyphicon-expand" aria-hidden="true"></span>{{item.playCount}}</div>
                                 <div class="events-body">
                                     <li class="row"><a href="/main/vedio?id={{item._id.toString()}}"><img src="/public/img/poster/{{item.poster}}" class="img-rounded" alt="vedio"></a></li>
                                 </div>
@@ -65,10 +65,10 @@
                             <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">
-                                <div class="events-header">{{item.title}}</div>
+                                <div class="events-header">{{item.title}}..<span class="glyphicon glyphicon-expand" aria-hidden="true"></span>{{item.playCount}}</div>
                                 <div class="events-body" data-toggle="" data-target="#album">
                                     {% for album in item.albumPath %}
-                                    <li class="row"><a href="/main/album?id={{item._id.toString()}}"><img class="img-rounded" src="/public/img/photobook/{{album}}" alt="img"></a></li>
+                                    <li class="row"><a href="/main/album?id={{item._id.toString()}}&bPlay=true"><img class="img-rounded" src="/public/img/photobook/{{album}}" alt="img"></a></li>
                                     {% endfor %}
                                 </div>
                                 <div class="events-desc">{{item.summary}}</div>

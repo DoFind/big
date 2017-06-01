@@ -78,7 +78,22 @@ router.get('/main/vedio', function(req, res) {
     var bSeries = req.query.bSeries;
 
     if (bSeries) {
-        Series.find({parentRes: req.query.parentID}).then(function (re) {
+
+        var parentID = req.query.parentID;
+        // 修改分集视频playCount
+        Series.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+            if(err){
+                console.log(err);
+            }
+        });
+        // 修改resource中的playCount
+        Resource.update({_id: parentID}, {$inc: {playCount: 1}}, function (err) {
+            if(err){
+                console.log(err);
+            }
+        });
+
+        Series.find({parentRes: parentID}).then(function (re) {
 
             data.series = re;
             Series.findOne({_id: id}).then(function (vedio) {
@@ -87,26 +102,41 @@ router.get('/main/vedio', function(req, res) {
                 res.render('main/vedio_detail', data);
             })
         })
+
     }
     else {
+
         Resource.findOne({
             _id: id
         }).then(function (vedio) {
-
             if (vedio.resType == 'vedio'){
                 data.vedio = vedio;
                 res.render('main/vedio_detail', data);
             }
             else if (vedio.resType == 'vgroup'){
 
-                Series.find({parentRes: id}).then(function (re) {
+                // 修改分集视频playCount
+                Series.update({parentRes: id}, {$inc: {playCount: 1}}, function (err) {
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        Series.find({parentRes: id}).then(function (re) {
 
-                    data.series = re;
-                    data.vedio = re[0];
-                    res.render('main/vedio_detail', data);
-                })
+                            data.series = re;
+                            data.vedio = re[0];
+                            res.render('main/vedio_detail', data);
+                        })
+                    }
+                });
             }
-        })
+        });
+        // resource中的普拉playCount
+        Resource.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+            if(err){
+                console.log(err);
+            }
+        });
     }
 })
 
@@ -117,11 +147,21 @@ router.get('/main/album', function(req, res){
 
     var id = req.query.id;
 
-    Resource.findOne({_id: id}).then(function (album) {
+    // 修改访问量playCount
+    Resource.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+        if(err){
+            console.log(err);
+        }
+        else{
+            // 访问具体相册
+            Resource.findOne({_id: id}).then(function (album) {
 
-        data.album = album;
-        res.render('main/album_detail', data);
-    })
+                data.album = album;
+                res.render('main/album_detail', data);
+            })
+        }
+    });
+
 })
 
 

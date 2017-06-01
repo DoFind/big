@@ -7,6 +7,10 @@
 
     <div class="page-header">
         <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
+        <p>
+            <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>{{album.playCount}}
+            <span class="glyphicon glyphicon-thumbs-up"></span>{{album.supportCount}}
+        </p>
         <p>{{album.summary}}</p>
     </div>
 
