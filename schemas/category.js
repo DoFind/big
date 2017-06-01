@@ -10,7 +10,16 @@ module.exports = new mongoose.Schema({
 
     name: String,
 
-    // 视频vedio， 图片pic
+    // 权重
+    weight: Number,
+
+    // 分组下的内容，这个暂时没有功能需求
+    resource: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Resource'
+    }],
+
+    // 视频vedio， 图片album
     resType: {
         type: String,
         default: ''

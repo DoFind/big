@@ -45,7 +45,7 @@
             <div class="VivaTimeline">
                 <dl>
                     {% for item in resources %}
-                        {% if item.resType == 'vedio' %}
+                        {% if item.resType == 'vedio' || item.resType == 'vgroup' %}
                         <dt>{{item.category.name}}</dt>
                         <dd class="pos-left clearfix">
                             <div class="circ"></div>

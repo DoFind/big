@@ -4,16 +4,16 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>视频上传 <small>标题不可重复--这不对，我知道</small></h3>
+    <h3>系列视频上传 <small>标题命名规则： 匆匆那年01 | 明星大侦探-坠落的校花</small></h3>
 </div>
 
 <div class="jumbotron">
 
-    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" method="post">
         <div class="form-group form-group-lg">
             <label for="title" class="col-sm-2 control-label">视频标题</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" name="title" placeholder="请输入这组视频的标题" required>
+                <input type="text" class="form-control" id="title" name="title" placeholder="请输入视频的标题" required>
             </div>
         </div>
         <div class="form-group">
@@ -23,30 +23,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="time" class="col-sm-2 control-label">资源类型</label>
-            <div class="col-sm-10">
-                <label class="radio-inline">
-                    <input type="radio" name="resType" id="inlineRadio2" value="vedio"> 视频（单期综艺、剪辑、电影）
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="resType" id="inlineRadio3" value="vgroup"> 视频组（系列综艺、电视剧）
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="category" class="col-sm-2 control-label">分类</label>
+            <label for="category" class="col-sm-2 control-label">所属的系列视频</label>
             <div class="col-sm-10">
                 <select name="category" id="category" class="form-control" required>
-                    {%for category in categories%}
-                    <option value="{{category.id}}">{{category.name}}</option>
-                    {%endfor%}
+                    {%for item in groups %}
+                    <option value="{{item.id}}">{{item.id}} - {{item.title}}</option>
+                    {% endfor %}
                 </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="tag" class="col-sm-2 control-label">标签</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="tag" name="tag" placeholder="标签以“#”隔开" required>
             </div>
         </div>
         <div class="form-group">
@@ -65,12 +48,6 @@
             <label for="summary" class="col-sm-2 control-label">视频简介</label>
             <div class="col-sm-10">
                 <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="poster" class="col-sm-2 control-label">上传海报</label>
-            <div class="col-sm-10">
-                <input type="file" id="poster" name="poster">
             </div>
         </div>
         <div class="form-group">

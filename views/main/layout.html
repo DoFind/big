@@ -39,39 +39,54 @@
 
             <div id="menu" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
-
-                    {% for cate in categories %}
-                        {% if category == cate.id %}
-                        <li><a href="/?category={{cate.id.toString()}}" class="navFocus">{{cate.name}}</a></li>
-                        {% else %}
-                        <li><a href="/?category={{cate.id.toString()}}">{{cate.name}}</a></li>
-                        {% endif %}
-                    {% endfor %}
+                    <li class="nav nav-pills">
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                动如脱兔-动态白<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for item in vedioCategories %}
+                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                静若处子-静态白<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for item in picCategories %}
+                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </li>
                 </ul>
 
-                <div class="col-sm-5">
+                <!--搜索栏-->
+                <!--<div class="col-sm-5">
                     <form action="/search" method="get" class="navbar-btn input-group pull-right">
-                        <input type="text" name="search" class="form-control" placeholder="Search for...">
+                        <input type="text" name="search" class="form-control" placeholder="Search for..."/>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </span>
                     </form>
                 </div>
-
+-->
                 <ul class="nav navbar-nav navbar-right">
                     {% if userInfo._id %}
                     <li class="nav nav-pills">
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            {{userInfo.username}}<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if userInfo.isAdmin %}
-                            <li class="admin"><a href="/admin">管理</a></li>
-                            {% endif %}
-                            <li id="logout"><a href="javascript:;">退出</a></li>
-                        </ul>
-                    </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                {{userInfo.username}}<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% if userInfo.isAdmin %}
+                                <li class="admin"><a href="/admin">管理</a></li>
+                                {% endif %}
+                                <li id="logout"><a href="javascript:;">退出</a></li>
+                            </ul>
+                        </li>
                     </li>
                     {% else %}
                     <li><a data-toggle="modal" data-target="#login">登录</a ></li>

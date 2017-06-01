@@ -19,10 +19,10 @@ module.exports = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    // 视频vedio， 图片album
+    // 视频vedio， 图片album, 视频集合vgroup
     resType: {
         type: String,
-        default: 'vedio'
+        default: ''
     },
     // 关联字段，所属分类
     category: {
@@ -31,6 +31,27 @@ module.exports = new mongoose.Schema({
         //引用
         ref: 'Category'
     },
+    // 标签
+    tag: {
+        type: String,
+        default: ''
+    },
+    // 访问量
+    playCount: {
+        type: Number,
+        default: 0
+    },
+    // 赞数量
+    supportCount: {
+        type: Number,
+        default: 0
+    },
+    // 是否为主页时间线   电视剧、电影、综艺、杂志
+    bTimeline: {
+        type: Boolean,
+        default: false
+    },
+
     // 图片资源相关字段，相册的路径
     albumPath: {
         type: Array,
@@ -43,6 +64,8 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
+
+    // 单视频资源访问这个
     // 资源通用地址
     path: {
         type: String,
@@ -54,15 +77,9 @@ module.exports = new mongoose.Schema({
         default: ''
     },
 
-    // 标签
-    tag: {
-        type: String,
-        default: ''
-    },
-
-    // 访问量
-    playCount: {
-        type: Number,
-        default: 0
-    }
+    // 子视频  vgroup 访问这个 
+    vediogroup: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Series'
+    }]
 });
