@@ -6,14 +6,10 @@ $(function() {
     $loginBox = $('#login');
     $registerBox = $('#register');
 
-
     /*
      * 登录
      * */
-    $loginBox.find('.close').on('click', function () {
-        $loginBox.hide();
-    })
-    $loginBox.find('.login').on('click', function () {
+    $loginBox.find('.login').click(function() {
 
         // 通过ajax提交请求
         $.ajax({
@@ -28,24 +24,17 @@ $(function() {
                 $loginBox.find('.colWarning').html(res.msg);
 
                 if (!res.code) {
-
-                    $loginBox.hide();
                     window.location.reload();
                 }
             }
         })
-        
     })
 
 
     /*
     * 注册
     * */
-    $registerBox.find('.close').on('click', function () {
-        $registerBox.hide();
-    })
-    $registerBox.find('.register').on('click', function () {
-
+    $registerBox.find('.register').click(function () {
         // 通过ajax提交请求
         $.ajax({
             type: 'post',
@@ -62,18 +51,17 @@ $(function() {
 
                 if (!res.code) {
                     //注册成功
-                    $registerBox.hide();
                     window.location.reload();
                 }
 
             }
         });
-    });
+    })
 
     /*
      * 退出登录
      * */
-    $('#logout').on('click', function () {
+    $('#logout').click(function () {
         $.ajax({
             type: 'get',
             url: '/api/user/logout',
@@ -85,4 +73,61 @@ $(function() {
             }
         });
     })
+
+
+    /*
+    * 表白
+    * */
+    var $loveBox = $('#loveBox');
+
+    $loveBox.find('.loveBtn').click(function () {
+        // 通过ajax提交请求
+        $.ajax({
+            type: 'post',
+            url: '/main/lover',
+            data: {
+                content: $loveBox.find('.content').val()
+            },
+            dataType: 'json',
+            success: function (res) {
+
+                if (!res.code) {
+                    window.location.reload();
+                }
+                else {
+                    $loveBox.find('.colWarning').html(res.msg);
+                }
+            }
+        });
+    });
+
+
+    /*
+    * 鼠标滑过  表白墙显示详情
+    * */
+
+    var $lovewall = $('#lovewall');
+
+    // prompt 提示框
+    var oPrompt = $('.loveword_info');
+    var oImg = oPrompt.find('img');
+    var oName = oPrompt.find('h4');
+    var oP = oPrompt.find('p');
+
+    $lovewall.find('img').hover(function() {
+
+        // 显示确定位置
+        var pos = $(this).parent().position();
+        var iTop = pos.top - 10;
+        var iLeft = pos.left + 60;
+        oPrompt.show().css({ 'left': iLeft, 'top': iTop });
+
+        // 赋值
+        oImg.attr('src', $(this).attr('src'));
+        oName.text($(this).attr('name'));
+        oP.text($(this).attr('content'));
+
+    }, function () {
+        oPrompt.hide();
+    });
 });

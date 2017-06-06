@@ -272,8 +272,65 @@ body {
 }
 
 
+/*-------------------------------------黑板 上墙-----------------------------------*/
 
+#lovewall {
+    margin-top: 100px;
+    width: 960px;
+}
 
+#lovewall ul li img {
+    margin: 10px 10px 0 0;
+    width: 50px;
+    height: 50px;
+}
+
+/* 鼠标滑过，显示悬浮框 */
+.loveword_info {
+    position: absolute;
+    top: 136px;
+    left: 288px;
+    width: 294px;
+    padding: 10px;
+    border: 1px solid #c0c0c0;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    background: #fff;
+    display: none;
+}
+
+.loveword_info img {
+    float: left;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #dbdbdb;
+}
+
+.loveword_info .text {
+    float: right;
+    width: 180px;
+}
+
+.loveword_info h4 {
+    font-size: 12px;
+    color: #333;
+    padding-bottom: 8px;
+}
+
+.loveword_info p {
+    line-height: 20px;
+    color: #999;
+}
+
+.loveword_info span {
+    position: absolute;
+    top: 45px;
+    left: -8px;
+    width: 8px;
+    height: 14px;
+    /* IE下不支持小于19px的图片？ */
+    overflow: hidden;
+    background: url(/public/img/res/adorn.gif) no-repeat 0 -48px;
+}
 
 
 

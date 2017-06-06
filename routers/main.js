@@ -8,6 +8,7 @@ var Category = require('../models/category');
 var Resource = require('../models/resource');
 var Series = require('../models/series');
 var Comments = require('../models/comments');
+var Loveword = require('../models/loveword');
 
 var data;
 
@@ -185,14 +186,46 @@ router.get('/main/album', function(req, res){
 /*
 * 表'白'墙
 * */
-router.get('/main/lovewall', function (req, res) {
+router.get('/main/lover', function (req, res) {
 
-    res.render('main/lovewall');
+    Loveword.find().populate('name').sort({time: 1}).then(function (words) {
+
+        data.words = words;
+        res.render('main/lover_wall', data);
+    })
 })
 
-router.post('/main/lovewall', function (req, res) {
+router.post('/main/lover', function (req, res) {
 
+    var content = req.body.content;
+    var name = req.userInfo._id;
+    console.log(name);
 
+    if(!name){
+        res.json({
+            msg: '请先登录',
+            code: 1
+        });
+        return;
+    }
+    if(content == ''){
+        res.json({
+            msg: '提交内容不能为空',
+            code: 2
+        });
+        return;
+    }
+
+    new Loveword({
+        name: name,
+        content: content,
+        time: Date.now()
+    }).save();
+
+    res.json({
+        msg: '提交成功',
+        code: 0
+    });
 })
 
 module.exports = router;

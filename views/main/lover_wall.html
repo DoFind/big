@@ -1,0 +1,66 @@
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div id="lovewall">
+        {% if words.length > 0 %}
+        <ul class="clearfix">
+            {% for item in words %}
+            <li class="pull-left">
+                <img src="/public/img/res/970902.jpg" alt="pic" name="{{item.name.username}}" content="{{item.content}}">
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="loveword_info">
+            <img src="" alt="" />
+            <div class="text">
+                <h4>本日主题</h4>
+                <p>迟到的荣誉——啦啦啦，现在还写电商网站，呃好吧，没词儿了~~ </p>
+            </div>
+            <!-- 边框的小尖三角 -->
+            <span></span>
+        </div>
+        {% else %}
+        <img src="/public/img/res/970902.jpg" alt="">
+        {% endif %}
+    </div>
+
+    <!--提交按钮-->
+
+    <div style="position:absolute; right: 50px; top: 80px; width: 50px; height: 50px">
+        {% if userInfo._id %}
+        <a data-toggle="modal" data-target="#loveBox">
+            <img src="/public/img/res/cat03.png" alt="img" style="width: 50px; height: 50px">
+        </a>
+        {% else %}
+        <a data-toggle="modal" data-target="#login">登录之后可以留言</a>
+        {% endif %}
+    </div>
+
+
+    <!--提交面板-->
+    <div id="loveBox" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">表“白”啦~~</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group ">
+                        <textarea class="content form-control" rows="3" placeholder="想说给白白听~" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label class="alert-danger colWarning pull-left"></label>
+                    <input type="submit" value="表白" class="btn btn-primary pull-right loveBtn">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
