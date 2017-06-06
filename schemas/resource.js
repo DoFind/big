@@ -36,17 +36,22 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
+    // 评论楼层
+    floor: {
+        type: Number,
+        default: 0
+    },
     // 访问量
-    playCount: {
+    PV: {
         type: Number,
         default: 0
     },
     // 赞数量
-    supportCount: {
+    likeCount: {
         type: Number,
         default: 0
     },
-    // 是否为主页时间线   电视剧、电影、综艺、杂志
+    // 是否为主页时间线.重要记事   电视剧、电影、综艺
     bTimeline: {
         type: Boolean,
         default: false

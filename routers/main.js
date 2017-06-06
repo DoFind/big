@@ -7,6 +7,7 @@ var router = express.Router();
 var Category = require('../models/category');
 var Resource = require('../models/resource');
 var Series = require('../models/series');
+var Comments = require('../models/comments');
 
 var data;
 
@@ -49,7 +50,7 @@ router.get('/', function (req, res, next) {
 /*
 * 搜索
 * */
-router.get('/search', function (req, res, next) {
+router.get('/main/search', function (req, res, next) {
 
     data.search = req.query.search || '';
 
@@ -80,14 +81,14 @@ router.get('/main/vedio', function(req, res) {
     if (bSeries) {
 
         var parentID = req.query.parentID;
-        // 修改分集视频playCount
-        Series.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+        // 修改分集视频PV
+        Series.update({_id: id}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
             }
         });
-        // 修改resource中的playCount
-        Resource.update({_id: parentID}, {$inc: {playCount: 1}}, function (err) {
+        // 修改resource中的PV
+        Resource.update({_id: parentID}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
             }
@@ -98,7 +99,11 @@ router.get('/main/vedio', function(req, res) {
             data.series = re;
             Series.findOne({_id: id}).then(function (vedio) {
 
-                data.vedio = vedio;
+                data.curView = vedio;
+                // 评论数据返回
+                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
+                //     data.comments = comments;
+                // });
                 res.render('main/vedio_detail', data);
             })
         })
@@ -110,13 +115,17 @@ router.get('/main/vedio', function(req, res) {
             _id: id
         }).then(function (vedio) {
             if (vedio.resType == 'vedio'){
-                data.vedio = vedio;
+                data.curView = vedio;
+                // 评论数据返回
+                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
+                //     data.comments = comments;
+                // });
                 res.render('main/vedio_detail', data);
             }
             else if (vedio.resType == 'vgroup'){
 
-                // 修改分集视频playCount
-                Series.update({parentRes: id}, {$inc: {playCount: 1}}, function (err) {
+                // 修改分集视频PV
+                Series.update({parentRes: id}, {$inc: {PV: 1}}, function (err) {
                     if(err){
                         console.log(err);
                     }
@@ -124,15 +133,19 @@ router.get('/main/vedio', function(req, res) {
                         Series.find({parentRes: id}).then(function (re) {
 
                             data.series = re;
-                            data.vedio = re[0];
+                            data.curView = re[0];
+                            // 评论数据返回
+                            // Comments.find({resourceID: re[0]._id}).then(function (comments) {
+                            //     data.comments = comments;
+                            // });
                             res.render('main/vedio_detail', data);
                         })
                     }
                 });
             }
         });
-        // resource中的普拉playCount
-        Resource.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+        // resource中的普拉PV
+        Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
             }
@@ -147,23 +160,40 @@ router.get('/main/album', function(req, res){
 
     var id = req.query.id;
 
-    // 修改访问量playCount
-    Resource.update({_id: id}, {$inc: {playCount: 1}}, function (err) {
+    // 修改访问量PV
+    Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
         if(err){
             console.log(err);
         }
         else{
             // 访问具体相册
             Resource.findOne({_id: id}).then(function (album) {
-
-                data.album = album;
+                data.curView = album;
                 res.render('main/album_detail', data);
-            })
+
+                // 评论数据返回
+                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
+                //     data.comments = comments;
+                //     res.render('main/album_detail', data);
+                // });
+            });
         }
     });
-
 })
 
+
+/*
+* 表'白'墙
+* */
+router.get('/main/lovewall', function (req, res) {
+
+    res.render('main/lovewall');
+})
+
+router.post('/main/lovewall', function (req, res) {
+
+
+})
 
 module.exports = router;
 

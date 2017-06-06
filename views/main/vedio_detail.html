@@ -6,43 +6,47 @@
 <div class="container">
 
     <div class="page-header">
-        <h3>{{vedio.title}} <small>{{vedio.time|date('Y-m-d')}}</small></h3>
+        <h3>{{curView.title}} <small>{{curView.time|date('Y-m-d')}}</small></h3>
         <p>
-            <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>{{vedio.playCount}}
-            </button><span class="glyphicon glyphicon-thumbs-up"></span>{{vedio.supportCount}}
+            <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{curView.PV}}
+            </button><span class="glyphicon glyphicon-heart"></span>{{curView.supportCount}}
         </p>
-        <p>{{vedio.summary}}</p>
+        <p>{{curView.summary}}</p>
     </div>
 
     <div class="row">
         <!--视频-->
         <div class="col-md-8" style="background: seagreen">
             <!--通用代码-->
-            <!--<iframe height=500 width=720 src='{{vedio.path}}' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>-->
+            <!--<iframe height=500 width=720 src='{{curView.path}}' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>-->
             <!--html代码-->
-            <embed src="{{vedio.flash}}" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>
+            <embed src="{{curView.flash}}" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>
         </div>
 
         <!--关联视频-->
-        <div class="col-md-4">
+        <div class="col-md-4" style="background: silver; height: 500px">
 
         </div>
     </div>
 
     <!--视频组的情况-->
     {% if series.length > 0 %}
-
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-8" style="background: #d0e9c6; margin-top: 10px">
             <ul>
                 {% for item in series %}
-                <li><a href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">{{item.title}}</a></li>
+                <li class="pull-left" style="margin-right: 10px">
+                    <a class="btn btn-default" href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">{{item.title}}</a>
+                </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-
     {% endif %}
+
+    <!--留言-->
+
+    {% include 'comments.html' %}
 </div>
 
 

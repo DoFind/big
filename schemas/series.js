@@ -36,14 +36,18 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
-
     // 访问量
-    playCount: {
+    PV: {
+        type: Number,
+        default: 0
+    },
+    // 楼层数
+    floor: {
         type: Number,
         default: 0
     },
     // 赞数量
-    supportCount: {
+    likeCount: {
         type: Number,
         default: 0
     }

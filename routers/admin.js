@@ -184,7 +184,7 @@ router.post('/category/add', function (req, res) {
                 isSuc: false,
                 message: '分类信息已存在..'
             });
-            return Promise.reject();;
+            return Promise.reject();
         }
         else {
             return new Category({

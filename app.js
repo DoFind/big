@@ -87,6 +87,7 @@ app.use(function(req, res, next){
 app.use('/admin', require('./routers/admin'));
 app.use('/api', require('./routers/api'));
 app.use('/', require('./routers/main'));
+app.use('/comments', require('./routers/comments'));
 
 
 // 监听http请求

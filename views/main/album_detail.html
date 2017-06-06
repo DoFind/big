@@ -6,36 +6,44 @@
 <div class="container">
 
     <div class="page-header">
-        <h3>{{album.title}} <small>{{album.time|date('Y-m-d')}}</small></h3>
+        <h3>{{curView.title}} <small>{{curView.time|date('Y-m-d')}}</small></h3>
         <p>
-            <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>{{album.playCount}}
-            <span class="glyphicon glyphicon-thumbs-up"></span>{{album.supportCount}}
+            <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{curView.PV}}
+            <span class="glyphicon glyphicon-heart"></span>{{curView.supportCount}}
         </p>
-        <p>{{album.summary}}</p>
+        <p>{{curView.summary}}</p>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="swiper-container gallery-top">
+                <div class="swiper-wrapper" style="transform: translate3d(-2752px, 0px, 0px); transition-duration: 0ms;">
+                    {% for path in curView.albumPath %}
+                    <div class="swiper-slide" style="background: black; width: 1366px; text-align: center;">
+                        <img src="/public/img/photobook/{{path}}" alt="img">
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev swiper-button-white"></div>
+                <div class="swiper-button-next swiper-button-white"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="swiper-container gallery-top">
-        <div class="swiper-wrapper" style="transform: translate3d(-2752px, 0px, 0px); transition-duration: 0ms;">
-            {% for path in album.albumPath %}
-            <div class="swiper-slide" style="background: black; width: 1366px; text-align: center;">
-                <img src="/public/img/photobook/{{path}}" alt="img">
-            </div>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev swiper-button-white"></div>
-        <div class="swiper-button-next swiper-button-white"></div>
-    </div>
 
     <!--<div class="swiper-container gallery-thumbs">
         <div class="swiper-wrapper" style="transform: translate3d(-200px, 0px, 0px); transition-duration: 0ms;">
-            {% for path in album.albumPath %}
+            {% for path in curView.albumPath %}
             <div class="swiper-slide" style="text-align: center; margin: 10px;">
                 <img src="/public/img/photobook/{{path}}" style="height: 80px">
             </div>
             {% endfor %}
         </div>
     </div>-->
+
+    <!--留言-->
+
+    {% include 'comments.html' %}
 
 </div>
 

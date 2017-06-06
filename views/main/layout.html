@@ -39,54 +39,42 @@
 
             <div id="menu" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="nav nav-pills">
-                        <li role="presentation" class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                动如脱兔-动态白<span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for item in vedioCategories %}
-                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        <li role="presentation" class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                静若处子-静态白<span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for item in picCategories %}
-                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            动如脱兔-动态白<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for item in vedioCategories %}
+                            <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                            {% endfor %}
+                        </ul>
                     </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            静若处子-静态白<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for item in picCategories %}
+                            <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li><a href="">快来表“白”上墙</a></li>
                 </ul>
 
-                <!--搜索栏-->
-                <!--<div class="col-sm-5">
-                    <form action="/search" method="get" class="navbar-btn input-group pull-right">
-                        <input type="text" name="search" class="form-control" placeholder="Search for..."/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit">Search</button>
-                        </span>
-                    </form>
-                </div>
--->
+                <!--登录 注册-->
                 <ul class="nav navbar-nav navbar-right">
                     {% if userInfo._id %}
-                    <li class="nav nav-pills">
-                        <li role="presentation" class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                {{userInfo.username}}<span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% if userInfo.isAdmin %}
-                                <li class="admin"><a href="/admin">管理</a></li>
-                                {% endif %}
-                                <li id="logout"><a href="javascript:;">退出</a></li>
-                            </ul>
-                        </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{userInfo.username}}<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if userInfo.isAdmin %}
+                            <li class="admin"><a href="/admin">管理</a></li>
+                            {% endif %}
+                            <li id="logout"><a href="javascript:;">退出</a></li>
+                        </ul>
                     </li>
                     {% else %}
                     <li><a data-toggle="modal" data-target="#login">登录</a ></li>
@@ -94,6 +82,17 @@
                     {% endif %}
 
                 </ul>
+
+                <!--搜索栏-->
+                <div class="col-sm-4 navbar-right">
+                    <form action="/main/search" method="get" class="navbar-btn input-group pull-right">
+                        <input type="text" name="search" class="form-control" placeholder="Search for..."/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </span>
+                    </form>
+                </div>
+
             </div>
         </div>
     </nav>
@@ -128,7 +127,7 @@
     <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-heading">
-                Login
+                Register
                 <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-content">
