@@ -1,72 +1,4 @@
 
-
-<!--<div class="row" style="margin-top: 10px">
-    <div class="col-md-8" style="background: lightgrey; padding: 10px 20px">
-
-        {% if comments.length > 0 %}
-        <ul>
-            {% for item in comments %}
-            <li>
-                <div class="col-md-1">
-                    <img src="/public/img/res/cat01.png" alt="..." class="img-circle pull-right" style="width: 30px; height: 30px">
-                </div>
-                <div class="col-md-11">
-                    <h5>{{item.from.username}}</h5>
-                    <p>{{item.content}}</p>
-                    <p>#{{item.floor}} &nbsp;&nbsp;{{item.time | date('Y-m-d h:m:s', -8*60)}}&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-thumbs-up"></span>{{item.supportCount}}&nbsp;&nbsp;
-                        <a href="#commentContent" data-cid="{{item._id}}" data-tid="{{item.from._id.toString()}}" id="replyMainBtn">回复</a>
-                    </p>
-                </div>
-
-                {% if item.reply.lenght > 0 %}
-                <div >
-                    &lt;!&ndash;<div role="separator" class="divider"></div>&ndash;&gt;
-                    <div class="col-md-1"></div>
-                    <ul class="col-md-10" style="padding-top: 10px">
-                        {% for reply in item.reply %}
-                        <li>
-                            <div class="col-md-1">
-                                <img src="/public/img/res/cat02.png" alt="..." class="img-circle pull-right" style="width: 26px; height: 26px">
-                            </div>
-                            <div class="col-md-11">
-                                <h5>{{reply.from.name}} <span style="color: cornflowerblue">回复</span> {{reply.to.name}}</h5>
-                                <p>{{reply.content}}</p>
-                                <p>{{reply.time | date('Y-m-d h:m:s')}}&nbsp;&nbsp;
-                                    <span class="glyphicon glyphicon-thumbs-up"></span>{{reply.supportCount}}&nbsp;&nbsp;
-                                    <a href="#commentContent" data-cid="{{item._id}}" data-tid="{{item.from._id.toString()}}" id="replyBtn">回复</a>
-                                </p>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>还没有评论呢，快留下你的评论吧..</p>
-        {% endif %}
-    </div>
-</div>
-
-<div class="row" style="margin-top: 10px">
-    <div class="col-md-8">
-        <div id="CommentBox">
-            <div class="form-group">
-                <textarea id="commentContent" name="comment" class="form-control" cols="30" rows="3" placeholder="请输入评论"></textarea>
-            </div>
-            {% if userInfo._id %}
-            <input type="hidden" id="resourceID" name="resourceID" value="{{curView._id.toString()}}">
-            <button type="submit" class="btn btn-primary pull-right" id="commentBtn">回复</button>
-            {% else %}
-            <a data-toggle="modal" data-target="#login" class="pull-right">请先登录</a>
-            {% endif %}
-        </div>
-    </div>
-</div>-->
-
 <div class="common">
     <div class="b-head">
         <span class="b-head-t result">0</span>
@@ -83,8 +15,8 @@
                 </div>
                 <div class="textarea-container">
                     <textarea class="ipt-txt" id="mainReply" name="" cols="80" rows="5" placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"></textarea>
-                    {% if userInfo._id %}
                     <input type="hidden" id="resourceID" value="{{curView._id.toString()}}">
+                    {% if userInfo._id %}
                     <button class="comment-submit" type="submit" id="commentBtn">发表评论</button>
                     {% else %}
                     <a data-toggle="modal" data-target="#login" class="pull-right" style="cursor: pointer">请先登录</a>
@@ -92,112 +24,139 @@
                 </div>
             </div>
 
-            <!--评论列表-->
-            <div class="comment-list">
+            <!--评论列表在 comment-list 下显示-->
+            <div class="comment-list"></div>
 
-                <!--单条 模板-->
-                <textarea id="template-list" style="display:none;">
-                    <div class="list-item reply-wrap">
-                        <div class="user-face">
-                            <img class="user-head" src="/public/img/res/cat01.png" alt="user">
-                        </div>
-                        <div class="con">
-                            <div class="user">
-                                <span class="name">$from.username$</span>
-                            </div>
-                            <p class="text">$content$</p>
-                            <div class="info">
-                                <span class="floor">#$floor$</span>
-                                <span class="time">$time|date('Y-m-d')$</span>
-                                <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>($likeCount$)</span></span>
-                                <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>($hateCount)</span></span>
-                                <span class="reply btn-hover" data-cid="$_id$ data-tid=$from._id$">回复</span>
-                            </div>
-                            <div class="replybox"></div>
-                        </div>
-                    </div>
-                </textarea>
+            <!--评论列表模板-->
+            <script id="template-list" type="text/html">
 
-                <!--<div class="list-item reply-wrap">
+                <div class="list-item reply-wrap">
                     <div class="user-face">
                         <img class="user-head" src="/public/img/res/cat01.png" alt="user">
                     </div>
                     <div class="con">
                         <div class="user">
-                            <span class="name">cc</span>
+                            <span class="name">@d.from.username@</span>
                         </div>
-                        <p class="text">hahahhaahhahahaaa</p>
+                        <p class="text">@d.content@</p>
                         <div class="info">
-                            <span class="floor">#1</span>
-                            <span class="time">2017-05-21</span>
-                            <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(1)</span></span>
-                            <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(0)</span></span>
-                            <span class="reply btn-hover" data-cid="$_id$ data-tid=$from._id$">回复</span>
-                        </div>
-                        <div class="replybox"></div>
-                    </div>
-                </div>-->
-
-                <!--有回复的评论-->
-                <!--<div class="list-item reply-wrap open-reply clearfix">
-                    <div class="user-face">
-                        <img class="user-head" src="/public/img/res/cat02.png" alt="user">
-                    </div>
-                    <div class="con">
-                        <div class="user">
-                            <span class="name">白白</span>
-                        </div>
-                        <p class="text">嗨起来</p>
-                        <div class="info">
-                            <span class="floor">#3</span>
-                            <span class="time">2017-06-01</span>
-                            <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
-                            <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
-                            <span class="reply btn-hover">回复</span>
+                            <span class="floor">#@d.floor@</span>
+                            <span class="time">@d.time@</span>
+                            <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(@d.likeCount@)</span></span>
+                            <span class="reply btn-hover" data-cid="@d._id@" data-tid="@d.from._id@">回复</span>
                         </div>
                         <div class="replybox">
+                            @# if(d.reply.length > 0) { @
+                            @# for(var i = 0, len = d.reply.length; i < len; i++){ @
                             <div class="list-item reply-wrap">
                                 <div class="user-face">
                                     <img class="user-head" src="/public/img/res/cat02.png" alt="user">
                                 </div>
                                 <div class="reply-con">
                                     <div class="user">
-                                        <span class="name">little白</span>
-                                        <span class="text-con">回复白白的内容</span>
+                                        <span class="name">@d.reply[i].from.username@</span>
+                                        回复
+                                        <span class="name">@d.reply[i].to.username@</span>
                                     </div>
+                                    <p class="text">@d.reply[i].content@</p>
                                     <div class="info">
-                                        <span class="time">2017-06-01</span>
-                                        <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
-                                        <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
-                                        <span class="reply btn-hover">回复</span>
+                                        <span class="time">@d.reply[i].time@</span>
+                                        <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(@d.reply[i].likeCount@)</span></span>
+                                        <span class="reply btn-hover" data-cid="@d._id@" data-tid="@d.reply[i].from._id@">回复</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="list-item reply-wrap">
-                                <div class="user-face">
-                                    <img class="user-head" src="/public/img/res/cat03.png" alt="user">
-                                </div>
-                                <div class="reply-con">
-                                    <div class="user">
-                                        <span class="name">小白</span>
-                                        <span class="text-con">回复@little白: 回复内容</span>
-                                    </div>
-                                    <div class="info">
-                                        <span class="time">2017-06-01</span>
-                                        <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
-                                        <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
-                                        <span class="reply btn-hover">回复</span>
-                                    </div>
-                                </div>
-                            </div>
+                            @# } @
+                            @# } @
                         </div>
                     </div>
-                </div>-->
-            </div>
+                </div>
+            </script>
+
         </div>
     </div>
 </div>
 
 
 
+<!--单条 模板-->
+<!-- <script id="template-list" type="text/html" style="display:none;">
+    <div class="list-item reply-wrap">
+        <div class="user-face">
+            <img class="user-head" src="/public/img/res/cat01.png" alt="user">
+        </div>
+        <div class="con">
+            <div class="user">
+                <span class="name">白二爷</span>
+            </div>
+            <p class="text">怼天怼地就是我</p>
+            <div class="info">
+                <span class="floor">#3</span>
+                <span class="time">2017-02-02</span>
+                <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(100)</span></span>
+                <span class="reply btn-hover replyyyyy" data-cid="_id data-tid=from._id">回复</span>
+            </div>
+            <div class="replybox"></div>
+        </div>
+    </div>
+</script>
+-->
+
+<!--有回复的评论-->
+<!--<div class="list-item reply-wrap open-reply clearfix">
+    <div class="user-face">
+        <img class="user-head" src="/public/img/res/cat02.png" alt="user">
+    </div>
+    <div class="con">
+        <div class="user">
+            <span class="name">白白</span>
+        </div>
+        <p class="text">嗨起来</p>
+        <div class="info">
+            <span class="floor">#3</span>
+            <span class="time">2017-06-01</span>
+            <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
+            <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
+            <span class="reply btn-hover">回复</span>
+        </div>
+        <div class="replybox">
+            <div class="list-item reply-wrap">
+                <div class="user-face">
+                    <img class="user-head" src="/public/img/res/cat02.png" alt="user">
+                </div>
+                <div class="reply-con">
+                    <div class="user">
+                        <span class="name">little白</span>
+                        <span class="text-con">回复白白的内容</span>
+                    </div>
+                    <div class="info">
+                        <span class="time">2017-06-01</span>
+                        <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
+                        <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
+                        <span class="reply btn-hover">回复</span>
+                    </div>
+                </div>
+            </div>
+            <div class="list-item reply-wrap">
+                <div class="user-face">
+                    <img class="user-head" src="/public/img/res/cat03.png" alt="user">
+                </div>
+                <div class="reply-con">
+                    <div class="user">
+                        <span class="name">小白</span>
+                        <span class="text-con">回复@little白: 回复内容</span>
+                    </div>
+                    <div class="info">
+                        <span class="time">2017-06-01</span>
+                        <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i><span>(20)</span></span>
+                        <span class="hate"><i class="glyphicon glyphicon-thumbs-down"></i><span>(2)</span></span>
+                        <span class="reply btn-hover">回复</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
 <script src="/public/js/comments.js"></script>
+<script src="/public/js/laytpl.js"></script>
