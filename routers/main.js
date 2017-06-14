@@ -33,9 +33,27 @@ router.use(function (req, res, next) {
 * */
 router.get('/', function (req, res, next) {
 
-    data.category = req.query.category || '';
-    // data.search = req.query.search || '';
+    var cat = req.query.category || '';
 
+    if(cat == ''){
+        // 主页
+        Resource.find({ bTimeline: true }).populate('category').sort({ time: -1}).then(function (re) {
+
+            data.resources = re;
+            res.render('main/index', data);
+        })
+    }
+    else{
+        // 分类页面
+        Resource.find({ category: cat }).populate('category').sort({ time: -1}).then(function (re) {
+
+            data.category = cat;
+            data.resources = re;
+            res.render('main/index', data);
+        })
+    }
+/*
+    data.category = req.query.category || '';
     // 查询条件
     var where = {};
     if (data.category){
@@ -46,8 +64,9 @@ router.get('/', function (req, res, next) {
 
         data.resources = re;
         res.render('main/index', data);
-    })
+    })*/
 })
+
 /*
 * 搜索
 * */
@@ -101,26 +120,16 @@ router.get('/main/vedio', function(req, res) {
             Series.findOne({_id: id}).then(function (vedio) {
 
                 data.curView = vedio;
-                // 评论数据返回
-                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
-                //     data.comments = comments;
-                // });
                 res.render('main/vedio_detail', data);
             })
         })
-
     }
     else {
-
         Resource.findOne({
             _id: id
         }).then(function (vedio) {
             if (vedio.resType == 'vedio'){
                 data.curView = vedio;
-                // 评论数据返回
-                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
-                //     data.comments = comments;
-                // });
                 res.render('main/vedio_detail', data);
             }
             else if (vedio.resType == 'vgroup'){
@@ -135,17 +144,13 @@ router.get('/main/vedio', function(req, res) {
 
                             data.series = re;
                             data.curView = re[0];
-                            // 评论数据返回
-                            // Comments.find({resourceID: re[0]._id}).then(function (comments) {
-                            //     data.comments = comments;
-                            // });
                             res.render('main/vedio_detail', data);
                         })
                     }
                 });
             }
         });
-        // resource中的普拉PV
+        // resource中的PV
         Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
@@ -171,12 +176,6 @@ router.get('/main/album', function(req, res){
             Resource.findOne({_id: id}).then(function (album) {
                 data.curView = album;
                 res.render('main/album_detail', data);
-
-                // 评论数据返回
-                // Comments.find({resourceID: id}).populate('from').then(function (comments) {
-                //     data.comments = comments;
-                //     res.render('main/album_detail', data);
-                // });
             });
         }
     });

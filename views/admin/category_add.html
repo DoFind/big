@@ -9,17 +9,7 @@
 
 <div class="jumbotron">
 
-    {% if bShow %}
-        {% if bSuc %}
-        <div class="alert alert-success" role="alert">
-            <h3 class="panel-title">{{message}}</h3>
-        </div>
-        {% else %}
-        <div class="alert alert-warning" role="alert">
-            <h3 class="panel-title">{{message}}</h3>
-        </div>
-        {% endif %}
-    {% endif %}
+    {% include 'alert.html' %}
 
     <form class="form-horizontal" method="post">
         <div class="form-group">

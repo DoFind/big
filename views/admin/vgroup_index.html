@@ -1,0 +1,36 @@
+
+{% extends 'layout.html' %}
+
+{% block main %}
+
+<div class="page-header">
+    <h3>分支视频管理 <small>慎删</small></h3>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th class="col-md-3 text-center">名字</th>
+        <th class="col-md-1 text-center">列表名字</th>
+        <th class="col-md-1 text-center">时间</th>
+        <th class="col-md-2 text-center">标签</th>
+        <th class="col-md-3 text-center">描述</th>
+        <th class="col-md-2 text-center">操作</th>
+    </tr>
+    {% for item in series %}
+    <tr>
+        <!--<td hidden>{{item._id.toString()}}</td>-->
+        <td>{{item.title}}</td>
+        <td>{{item.listTitle}}</td>
+        <td>{{item.time|date('Y-m-d')}}</td>
+        <td>{{item.tag}}</td>
+        <td>{{item.summary}}</td>
+        <td>
+            <a href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}" class="btn btn-default">查看</a>
+            <a href="/admin/vgroup/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>
+            <a href="/admin/vgroup/delete?id={{item._id.toString()}}" class="btn btn-danger" role="button">删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

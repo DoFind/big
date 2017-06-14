@@ -36,6 +36,11 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
+    // bilibili地址
+    bili: {
+        type: String,
+        default: ''
+    },
     // 访问量
     PV: {
         type: Number,
@@ -50,5 +55,15 @@ module.exports = new mongoose.Schema({
     likeCount: {
         type: Number,
         default: 0
+    },
+    // 标签
+    tag: {
+        type: String,
+        default: ''
+    },
+    // 列表显示名
+    listTitle: {
+        type: String,
+        default: ''
     }
 });

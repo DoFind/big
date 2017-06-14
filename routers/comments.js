@@ -62,12 +62,9 @@ router.post('/reply', function (req, res) {
 
         }).then(function (re) {
 
-            console.log('re');
-            console.log(re);
             // 查询当前resourceID下的所有评论
             Comments.find({resourceID: resourceID}).populate(['from', 'reply.from', 'reply.to']).sort({time: -1}).then(function (comments) {
-                console.log('评论之后返回数据');
-                console.log(comments.reply);
+                // console.log('回复之后返回数据');
                 res.json(comments);
             })
         });

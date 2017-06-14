@@ -4,70 +4,63 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>系列视频上传 <small>标题命名规则： 匆匆那年01 | 明星大侦探-坠落的校花</small></h3>
+    <h3>系列视频修改 <small>仔细啊</small></h3>
 </div>
 
 <div class="jumbotron">
 
     <form class="form-horizontal" method="post">
+
         <div class="form-group form-group-lg">
             <label for="title" class="col-sm-2 control-label">视频标题</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" name="title" placeholder="请输入视频的标题" required>
+                <input type="text" class="form-control" id="title" name="title" value="{{series.title}}" placeholder="请输入视频的标题" required>
             </div>
         </div>
         <div class="form-group">
             <label for="listTitle" class="col-sm-2 control-label">列表显示标题</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="listTitle" name="listTitle" placeholder="请输入视频在列表中的标题" required>
+                <input type="text" class="form-control" id="listTitle" name="listTitle" value="{{series.listTitle}}" placeholder="请输入视频在列表中的标题" required>
             </div>
         </div>
         <div class="form-group">
             <label for="time" class="col-sm-2 control-label">时间</label>
             <div class="col-sm-10">
-                <input type="date" class="form-control" id="time" name="time" placeholder="请输入这组视频的拍摄（公布）时间" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="parentRes" class="col-sm-2 control-label">所属的系列视频</label>
-            <div class="col-sm-10">
-                <select name="parentRes" id="parentRes" class="form-control" required>
-                    {%for item in groups %}
-                    <option value="{{item.id}}">{{item.title}}</option>
-                    {% endfor %}
-                </select>
+                <input type="date" class="form-control" id="time" name="time" value="{{series.time | date('Y-m-d')}}" placeholder="请输入这组视频的拍摄（公布）时间" required>
             </div>
         </div>
         <div class="form-group">
             <label for="flash" class="col-sm-2 control-label">片源flash地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="flash" name="flash" placeholder="请输入片源flash地址">
+                <input type="url" class="form-control" id="flash" name="flash" value="{{series.flash}}" placeholder="请输入片源flash地址">
             </div>
         </div>
         <div class="form-group">
             <label for="path" class="col-sm-2 control-label">片源通用地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="path" name="path" placeholder="请输入片源通用地址">
+                <input type="url" class="form-control" id="path" name="path" value="{{series.path}}" placeholder="请输入片源通用地址">
             </div>
         </div>
         <div class="form-group">
             <label for="bili" class="col-sm-2 control-label">片源bilibili地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="bili" name="bili" placeholder="请输入片源bilibili地址">
+                <input type="url" class="form-control" id="bili" name="bili" value="{{series.bili}}" placeholder="请输入片源bilibili地址">
             </div>
         </div>
         <div class="form-group">
             <label for="tag" class="col-sm-2 control-label">视频标签</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tag" name="tag" placeholder="请输入视频标签，用“#”分割">
+                <input type="text" class="form-control" id="tag" name="tag" value="{{series.tag}}" placeholder="请输入视频标签，用“#”分隔">
             </div>
         </div>
         <div class="form-group">
             <label for="summary" class="col-sm-2 control-label">视频简介</label>
             <div class="col-sm-10">
-                <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required></textarea>
+                <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required>{{series.summary}}</textarea>
             </div>
         </div>
+        <!-- toString() 的重要性 -->
+        <input type="hidden" name="parentRes" value="{{series.parentRes.toString()}}">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">提交</button>

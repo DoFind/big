@@ -4,13 +4,12 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>视频修改 <small>标题不可重复--这不对，我知道</small></h3>
+    <h3>视频修改 <small>视频路径必须有一个</small></h3>
 </div>
 
 <div class="jumbotron">
 
     <form class="form-horizontal" method="post">
-        <input type="text" hidden value="{{vedio._id}}">
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">视频标题</label>
             <div class="col-sm-10">
@@ -45,25 +44,37 @@
                 <input type="text" class="form-control" id="poster" name="poster" value="{{vedio.poster}}" placeholder="请输入海报地址">
             </div>
         </div>
-        <div class="form-group">
-            <label for="path" class="col-sm-2 control-label">片源通用地址</label>
-            <div class="col-sm-10">
-                <input type="url" class="form-control" id="path" name="path" value="{{vedio.path}}" placeholder="请输入片源通用地址" required>
-            </div>
-        </div>
+
+        {% if vedio.resType == 'vedio' %}
         <div class="form-group">
             <label for="flash" class="col-sm-2 control-label">片源flash地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="flash" name="flash" value="{{vedio.flash}}" placeholder="请输入片源flash地址" required>
+                <input type="url" class="form-control" id="flash" name="flash" value="{{vedio.flash}}" placeholder="请输入片源flash地址">
             </div>
         </div>
+        <div class="form-group">
+            <label for="path" class="col-sm-2 control-label">片源通用地址</label>
+            <div class="col-sm-10">
+                <input type="url" class="form-control" id="path" name="path" value="{{vedio.path}}" placeholder="请输入片源通用地址">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="bili" class="col-sm-2 control-label">片源bilibili地址</label>
+            <div class="col-sm-10">
+                <input type="url" class="form-control" id="bili" name="bili" value="{{vedio.bili}}" placeholder="请输入片源bilibili地址">
+            </div>
+        </div>
+        {% endif %}
+
         <div class="form-group">
             <label for="summary" class="col-sm-2 control-label">视频简介</label>
             <div class="col-sm-10">
                 <textarea id="summary" name="summary"  class="form-control" rows="3" placeholder="请输入视频简介" required>{{vedio.summary}}</textarea>
             </div>
         </div>
-
+        <!--传一下资源类型，方便验证非空-->
+        <input type="hidden" name="vedioID" value="{{vedio._id.toString()}}">
+        <input type="hidden" name="resType" value="{{vedio.resType}}">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">提交</button>

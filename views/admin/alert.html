@@ -1,0 +1,14 @@
+
+{% if bShow %}
+    {% if bSuc %}
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>恭喜！{{message}}</h4>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>警告！{{message}}</h4>
+    </div>
+    {% endif %}
+{% endif %}

@@ -81,7 +81,11 @@ module.exports = new mongoose.Schema({
         type: String,
         default: ''
     },
-
+    // bilibili地址
+    bili: {
+        type: String,
+        default: ''
+    },
     // 子视频  vgroup 访问这个  暂时没用！！
     vediogroup: [{
         type: mongoose.Schema.Types.ObjectId,

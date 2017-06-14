@@ -6,10 +6,10 @@
     </div>
     <div id="bbComment" class="comm">
 
-        <div class="bb-comment clearfix">
+        <div class="bb-comment">
 
             <!--发表评论-->
-            <div class="comment-send" id="comment-send">
+            <div class="comment-send clearfix" id="comment-send">
                 <div class="user-face">
                     <img class="user-head" src="/public/img/res/cat01.png" alt="usesr">
                 </div>
@@ -23,6 +23,24 @@
                     {% endif %}
                 </div>
             </div>
+
+            <!--回复评论模板-->
+            <script id="template-reply" type="text/html">
+                <div class="comment-send clearfix">
+                    <div class="user-face">
+                        <img class="user-head" src="/public/img/res/cat01.png" alt="usesr">
+                    </div>
+                    <div class="textarea-container">
+                        <textarea class="ipt-txt" name="" cols="80" rows="5" placeholder="请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。"></textarea>
+                        <input type="hidden" class="resourceID" value="{{curView._id.toString()}}">
+                        {% if userInfo._id %}
+                        <button class="comment-submit" type="submit" id="replyBtn">发表评论</button>
+                        {% else %}
+                        <a data-toggle="modal" data-target="#login" class="pull-right" style="cursor: pointer">请先登录</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </script>
 
             <!--评论列表在 comment-list 下显示-->
             <div class="comment-list"></div>
@@ -69,10 +87,10 @@
                             @# } @
                             @# } @
                         </div>
+                        <div class="reply-send"></div>
                     </div>
                 </div>
             </script>
-
         </div>
     </div>
 </div>

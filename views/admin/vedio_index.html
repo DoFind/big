@@ -7,23 +7,29 @@
     <h3>视频管理 <small>慎删</small></h3>
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-responsive">
     <tr>
-        <th>名字</th>
-        <th>时间</th>
-        <th>所属分类</th>
-        <th>海报</th>
-        <th>操作</th>
+        <th class="col-md-2 text-center">名字</th>
+        <th class="col-md-1 text-center">时间</th>
+        <th class="col-md-1 text-center">分类</th>
+        <th class="col-md-1 text-center">海报</th>
+        <th class="col-md-5 text-center">描述</th>
+        <th class="col-md-2 text-center">操作</th>
     </tr>
     {% for item in resources %}
     <tr>
-        <td hidden>{{item._id.toString()}}</td>
+        <!--<td hidden>{{item._id.toString()}}</td>-->
         <td>{{item.title}}</td>
         <td>{{item.time|date('Y-m-d')}}</td>
         <td>{{item.category.name}}</td>
-        <td><img src="/public/img/poster/{{item.poster}}" alt="poster" style="height: 80px"></td><!--{{item.poster}}-->
+        <td><img src="/public/img/poster/{{item.poster}}" alt="poster" style="height: 80px"></td>
+        <td>{{item.summary}}</td>
         <td>
+            {% if item.resType == 'vedio' %}
             <a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            {% else %}
+            <a href="/admin/vgroup?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            {% endif %}
             <a href="/admin/vedio/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>
             <a href="/admin/vedio/delete?id={{item._id.toString()}}" class="btn btn-danger" role="button">删除</a>
         </td>

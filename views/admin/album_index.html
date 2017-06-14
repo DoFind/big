@@ -7,7 +7,39 @@
     <h3>图片管理 <small>慎删</small></h3>
 </div>
 
-<div class="row">
+<table class="table table-bordered">
+    <tr>
+        <th>名字</th>
+        <th>时间</th>
+        <th>所属分类</th>
+        <th>描述</th>
+        <th>图集内容</th>
+        <th>操作</th>
+    </tr>
+    {% for item in resources %}
+    <tr>
+        <td hidden>{{item._id.toString()}}</td>
+        <td>{{item.title}}</td>
+        <td>{{item.time|date('Y-m-d')}}</td>
+        <td>{{item.category.name}}</td>
+        <td>{{item.summary}}</td>
+        <td>
+            {% for path in item.albumPath %}
+            {% if loop.index <= 3 %}  <!--最多展示3张图片-->
+            <img src="/public/img/photobook/{{path}}" style="width: auto; height: 100px">
+            {% endif %}
+            {% endfor %}
+        </td>
+        <td>
+            <a href="/main/album?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            <a href="/admin/album/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>
+            <a href="/admin/album/delete?id={{item._id.toString()}}" class="btn btn-danger" role="button">删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!--<div class="row">
 
     {% for item in resources %}
     <div class="col-sm-6 col-md-3">
@@ -27,6 +59,6 @@
     </div>
     {% endfor %}
 
-</div>
+</div>-->
 
 {% endblock %}

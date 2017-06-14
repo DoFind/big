@@ -4,7 +4,7 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>视频上传 <small>标题不可重复--这不对，我知道</small></h3>
+    <h3>视频上传 <small>单视频必须填一个视频路径，视频组不需填写路径</small></h3>
 </div>
 
 <div class="jumbotron">
@@ -23,13 +23,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="time" class="col-sm-2 control-label">资源类型</label>
+            <label class="col-sm-2 control-label">资源类型</label>
             <div class="col-sm-10">
                 <label class="radio-inline">
-                    <input type="radio" name="resType" id="inlineRadio2" value="vedio"> 视频（单期综艺、剪辑、电影）
+                    <input type="radio" name="resType" value="vedio" required> 视频（单期综艺、剪辑、电影）
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="resType" id="inlineRadio3" value="vgroup"> 视频组（系列综艺、电视剧）
+                    <input type="radio" name="resType" value="vgroup"> 视频组（系列综艺、电视剧）
                 </label>
             </div>
         </div>
@@ -46,19 +46,36 @@
         <div class="form-group">
             <label for="tag" class="col-sm-2 control-label">标签</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tag" name="tag" placeholder="标签以“#”隔开" required>
+                <input type="text" class="form-control" id="tag" name="tag" placeholder="标签以“#”隔开">
             </div>
         </div>
         <div class="form-group">
-            <label for="path" class="col-sm-2 control-label">片源通用地址</label>
+            <label class="col-sm-2 control-label">资源类型</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="path" name="path" placeholder="请输入片源通用地址" required>
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="true" required> 主线（大事件：电视剧、电影、系列综艺）
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="false"> 非主线
+                </label>
             </div>
         </div>
         <div class="form-group">
             <label for="flash" class="col-sm-2 control-label">片源flash地址</label>
             <div class="col-sm-10">
-                <input type="url" class="form-control" id="flash" name="flash" placeholder="请输入片源flash地址" required>
+                <input type="url" class="form-control" id="flash" name="flash" placeholder="请输入片源flash地址">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="path" class="col-sm-2 control-label">片源通用地址</label>
+            <div class="col-sm-10">
+                <input type="url" class="form-control" id="path" name="path" placeholder="请输入片源通用地址">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="bili" class="col-sm-2 control-label">片源bilibili地址</label>
+            <div class="col-sm-10">
+                <input type="url" class="form-control" id="bili" name="bili" placeholder="请输入片源bilibili地址">
             </div>
         </div>
         <div class="form-group">

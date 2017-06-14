@@ -16,11 +16,23 @@
 
     <div class="row">
         <!--视频-->
-        <div class="col-md-8" style="background: seagreen">
-            <!--通用代码-->
-            <!--<iframe height=500 width=720 src='{{curView.path}}' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>-->
+        <div class="col-md-8">
+
+            {% if curView.bili.length > 0 %}
+            <!--优先用B站视频链接，没有广告啊-->
+            <embed src="{{curView.bili}}" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>
+            {% elseif curView.flash.length > 0 %}
             <!--html代码-->
             <embed src="{{curView.flash}}" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>
+            {% else %}
+            <!--通用代码-->
+            <iframe width=720 height=500 src='{{curView.path}}' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>
+            {% endif %}
+
+            <!--测试用-->
+            <!--<embed src="https://static.hdslb.com/miniloader.swf?aid=6302761&page=1" type="application/x-shockwave-flash" width="720" height="500" allowFullScreen="true" align="middle" quality="high"/>-->
+            <!--<iframe width=720 height=500 src='http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=b5eea6904e5f33db3fe76e35055a2312&tvId=408330700&accessToken=2.f22860a2479ad60d8da7697274de9346&appKey=3955c3425820435e86d0f4cdfe56f5e7&appId=1368' frameborder=0 allowFullScreen align="middle" quality="high"></iframe>-->
+
         </div>
 
         <!--关联视频-->
@@ -35,8 +47,8 @@
         <div class="col-sm-8" style="background: #d0e9c6; margin-top: 10px">
             <ul>
                 {% for item in series %}
-                <li class="pull-left" style="margin-right: 10px">
-                    <a class="btn btn-default" href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">{{item.title}}</a>
+                <li class="pull-left" style="margin-right: 10px; margin-bottom: 10px;">
+                    <a class="btn btn-default" href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">{{item.listTitle}}</a>
                 </li>
                 {% endfor %}
             </ul>

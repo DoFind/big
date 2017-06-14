@@ -108,19 +108,22 @@ body {
     color: #555;
 }
 
-.bb-comment {
+/* 提交评论 */
+.bb-comment .comment-send {
+    position: relative;
+    margin: 10px 0;
+}
+/* 点击回复 跳转 锚点设置偏移量*/
+.bb-comment .comment-send:target {
+    padding-top:60px;
 }
 
-/* 提交评论 */
-.bb-comment .comment-send{
-    position: relative;
-    width: 690px;
-    margin-bottom: 30px;
-}
-.bb-comment .comment-send .user-face{
+.bb-comment .comment-send .user-face,
+.bb-comment .comment-list .list-item .comment-send .user-face{
     float: left;
     margin: 7px 0 0 5px;
 }
+
 .bb-comment .user-face .user-head{
     width:48px;
     height:48px;
@@ -147,7 +150,9 @@ body {
     box-sizing: border-box;
 }
 
-.bb-comment .comment-send .textarea-container:hover .ipt-txt {
+.bb-comment .comment-send .textarea-container:hover .ipt-txt,
+.bb-comment .comment-send .textarea-container .ipt-txt:target
+{
     background-color: #fff;
     border-color: #00a1d6;
 }
@@ -177,16 +182,15 @@ body {
 /* 评论列表 */
 .bb-comment .comment-list{
     width:690px;
+    margin: 30px 0;
 }
 .bb-comment .comment-list .list-item{
     position: relative;
     width: 690px;
-    /*height: 126px;*/
 }
 .bb-comment .comment-list .list-item .user-face{
     float: left;
     margin: 24px 0 0 5px;
-    /*position: relative;*/
     width:48px;
     height:48px;
 }
@@ -196,9 +200,6 @@ body {
     margin-left: 85px;
     padding: 22px 0 14px 0;
     border-top: 1px solid #e5e9ef;
-
-    /*width: 605px;*/
-    /*height:112px;*/
 }
 
 .bb-comment .comment-list .list-item .user .name{

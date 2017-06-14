@@ -1,69 +1,69 @@
 
-// 回复别人的评论
-$('.comment-list').on('click', '.reply', function () {
+$(function () {
+    // 回复别人的评论
+    $('.comment-list').on('click', '.reply', function () {
 
-    var target = $(this);
-    var toID = target.data('tid');
-    var commentID = target.data('cid');
-    // console.log(toID);
-    // console.log(commentID);
+        var target = $(this);
+        var toID = target.data('tid');
+        var commentID = target.data('cid');
 
-    //插入隐藏域  .textarea-container
-    if($('#toID').length > 0){
-        $('#toID').attr('value', toID);
-    }
-    else{
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'toID',
-            value: toID
-        }).appendTo('.textarea-container');
-    }
+        // console.log(toID);
+        // console.log(commentID);
 
-    if($('#commentID').length > 0){
-        $('#commentID').attr('value', commentID);
-    }
-    else{
-        $('<input>').attr({
-            type: 'hidden',
-            id: 'commentID',
-            value: commentID
-        }).appendTo('.textarea-container');
-    }
-})
-
-$('#commentBtn').click(function () {
-    $.ajax({
-        type: 'post',
-        url: '/comments/reply',
-        data: {
-            resourceID:$('#resourceID').val(),
-            content:$('#mainReply').val(),
-            toID: $('#toID').length>0 ? $('#toID').val() : null,
-            commentID: $('#commentID').length>0 ? $('#commentID').val() : null
-        },
-        dataType: 'json',
-        success: function (comments) {
-
-            $('#mainReply').val('');
-            // console.log('html--评论返回');
-            // console.log(comments);
-            renderComment(comments);
+        //插入隐藏域  .textarea-container
+        if($('#toID').length > 0){
+            $('#toID').val(toID);
         }
-    });
-})
+        else{
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'toID',
+                value: toID
+            }).appendTo('.textarea-container');
+        }
 
-//每次页面重载的时候获取一下该文章的所有评论
-$.ajax({
-    url: '/comments/list',
-    data: {
-        resourceID: $('#resourceID').val()
-    },
-    success: function(comments) {
-        // console.log('html--页面重载');
-        // console.log(comments);
-        renderComment(comments);
-    }
+        if($('#commentID').length > 0){
+            $('#commentID').val(commentID);
+        }
+        else{
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'commentID',
+                value: commentID
+            }).appendTo('.textarea-container');
+        }
+
+        // 插入回复框reply-send
+        /*var htmlList = '',
+            // 模板HTML
+            htmlTemp = $("#template-reply").html();
+
+        laytpl(htmlTemp).render({}, function(html){
+            $(".reply-send").empty().append(html);
+        });*/
+    })
+
+    // 提交评论
+    $('#commentBtn').click(function () {
+        $.ajax({
+            type: 'post',
+            url: '/comments/reply',
+            data: {
+                resourceID:$('#resourceID').val(),
+                content:$('#mainReply').val(),
+                toID: $('#toID').length>0 ? $('#toID').val() : null,
+                commentID: $('#commentID').length>0 ? $('#commentID').val() : null
+            },
+            dataType: 'json',
+            success: function (comments) {
+
+                $('#mainReply').val('');
+                // console.log('html--评论返回');
+                // console.log(comments);
+                renderComment(comments);
+            }
+        });
+    })
 });
 
 // 显示评论列表啦
@@ -88,3 +88,16 @@ function renderComment(comments) {
         $(".comment-list").empty().append(htmlList);
     }
 }
+
+//每次页面重载的时候获取一下该文章的所有评论
+$.ajax({
+    url: '/comments/list',
+    data: {
+        resourceID: $('#resourceID').val()
+    },
+    success: function(comments) {
+        // console.log('html--页面重载');
+        // console.log(comments);
+        renderComment(comments);
+    }
+});
