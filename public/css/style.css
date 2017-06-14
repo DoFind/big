@@ -64,33 +64,27 @@ textarea {
 /*-----------------------------通用格式----------------------------------------------*/
 
 body {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     font-size: 12px;
     font-family: "微软雅黑";
 }
 
+/*vedio-detial  album-detail 上方描述*/
 .page-header {
     margin:20px 0 10px;
 }
 
 /*导航栏nav 样式重写*/
-
-.navFocus {
-    color: #fff;
+.navbar {
+    margin-bottom: 0;
 }
-
-.navbar-brand img {
-    width: 60px;
-    height:30px;
+.dropdown-menu {
+    right: 0;
+    min-width: 100px;
 }
 
 .dropdown-menu li a {
     text-align: right;
-}
-
-
-.list-group-item {
-    display: inline-block;
 }
 
 /*-------------------------------------评论----------------------------------------*/
@@ -276,7 +270,7 @@ body {
 /*-------------------------------------黑板 上墙-----------------------------------*/
 
 #lovewall {
-    margin-top: 100px;
+    margin-top: 30px;
     width: 960px;
 }
 
@@ -333,16 +327,82 @@ body {
     background: url(/public/img/res/adorn.gif) no-repeat 0 -48px;
 }
 
+/*-------------------------------------growth.html----固定导航栏---------------------------*/
 
+#growth-content {
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#growth-content h1 {
+    color: #0088bb;
+}
+
+#growth-content .item {
+    margin-bottom: 20px;
+    border: 1px dotted #0088bb;
+}
+
+#growth-content .item h2 {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #0088bb;
+    margin-bottom: 10px;
+}
+
+#growth-content .item img {
+    width: 100%;
+}
+
+#growth-menu {
+    position: fixed;
+    top: 100px;
+    /*小技巧，先居中；然后根据content的宽度放在右边*/
+    left: 50%;
+    margin-left: 450px;
+}
+
+#growth-menu ul li a {
+    display: block;
+    margin: 2px 0;
+    color: #333;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none;
+    text-align: center;
+    background-color: #ccc;
+}
+
+#growth-menu ul li a:hover,
+#growth-menu ul li a.current {
+    color: #fff;
+    background-color: #0088bb;
+}
+
+/*-------------------------------------正文 配合页脚----------------------------------------*/
+
+html, body {
+    height:100%;
+}
+.container-wrap {
+    min-height:100%;
+}
+.container-main {
+    overflow: auto;
+    padding-bottom: 60px;
+}
 
 /*-------------------------------------页脚----------------------------------------*/
 footer {
-    /*position: absolute;*/
-    /*bottom: 0;*/
-    margin-top: 20px;
-    height: 50px;
-    line-height: 50px;
+    position: relative;
+    margin-top: -60px;
+
+    height: 60px;
+    line-height: 60px;
     background: black;
     color: white;
     text-align: center;
+    clear:both;
 }

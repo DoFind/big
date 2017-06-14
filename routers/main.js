@@ -227,6 +227,11 @@ router.post('/main/lover', function (req, res) {
     });
 })
 
+router.get('/main/growth', function (req, res) {
+
+    res.render('main/growth', data);
+})
+
 module.exports = router;
 
 
