@@ -26,7 +26,6 @@ function error(req, res, msg ) {
     res.render('admin/error', {
         userInfo: req.userInfo,
         message: msg,
-        url: '/admin/vedio'
     });
 }
 function success(req, res,  msg, toUrl) {
@@ -38,6 +37,17 @@ function success(req, res,  msg, toUrl) {
     });
 }
 
+// 删除空的海报文件
+function delPoster( filename ) {
+
+    var file = './public/img/poster/' + filename;
+    // 判断一下这个文件是否存在
+    fs.exists(file, function(exists) {
+        if(exists){
+            fs.unlink(file);
+        }
+    });
+}
 
 /*
 * 首页
@@ -372,6 +382,12 @@ router.post('/album/add', function(req, res, next){
 
     form.parse(req, function (err, fields, files) {
 
+        // path  文件是通过这个字段传过来的。
+        // 如果表单中有多处文件上传的地方，那这里应该就多了吧
+        /*Object.keys(files).forEach(function (name) {
+            console.log('get files name:' +name);
+        });*/
+
         var paths = files.path;
 
         if( paths.length > 0 ){
@@ -403,7 +419,6 @@ router.post('/album/add', function(req, res, next){
             next();
         }
     })
-
 },
     function(req, res){
 
@@ -517,13 +532,31 @@ router.get('/album/delete', function (req, res) {
  * */
 router.get('/vedio', function (req, res) {
 
-    Resource.find({
-        resType: {$in: ['vedio', 'vgroup']}
-    }).populate(['category']).sort({ category: -1}).then(function (resources) {
+    var category = req.query.category;
+    // 这里有必要区分一下
+    // Category 的 resType 只区分 vedio album
+    // Resource 的 resType 为 vedio vgroup album
+    var categories;
+    Category.find({resType: 'vedio'}).then(function (re) {
+
+        categories = re;
+        if (category){
+            return Resource.find({
+                category: category,
+                resType: {$in: ['vedio', 'vgroup']}
+            }).populate(['category']);
+        }
+        else {
+            return Resource.find({
+                resType: {$in: ['vedio', 'vgroup']}
+            }).populate(['category']).sort({ category: -1});
+        }
+    }).then(function (resources) {
 
         res.render('admin/vedio_index', {
             userInfo: req.userInfo,
-            resources: resources
+            resources: resources,
+            categories: categories
         });
     })
 })
@@ -549,42 +582,35 @@ router.post('/vedio/add', function(req, res, next){
 
     form.parse(req, function (err, fields, files) {
 
-        if( files.poster.length > 0 ){
+        var posterData = files.poster[0];
+        var poster = Date.now() + '-' + posterData.originalFilename;
+        var newPath = './public/img/poster/' + poster;
 
-            var posterData = files.poster[0];
-            var filename = Date.now() + '-' + posterData.originalFilename;
-            var newPath = './public/img/poster/' + filename;
+        fs.rename(posterData.path, newPath);
 
-            //重命名文件名
-            fs.rename(posterData.path, newPath, function(err) {
-                if(err){
-                        req.fields = fields;
-                        console.log('rename error: ' + err);
-                        next();
-                    } else {
-                        req.poster = filename;
-                        req.fields = fields;
-                        next();
-                    }
-                });
-        }
-        else{
+        if(posterData.size > 0){
+            req.poster = poster;
             req.fields = fields;
-            console.log('no files');
             next();
+        }
+        else {
+            console.log('no files');
+            delPoster(poster);
+            error(req, res, '请上传海报');
+            return;
         }
     })
 },
     function(req, res){
 
     var data = req.fields;
+    var poster = req.poster;
 
-    // 标题、简介、时间、分类、海报
+    // 标题、简介、时间、分类
     var title = data.title || '';
     var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
-    var poster = req.poster || '';
     // 视频资源类型  vedio  vgroup
     var resType = data.resType[0] || '';
     // 是否为主线  radio值为数组，arr[0]为选中的辣一个
@@ -596,20 +622,22 @@ router.post('/vedio/add', function(req, res, next){
     var bili = data.bili || '';
 
 
-    //信息验证  海报暂时不验证
+    //信息验证
     if(title == '' || summary == '' || time == null || category == '' || resType == ''){
 
+        delPoster(poster);
         error(req, res,  '请填写完整信息..');
         return;
     }
     if(resType == 'vedio' && path == '' && flash == '' && bili == ''){
 
-        error(req, res,  '请填写完整信息..');
+        delPoster(poster);
+        error(req, res,  '视频路径不得全为空..');
         return;
     }
 
     // 信息保存
-    // 单条信息保存
+    // 上传规则与修改规则有必要保持一致   title,time,resType 同时验证么？ 还是缩紧条件验证title,resType
     Resource.findOne({
         title: title,
         time: time,
@@ -617,6 +645,7 @@ router.post('/vedio/add', function(req, res, next){
     }).then(function (re) {
 
         if(re) {
+            delPoster(poster);
             error(req, res,  '该视频信息已存在..');
             return Promise.reject();
         }
@@ -647,7 +676,7 @@ router.get('/vedio/edit', function (req, res) {
     var id = req.query.id || '';
 
     if(id == ''){
-        error(req, res,  '修改的视频不存在');
+        error(req, res,  '视频ID为空');
         return;
     }
 
@@ -674,48 +703,95 @@ router.get('/vedio/edit', function (req, res) {
     })
 })
 
-router.post('/vedio/edit', function (req, res) {
+router.post('/vedio/edit', function(req, res, next){
 
-    var data = req.body;
+    // 生成multiparty对象，配置上传目标路径
+    var form = new multiparty.Form({uploadDir: './public/img/poster/'});
+
+    form.parse(req, function (err, fields, files) {
+
+        var posterData = files.poster[0];
+        var poster = Date.now() + '-' + posterData.originalFilename;
+        var newPath = './public/img/poster/' + poster;
+
+        fs.rename(posterData.path, newPath);
+
+        if(posterData.size > 0){
+            req.poster = poster;
+            req.fields = fields;
+            delPoster(fields.oldPoster);
+            next();
+        }
+        else {
+            req.poster = fields.oldPoster;
+            req.fields = fields;
+            delPoster(poster);
+            next();
+        }
+    })
+},
+    function(req, res){
+
+    var data = req.fields;
+    var poster = req.poster;
     var id = data.vedioID;
     var resType = data.resType;
 
     // 标题、简介、时间、所属分类、海报地址
-    // var title = data.title || '';
+    var title = data.title || '';
     var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
-    var poster = data.poster || '';
     // 视频资源地址 如果是视频组可以不填
     var path = data.path ||'';
     var flash = data.flash || '';
     var bili = data.bili || '';
 
     //信息非空验证
-    if(summary == '' || time == null || category == '' || poster == ''){
+    if(title == '' || summary == '' || time == null || category == ''){
 
+        // 有新上传的情况下 poster != data.oldPoster 需要删除oldPoster
+        if(poster != data.oldPoster){
+            delPoster(poster);
+        }
         error(req, res,  '请填写完整信息..');
         return;
     }
-    if(resType == 'vedio' && path == '' && flash == '' && bili == ''){
-
-        error(req, res,  '请填写完整信息..');
+    if (resType == 'vedio' && path == '' && flash == '' && bili == ''){
+        if(poster != data.oldPoster){
+            delPoster(poster);
+        }
+        error(req, res,  '视频路径不得全为空..');
         return;
     }
 
-    Resource.update({
-        _id: id
-    }, {
-        //title: title,
-        summary: summary,
+    Resource.findOne({
+        _id:{$ne: id},
+        title: title,
         time: time,
-        category: category,
-        poster: poster,
-        path: path,
-        flash: flash,
-        bili: bili
-    }).then(function () {
-        success(req, res,  '视频修改成功', '/admin/vedio');
+        resType: resType
+    }).then(function (re) {
+
+        if (re){
+            error(req, res, '该名称已存在');
+            return;
+        }
+        else{
+            Resource.update({
+                _id: id
+            }, {
+                title: title,
+                time: time,
+                category: category,
+                path: path,
+                flash: flash,
+                bili: bili,
+                summary: summary,
+                poster: poster
+            }).then(function () {
+                success(req, res,  '视频修改成功', '/admin/vedio');
+            })
+        }
     })
 })
 
@@ -785,9 +861,12 @@ router.post('/vgroup/add', function (req, res) {
     }
 
     // 数据写入series表中  尤其注意parentID
-    Series.findOne({title: data.title}).then(function (re) {
+    Series.findOne({
+        title: title,
+        parentRes: parentRes
+    }).then(function (re) {
         if(re){
-            error(req, res, '资源已存在');
+            error(req, res, '该名称已存在');
             return Promise.reject();
         }
         else{
@@ -835,6 +914,7 @@ router.post('/vgroup/edit', function (req, res) {
 
     var data = req.body;
     var id = req.query.id;
+    var parentRes = data.parentRes;
 
     // 标题、简介、时间、列表显示名
     var title = data.title || '';
@@ -859,19 +939,32 @@ router.post('/vgroup/edit', function (req, res) {
         return;
     }
 
-    Series.update({
-        _id: id
-    }, {
+    Series.findOne({
+        _id: {$ne:id},
         title: title,
-        summary: summary,
-        time: time,
-        path: path,
-        flash: flash,
-        bili: bili,
-        tag: tag,
-        listTitle: listTitle
-    }).then(function () {
-        success(req, res,  '视频修改成功', '/admin/vgroup?id='+data.parentRes);
+        parentRes: parentRes
+    }).then(function (re) {
+
+        if (re){
+            error(req, res, '该名称已存在..');
+            return;
+        }
+        else{
+            Series.update({
+                _id: id
+            }, {
+                title: title,
+                summary: summary,
+                time: time,
+                path: path,
+                flash: flash,
+                bili: bili,
+                tag: tag,
+                listTitle: listTitle
+            }).then(function () {
+                success(req, res,  '视频修改成功', '/admin/vgroup?id='+parentRes);
+            })
+        }
     })
 })
 

@@ -102,17 +102,17 @@ router.get('/main/vedio', function(req, res) {
 
         var parentID = req.query.parentID;
         // 修改分集视频PV
-        Series.update({_id: id}, {$inc: {PV: 1}}, function (err) {
+        /*Series.update({_id: id}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
             }
-        });
+        });*/
         // 修改resource中的PV
-        Resource.update({_id: parentID}, {$inc: {PV: 1}}, function (err) {
+        /*Resource.update({_id: parentID}, {$inc: {PV: 1}}, function (err) {
             if(err){
                 console.log(err);
             }
-        });
+        });*/
 
         Series.find({parentRes: parentID}).then(function (re) {
 
@@ -135,27 +135,27 @@ router.get('/main/vedio', function(req, res) {
             else if (vedio.resType == 'vgroup'){
 
                 // 修改分集视频PV
-                Series.update({parentRes: id}, {$inc: {PV: 1}}, function (err) {
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
+                // Series.update({parentRes: id}, {$inc: {PV: 1}}, function (err) {
+                //     if(err){
+                //         console.log(err);
+                //     }
+                //     else{
                         Series.find({parentRes: id}).then(function (re) {
 
                             data.series = re;
                             data.curView = re[0];
                             res.render('main/vedio_detail', data);
                         })
-                    }
-                });
+                //     }
+                // });
             }
         });
         // resource中的PV
-        Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
-            if(err){
-                console.log(err);
-            }
-        });
+        // Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
+        //     if(err){
+        //         console.log(err);
+        //     }
+        // });
     }
 })
 
@@ -167,18 +167,18 @@ router.get('/main/album', function(req, res){
     var id = req.query.id;
 
     // 修改访问量PV
-    Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
-        if(err){
-            console.log(err);
-        }
-        else{
+    // Resource.update({_id: id}, {$inc: {PV: 1}}, function (err) {
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     else{
             // 访问具体相册
             Resource.findOne({_id: id}).then(function (album) {
                 data.curView = album;
                 res.render('main/album_detail', data);
             });
-        }
-    });
+    //     }
+    // });
 })
 
 

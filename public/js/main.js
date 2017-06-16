@@ -130,4 +130,11 @@ $(function() {
     }, function () {
         oPrompt.hide();
     });
+
+    /*
+    * 返回顶部  原则上显示内容超过一页才有这个按钮，某些页面不显示
+    * */
+    $('#scrollTop').click(function(){
+        $('html,body').animate({scrollTop: '0px'}, 300);
+    });
 });

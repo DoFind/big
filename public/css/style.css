@@ -37,7 +37,7 @@ li {
     list-style: none;
 }
 
-a, a:hover {
+a, a:link, a:visited, a:hover, a:active {
     text-decoration: none;
 }
 
@@ -75,15 +75,15 @@ body {
 }
 
 /*导航栏nav 样式重写*/
-.navbar {
+#nav-container .navbar {
     margin-bottom: 0;
 }
-.dropdown-menu {
+#nav-container .dropdown-menu {
     right: 0;
     min-width: 100px;
 }
 
-.dropdown-menu li a {
+#nav-container .dropdown-menu li a {
     text-align: right;
 }
 
@@ -327,6 +327,26 @@ body {
     background: url(/public/img/res/adorn.gif) no-repeat 0 -48px;
 }
 
+/*-------------------------------------返回顶部-----------------------------------------------*/
+
+#scrollTop {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+}
+
+#scrollTop a:hover {
+    display: block;
+    border-radius: 5px;
+    background-color: #0088bb;
+    color: #fff;
+}
+
 /*-------------------------------------growth.html----固定导航栏---------------------------*/
 
 #growth-content {
@@ -386,7 +406,7 @@ body {
 html, body {
     height:100%;
 }
-.container-wrap {
+#nav-container {
     min-height:100%;
 }
 .container-main {

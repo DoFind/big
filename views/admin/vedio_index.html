@@ -4,7 +4,14 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>视频管理 <small>慎删</small></h3>
+    <h3>视频管理
+        <small>
+            {% for cat in categories %}
+            <a href="/admin/vedio?category={{cat._id.toString()}}">{{cat.name}}</a> |
+            {% endfor %}
+            <a href="/admin/vedio">全部</a>
+        </small>
+    </h3>
 </div>
 
 <table class="table table-bordered table-responsive">
@@ -13,8 +20,8 @@
         <th class="col-md-1 text-center">时间</th>
         <th class="col-md-1 text-center">分类</th>
         <th class="col-md-1 text-center">海报</th>
-        <th class="col-md-5 text-center">描述</th>
-        <th class="col-md-2 text-center">操作</th>
+        <th class="col-md-4 text-center">描述</th>
+        <th class="col-md-3 text-center">操作</th>
     </tr>
     {% for item in resources %}
     <tr>
@@ -26,9 +33,9 @@
         <td>{{item.summary}}</td>
         <td>
             {% if item.resType == 'vedio' %}
-            <a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            <a href="/main/vedio?id={{item._id.toString()}}" class="btn btn-default">观看</a>
             {% else %}
-            <a href="/admin/vgroup?id={{item._id.toString()}}" class="btn btn-default">查看</a>
+            <a href="/admin/vgroup?id={{item._id.toString()}}" class="btn btn-default">详细</a>
             {% endif %}
             <a href="/admin/vedio/edit?id={{item._id.toString()}}" class="btn btn-info" role="button">修改</a>
             <a href="/admin/vedio/delete?id={{item._id.toString()}}" class="btn btn-danger" role="button">删除</a>
