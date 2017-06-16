@@ -47,8 +47,12 @@
                     {% for item in resources %}
                         {% if item.resType == 'vedio' || item.resType == 'vgroup' %}
                         <dt>{{item.category.name}}</dt>
+                        {% if loop.index%2 == 0 %}
                         <dd class="pos-left clearfix">
-                            <div class="circ"></div>
+                        {% else %}
+                        <dd class="pos-right clearfix">
+                        {% endif %}
+                        <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">
                                 <div class="events-header">{{item.title}}..<span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{item.PV}}</div>
@@ -61,7 +65,11 @@
                         </dd>
                         {% else %}
                         <dt>{{item.category.name}}</dt>
+                        {% if loop.index%2 == 0 %}
+                        <dd class="pos-left clearfix">
+                            {% else %}
                         <dd class="pos-right clearfix">
+                        {% endif %}
                             <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">

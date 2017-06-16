@@ -544,7 +544,7 @@ router.get('/vedio', function (req, res) {
             return Resource.find({
                 category: category,
                 resType: {$in: ['vedio', 'vgroup']}
-            }).populate(['category']);
+            }).populate(['category']).sort({ time: 1 });
         }
         else {
             return Resource.find({
@@ -611,6 +611,7 @@ router.post('/vedio/add', function(req, res, next){
     var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
+    var tag = data.tag || '';
     // 视频资源类型  vedio  vgroup
     var resType = data.resType[0] || '';
     // 是否为主线  radio值为数组，arr[0]为选中的辣一个
@@ -654,6 +655,7 @@ router.post('/vedio/add', function(req, res, next){
                 title: title,
                 summary: summary,
                 time: time,
+                tag: tag,
                 resType: resType,
                 category: category,
                 poster: poster,
@@ -737,11 +739,13 @@ router.post('/vedio/edit', function(req, res, next){
     var id = data.vedioID;
     var resType = data.resType;
 
-    // 标题、简介、时间、所属分类、海报地址
+    // 标题、简介、时间、海报地址
     var title = data.title || '';
     var summary = data.summary || '';
     var time = data.time || null;
     var category = data.category || '';
+    var tag = data.tag || '';
+    var bTimeline = data.timeline[0] == 'true' ? true : false;
     // 视频资源地址 如果是视频组可以不填
     var path = data.path ||'';
     var flash = data.flash || '';
@@ -786,8 +790,10 @@ router.post('/vedio/edit', function(req, res, next){
                 path: path,
                 flash: flash,
                 bili: bili,
+                tag: tag,
                 summary: summary,
-                poster: poster
+                poster: poster,
+                bTimeline: bTimeline
             }).then(function () {
                 success(req, res,  '视频修改成功', '/admin/vedio');
             })
@@ -980,15 +986,19 @@ router.get('/vedio/delete', function (req, res) {
         return;
     }
 
-    // 获取要修改的分类信息
-    // 也要删除云端的海报图，不然占着空间
-    // 或者留着，在修改海报的时候从云端读取
+    Resource.findOne({
+        _id: id
+    }, {'poster': 1}).then(function (re) {
 
-    Series.remove({ parentRes: id }).then(function () {
+        // 删除云端的海报图，不然占着空间
+        delPoster(re.poster);
+        return Series.remove({ parentRes: id });
+    }).then(function () {
 
-        Resource.remove({ _id: id }).then(function () {
-            success(req, res,  '成功删除视频', '/admin/vedio');
-        })
+        return Resource.remove({ _id: id });
+    }).then(function () {
+
+        success(req, res,  '成功删除视频', '/admin/vedio');
     })
 })
 

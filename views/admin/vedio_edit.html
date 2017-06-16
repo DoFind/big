@@ -38,6 +38,33 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="tag" class="col-sm-2 control-label">标签</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="tag" name="tag" value="{{vedio.tag}}" placeholder="标签以“#”隔开">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">资源类型</label>
+            <div class="col-sm-10">
+                {% if vedio.bTimeline %}
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="true" checked required> 主线（大事件：电视剧、电影、系列综艺）
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="false"> 非主线
+                </label>
+                {% else %}
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="true" required> 主线（大事件：电视剧、电影、系列综艺）
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="timeline" value="false" checked> 非主线
+                </label>
+                {% endif %}
+            </div>
+        </div>
+
         {% if vedio.resType == 'vedio' %}
         <div class="form-group">
             <label for="flash" class="col-sm-2 control-label">片源flash地址</label>
@@ -58,6 +85,7 @@
             </div>
         </div>
         {% endif %}
+
 
         <div class="form-group">
             <label for="summary" class="col-sm-2 control-label">视频简介</label>
