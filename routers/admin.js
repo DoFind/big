@@ -38,6 +38,18 @@ function success(req, res,  msg, toUrl) {
 }
 
 // 删除空的海报文件
+function delAlbum( filename ) {
+
+    for(var i = 0; i < filename.length; i++){
+        var file = './public/img/photobook/' + filename;
+        // 判断一下这个文件是否存在
+        fs.exists(file, function(exists) {
+            if(exists){
+                fs.unlink(file);
+            }
+        });
+    }
+}
 function delPoster( filename ) {
 
     var file = './public/img/poster/' + filename;
@@ -349,13 +361,31 @@ router.get('/category/delete', function (req, res) {
 * */
 router.get('/album', function (req, res) {
 
-    Resource.find({
-        resType: 'album'
-    }).populate(['category']).sort({ time: -1}).then(function (resources) {
+    // Category 的 resType 只区分 vedio album
+    // Resource 的 resType 为 vedio vgroup album
+    var category = req.query.category;
+    var categories;
+    Category.find({resType: 'album'}).then(function (re) {
+
+        categories = re;
+
+        if (category){
+            return Resource.find({
+                resType: 'album',
+                category: category
+            }).populate(['category']).sort({ time: -1})
+        }
+        else{
+            return Resource.find({
+                resType: 'album'
+            }).populate(['category']).sort({ category: 1})
+        }
+    }).then(function (album) {
 
         res.render('admin/album_index', {
             userInfo: req.userInfo,
-            resources: resources
+            resources: resources,
+            categories: album
         });
     })
 })
@@ -387,35 +417,29 @@ router.post('/album/add', function(req, res, next){
         /*Object.keys(files).forEach(function (name) {
             console.log('get files name:' +name);
         });*/
-
         var paths = files.path;
+        var filenames = [];
+        var len = paths.length;
 
-        if( paths.length > 0 ){
+        for(var i=0; i<len; i++){
 
-            var filenames = [];
-            var len = paths.length;
-            var index = 0;
+            var posterData = paths[i];
+            var filename = Date.now() + '-' + posterData.originalFilename;
+            filenames.push(filename);
 
-            for(var i=0; i<len; i++){
+            //重命名文件名
+            fs.rename(posterData.path, dirpath + filename);
+        }
 
-                var posterData = paths[i];
-                var filename = Date.now() + '-' + posterData.originalFilename;
-                filenames.push(filename);
-
-                //重命名文件名
-                fs.rename(posterData.path, dirpath + filename, function(err) {
-                    if(err){
-                        console.log('rename failed');
-                    }
-                });
-            }
-            req.albumPath = filenames;
-            req.fields = fields;
-            next();
+        if(filenames.length == 1 && paths[0].size == 0){
+            console.log('no album uploadfiles');
+            delAlbum(filenames);
+            error(req, res, '上传图集不能为空');
+            return;
         }
         else{
+            req.albumPath = filenames;
             req.fields = fields;
-            console.log('no files');
             next();
         }
     })
@@ -426,27 +450,29 @@ router.post('/album/add', function(req, res, next){
     var title = data.title || '';
     var time = data.time || null;
     var category = data.category || '';
+    var tag = data.tag || '';
     var summary = data.summary || '';
     var albumPath = req.albumPath || [];
 
     //信息非空验证
     if(title == '' || summary == '' || time == null || category == '' || albumPath.length == 0){
 
+        delAlbum(albumPath);
         error(req, res,  '请填写全部信息..');
         return;
     }
 
     // 信息保存
     // 单条信息保存
-
     Resource.findOne({
         title: title,
         time: time,
         resType: 'album'
     }).then(function (re) {
         if(re) {
-            error(req, res,  '该图集信息已存在..')
-            return Promise.reject();;
+            delAlbum(albumPath);
+            error(req, res,  '该图集信息已存在..');
+            return Promise.reject();
         }
         else {
             return new Resource({
@@ -455,7 +481,8 @@ router.post('/album/add', function(req, res, next){
                 time: time,
                 resType: 'album',
                 category: category,
-                albumPath: albumPath
+                albumPath: albumPath,
+                tag: tag
             }).save();
         }
     }).then(function () {
@@ -472,11 +499,11 @@ router.get('/album/edit', function (req, res) {
     var id = req.query.id || '';
 
     if(id == ''){
-        error(req, res,  '修改的相册不存在');
+        error(req, res,  'ID为空');
         return;
     }
 
-    var categories = [];
+    var categories;
 
     Category.find({resType: 'album'}).then(function (re){
 
@@ -515,7 +542,7 @@ router.get('/album/delete', function (req, res) {
     var id = req.query.id || '';
 
     if (id == ''){
-        error(req, res,  '要删除的图集不存在..');
+        error(req, res,  'ID为空，图集不存在..');
         return;
     }
     // 获取要修改的分类信息
@@ -526,6 +553,7 @@ router.get('/album/delete', function (req, res) {
         success(req, res,  '成功删除图片', '/admin/album');
     })
 })
+
 
 /*
  * 视频管理
@@ -577,16 +605,16 @@ router.get('/vedio/add', function (req, res) {
 
 router.post('/vedio/add', function(req, res, next){
 
+    var uploadDir = './public/img/poster/';
     // 生成multiparty对象，配置上传目标路径
-    var form = new multiparty.Form({uploadDir: './public/img/poster/'});
+    var form = new multiparty.Form({uploadDir: uploadDir});
 
     form.parse(req, function (err, fields, files) {
 
         var posterData = files.poster[0];
         var poster = Date.now() + '-' + posterData.originalFilename;
-        var newPath = './public/img/poster/' + poster;
 
-        fs.rename(posterData.path, newPath);
+        fs.rename(posterData.path, uploadDir + poster);
 
         if(posterData.size > 0){
             req.poster = poster;
@@ -594,7 +622,7 @@ router.post('/vedio/add', function(req, res, next){
             next();
         }
         else {
-            console.log('no files');
+            console.log('no poster uploadfiles');
             delPoster(poster);
             error(req, res, '请上传海报');
             return;

@@ -4,7 +4,14 @@
 {% block main %}
 
 <div class="page-header">
-    <h3>图片管理 <small>慎删</small></h3>
+    <h3>图片管理
+        <small>
+            {% for cat in categories %}
+            <a href="/admin/album?category={{cat._id.toString()}}">{{cat.name}}</a> |
+            {% endfor %}
+            <a href="/admin/album">全部</a>
+        </small>
+    </h3>
 </div>
 
 <table class="table table-bordered">
