@@ -37,19 +37,22 @@ function success(req, res,  msg, toUrl) {
     });
 }
 
-// 删除空的海报文件
+// 删除图集，多张  filename是数组，但也可能是undefined
 function delAlbum( filename ) {
 
-    for(var i = 0; i < filename.length; i++){
-        var file = './public/img/photobook/' + filename;
-        // 判断一下这个文件是否存在
-        fs.exists(file, function(exists) {
-            if(exists){
-                fs.unlink(file);
-            }
-        });
+    if (filename){
+        for(var i = 0; i < filename.length; i++){
+            var file = './public/img/photobook/' + filename;
+            // 判断一下这个文件是否存在
+            fs.exists(file, function(exists) {
+                if(exists){
+                    fs.unlink(file);
+                }
+            });
+        }
     }
 }
+// 删除海报文件，单张
 function delPoster( filename ) {
 
     var file = './public/img/poster/' + filename;
@@ -384,8 +387,8 @@ router.get('/album', function (req, res) {
 
         res.render('admin/album_index', {
             userInfo: req.userInfo,
-            resources: resources,
-            categories: album
+            resources: album,
+            categories: categories
         });
     })
 })
@@ -526,13 +529,158 @@ router.get('/album/edit', function (req, res) {
     })
 })
 
-router.post('/album/edit', function (req, res) {
+router.post('/album/edit', function (req, res, next) {
 
-    // 上传为上， 修改自己注意吧  别传错啊
-    var data = req.body;
-    var id = req.query.id;
+    // 生成multiparty对象，配置上传目标路径
+    var dirpath = './public/img/photobook/';
+    var form = new multiparty.Form({uploadDir: dirpath});
 
+    form.parse(req, function (err, fields, files) {
+
+        var paths = files.path;
+        var uploadAlbum = [];
+        var len = paths.length;
+
+        for(var i=0; i<len; i++){
+
+            var posterData = paths[i];
+            var filename = Date.now() + '-' + posterData.originalFilename;
+            uploadAlbum.push(filename);
+
+            //重命名文件名
+            fs.rename(posterData.path, dirpath + filename);
+        }
+
+        if(uploadAlbum.length == 1 && paths[0].size == 0){
+            delAlbum(uploadAlbum);
+        }
+        else{
+            req.uploadAlbum = uploadAlbum;
+        }
+        req.fields = fields;
+        next();
+    })
+},
+    function (req, res) {
+
+        var data = req.fields;
+        var uploadAlbum = req.uploadAlbum;
+        var id = data.id;
+        var title = data.title || '';
+        var time = data.time || '';
+        var category = data.category || '';
+        var summary = data.summary || '';
+        var tag = data.tag || '';
+        var albumPath = [];
+
+         // console.log(data.delArray);
+        console.log('uploadAlbum');
+        console.log(uploadAlbum);
+
+        if(title == '' || time == '' || category == '' || summary == ''){
+
+            delAlbum(uploadAlbum);
+            error(req, res, '请填写完整信息');
+            return;
+        }
+
+        Resource.findOne({_id: id}, {'albumPath': 1}).then(function (re) {
+
+            // data.delArray 两种情况
+            // undefined  不删除图片
+            // ['str1, str2...'] 是个长度为1的数组，item的类型为string，内容是很多字符串
+            if (data.delArray){ // && data.delArray.length > 0
+                var delArr = data.delArray[0].split(',');
+                return getDifString(re.albumPath, delArr);
+            }
+            else{
+                return re.albumPath;
+            }
+
+        }).then(function (newArr) {
+
+            // console.log('newArray');
+            // console.log(newArr);
+
+            if(uploadAlbum){
+
+                albumPath = newArr.concat(uploadAlbum);
+                // console.log('连接之后的albumPath');
+                // console.log(albumPath);
+            }
+            else{
+                if(newArr.length == 0){
+                    // console.log('严重了，原图集被删完，没有新图上传');
+                    delAlbum(uploadAlbum);
+                    error(req, res, '图集里得有张图啊');
+                    return Promise.reject();
+                }
+                else{
+                    // console.log('没有新图上传');
+                    albumPath = newArr;
+                }
+            }
+
+            // console.log('albumPath');
+            // console.log(albumPath);
+
+            // 保存
+            Resource.findOne({
+                _id: {$ne: id},
+                title: title,
+                time: time,
+                resType: 'album'
+            }).then(function (re) {
+                if(re) {
+                    delAlbum(uploadAlbum);
+                    error(req, res, '该图集信息已存在..');
+                    return Promise.reject();
+                }
+                else {
+                    return Resource.update({ _id: id },{
+                        title: title,
+                        summary: summary,
+                        time: time,
+                        category: category,
+                        albumPath: albumPath,
+                        tag: tag
+                    });
+                }
+            }).then(function () {
+
+                success(req, res,  '图集修改成功', '/admin/album');
+            })
+        })
 })
+
+// 从arr1中剔除arr2中用的字符串
+function getDifString(orginArr, delArr) {
+
+    // delArr 是从 orginArr 中移除某些原素之后的数组
+    var newArr = [];
+    if (delArr.length > 0){
+
+        var flag = false;
+        for(var i = 0; i < orginArr.length; i++){
+
+            flag = true;
+            for(var j = 0; j < delArr.length; j++){
+
+                if(delArr[j] == orginArr[i]){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                newArr.push(orginArr[i]);
+            }
+        }
+        return newArr;
+    }
+    else{
+        return orginArr;
+    }
+}
 
 /*
 * 图片删除
