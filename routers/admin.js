@@ -37,31 +37,72 @@ function success(req, res,  msg, toUrl) {
     });
 }
 
-// 删除图集，多张  filename是数组，但也可能是undefined
-function delAlbum( filename ) {
+// 删除图集，多张  delFileArray，但也可能是undefined
+// 总是只能删掉一张
+// for循环中的file是有问题的，都是一样的内容
+// 异步的原因？
+function delAlbum( arrDelFilenames ) {
 
-    if (filename){
-        for(var i = 0; i < filename.length; i++){
-            var file = './public/img/photobook/' + filename;
-            // 判断一下这个文件是否存在
-            fs.exists(file, function(exists) {
+    if (arrDelFilenames){
+        for(var i = 0; i < arrDelFilenames.length; i++){
+            
+            var file = './public/img/photobook/' + arrDelFilenames[i];
+
+            // 这么写一定是同步.. 判定->删除->next  这里用的是funcSync
+            if (fs.existsSync(file)){
+                fs.unlinkSync(file);
+            }
+
+            // 异步的方法是在函数调用结束之后再执行回掉函数，执行exists会花费一点时间，for花费更少的时间...  这里用的是异步函数
+            /*fs.exists(file, function(exists) {
                 if(exists){
                     fs.unlink(file);
                 }
-            });
+            });*/
+
+            // 怎样可以在异步的基础上还实现循环删除呢？
+            // 要删除的存起来，循环unlink吧.. 不咋地
         }
     }
 }
 // 删除海报文件，单张
-function delPoster( filename ) {
+function delPoster( delFilename ) {
 
-    var file = './public/img/poster/' + filename;
+    var file = './public/img/poster/' + delFilename;
     // 判断一下这个文件是否存在
     fs.exists(file, function(exists) {
         if(exists){
             fs.unlink(file);
         }
     });
+}
+// 从arr1中剔除arr2中用的字符串
+function getDifString(orginArr, delArr) {
+
+    // delArr 是从 orginArr 中移除某些原素之后的数组
+    var newArr = [];
+    if (delArr.length > 0){
+
+        var flag = false;
+        for(var i = 0; i < orginArr.length; i++){
+
+            flag = true;
+            for(var j = 0; j < delArr.length; j++){
+
+                if(delArr[j] == orginArr[i]){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                newArr.push(orginArr[i]);
+            }
+        }
+        return newArr;
+    }
+    else{
+        return orginArr;
+    }
 }
 
 /*
@@ -563,6 +604,8 @@ router.post('/album/edit', function (req, res, next) {
 },
     function (req, res) {
 
+        // 从这里开始， 图片文件已经上传了。失败的情况下要考虑删掉新上传的。成功的情况下，也要删掉delArray中原有的
+
         var data = req.fields;
         var uploadAlbum = req.uploadAlbum;
         var id = data.id;
@@ -572,10 +615,7 @@ router.post('/album/edit', function (req, res, next) {
         var summary = data.summary || '';
         var tag = data.tag || '';
         var albumPath = [];
-
-         // console.log(data.delArray);
-        console.log('uploadAlbum');
-        console.log(uploadAlbum);
+        var delArray = []; //成功之后，原图集中要删的记录在这里
 
         if(title == '' || time == '' || category == '' || summary == ''){
 
@@ -586,27 +626,29 @@ router.post('/album/edit', function (req, res, next) {
 
         Resource.findOne({_id: id}, {'albumPath': 1}).then(function (re) {
 
-            // data.delArray 两种情况
-            // undefined  不删除图片
-            // ['str1, str2...'] 是个长度为1的数组，item的类型为string，内容是很多字符串
-            if (data.delArray){ // && data.delArray.length > 0
-                var delArr = data.delArray[0].split(',');
-                return getDifString(re.albumPath, delArr);
+            if (re){
+                // data.delArray 两种情况
+                // undefined  不删除图片
+                // ['str1, str2...'] 是个长度为1的数组，item的类型为string，内容是很多字符串
+                if (data.delArray){ // && data.delArray.length > 0
+                    delArray = data.delArray[0].split(',');
+                    return getDifString(re.albumPath, delArray);
+                }
+                else{
+                    return re.albumPath;
+                }
             }
-            else{
-                return re.albumPath;
+            else {
+                delAlbum(uploadAlbum);
+                error(req, res, 'Oops，图集资源不存在...');
+                return Promise.reject();
             }
 
         }).then(function (newArr) {
 
-            // console.log('newArray');
-            // console.log(newArr);
-
             if(uploadAlbum){
 
                 albumPath = newArr.concat(uploadAlbum);
-                // console.log('连接之后的albumPath');
-                // console.log(albumPath);
             }
             else{
                 if(newArr.length == 0){
@@ -616,13 +658,10 @@ router.post('/album/edit', function (req, res, next) {
                     return Promise.reject();
                 }
                 else{
-                    // console.log('没有新图上传');
+                    // console.log('没有新图上传，保留原图集中剩下的东西');
                     albumPath = newArr;
                 }
             }
-
-            // console.log('albumPath');
-            // console.log(albumPath);
 
             // 保存
             Resource.findOne({
@@ -648,39 +687,11 @@ router.post('/album/edit', function (req, res, next) {
                 }
             }).then(function () {
 
+                delAlbum(delArray);
                 success(req, res,  '图集修改成功', '/admin/album');
             })
         })
 })
-
-// 从arr1中剔除arr2中用的字符串
-function getDifString(orginArr, delArr) {
-
-    // delArr 是从 orginArr 中移除某些原素之后的数组
-    var newArr = [];
-    if (delArr.length > 0){
-
-        var flag = false;
-        for(var i = 0; i < orginArr.length; i++){
-
-            flag = true;
-            for(var j = 0; j < delArr.length; j++){
-
-                if(delArr[j] == orginArr[i]){
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag){
-                newArr.push(orginArr[i]);
-            }
-        }
-        return newArr;
-    }
-    else{
-        return orginArr;
-    }
-}
 
 /*
 * 图片删除
