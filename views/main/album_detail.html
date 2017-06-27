@@ -16,10 +16,10 @@
     <div class="row">
         <div class="col-md-8">
             <div class="swiper-container gallery-top">
-                <div class="swiper-wrapper" style="transform: translate3d(-2752px, 0px, 0px); transition-duration: 0ms;">
+                <div class="swiper-wrapper" style="transform: translate3d(-1440px, 0px, 0px); transition-duration: 0ms;">
                     {% for path in curView.albumPath %}
-                    <div class="swiper-slide" style="background: black; width: 1366px; text-align: center;">
-                        <img src="/public/img/photobook/{{path}}" alt="img">
+                    <div class="swiper-slide" style="background: black; width: 720px; text-align: center;">
+                        <img src="/public/img/photobook/{{path}}" alt="img" style="max-width: 100%">
                     </div>
                     {% endfor %}
                 </div>

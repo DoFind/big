@@ -19,10 +19,21 @@ router.use(function (req, res, next) {
         picCategories: [],
         vedioCategories: []
     }
+    // 导航栏分类目录
+    /*Category.find({resType: 'album'}).then(function(picCategories) {
+        data.picCategories = picCategories;
+        return Category.find({resType: 'vedio'});
+    }).then(function(vedioCategories) {
+        data.vedioCategories = vedioCategories;
+        next();
+    });*/
+
+    // 这个最好也保存在req中吧，不这么频繁获取。
+    // 一次性获取，不分两次
     Category.find({resType: 'album'}).then(function(picCategories) {
         data.picCategories = picCategories;
     });
-    Category.find({resType: 'vedio'}).then(function(vedioCategories) {
+    Category.find({resType: 'vedio'}).then(function (vedioCategories) {
         data.vedioCategories = vedioCategories;
     });
     next();
@@ -52,19 +63,6 @@ router.get('/', function (req, res, next) {
             res.render('main/index', data);
         })
     }
-/*
-    data.category = req.query.category || '';
-    // 查询条件
-    var where = {};
-    if (data.category){
-        where.category = data.category;
-    }
-    // 查询数据
-    Resource.where(where).find().populate('category').sort({ time: -1}).then(function (re) {
-
-        data.resources = re;
-        res.render('main/index', data);
-    })*/
 })
 
 /*
@@ -73,6 +71,10 @@ router.get('/', function (req, res, next) {
 router.get('/main/search', function (req, res, next) {
 
     data.search = req.query.search || '';
+
+    if (data.search == ''){
+        return;
+    }
 
     // 查询条件
     var where = {};
@@ -227,8 +229,12 @@ router.post('/main/lover', function (req, res) {
     });
 })
 
+/*
+* 工作室发布的日程
+* */
 router.get('/main/growth', function (req, res) {
 
+    console.log(data);
     res.render('main/growth', data);
 })
 
