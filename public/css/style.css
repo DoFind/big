@@ -68,7 +68,6 @@ textarea {
 /*-----------------------------通用格式----------------------------------------------*/
 
 body {
-    /*padding-top: 50px;*/
     font-size: 12px;
     font-family: "微软雅黑";
 }
@@ -83,16 +82,16 @@ body {
 
 /*导航栏nav 样式重写*/
 
-#nav-container .navbar {
+#wrap-container .navbar {
     margin-bottom: 0;
 }
 
-#nav-container .dropdown-menu {
+#wrap-container .dropdown-menu {
     right: 0;
-    min-width: 100px;
+    min-width: 80px;
 }
 
-#nav-container .dropdown-menu li a {
+#wrap-container .dropdown-menu li a {
     text-align: right;
 }
 
@@ -133,15 +132,79 @@ body {
 }
 
 .vgroup-list ul li {
+    position: relative;
     margin-right: 10px;
     margin-bottom: 10px;
     padding: 6px;
     width: 136px;
     height: 60px;
-    background: #ccc;
-    border-radius: 5px;
+    background: #c8c8c8;
+    border-radius: 6px;
+    color: #333;
+}
+.vgroup-list ul a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    padding-top: 24px;
+    padding-left: 6px;
+    width: 136px;
+    height: 60px;
+    color: #333;
 }
 
+.vgroup-list ul .active {
+    background: #333;
+    color: #fff;
+}
+
+.vgroup-list ul a:hover,
+.vgroup-list ul .active a {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    color: #fff;
+}
+
+/*-------------------------------------搜索页----------------------------------------*/
+
+/* search input */
+#search-i {
+    background-color: #333;
+}
+
+#search-i .search-box {
+    margin: 0 auto;
+    padding: 70px 0 0;
+}
+
+#search-i .search-tag {
+    margin: 20px auto;
+    padding: 0 10px
+}
+
+#search-i .search-tag a {
+
+    display: inline-block;
+    width: 50px;
+    height: 14px;
+    color: #fff;
+}
+
+#search-i .search-tag a:hover,
+#search-i .search-tag a:active {
+
+    line-height: 14px;
+    text-align: center;
+    background-color: #b2dba1;
+    border-radius: 4px;
+    color: #000;
+}
+
+/* search output */
+#search-o {
+    padding-top: 20px;
+}
 
 /*-------------------------------------评论----------------------------------------*/
 
@@ -340,12 +403,27 @@ body {
 
 /*-------------------------------------黑板 上墙-----------------------------------*/
 
-#lovewall {
-    margin-top: 30px;
-    width: 960px;
+#lovewall-bg {
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+    width:100%;
+    height:100%;
+    background: #ffa5a5;
+    background: -moz-linear-gradient(top, #ffa5a5 0%, #ffd3d3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa5a5), color-stop(100%,#ffd3d3));
+    background: -webkit-linear-gradient(top, #ffa5a5 0%,#ffd3d3 100%);
+    background: linear-gradient(top, #ffa5a5 0%,#ffd3d3 100%);
 }
 
-#lovewall ul li img {
+#lovewall {
+    margin-top: 30px;
+    padding-right: 300px;
+    /*width: 960px;*/
+}
+
+#lovewall .item img {
     margin: 10px 10px 0 0;
     width: 50px;
     height: 50px;
@@ -368,14 +446,14 @@ body {
 
 .loveword_info img {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     border: 2px solid #dbdbdb;
 }
 
 .loveword_info .text {
     float: right;
-    width: 180px;
+    width: 200px;
 }
 
 .loveword_info h4 {
@@ -400,6 +478,71 @@ body {
     background: url(/public/img/res/adorn.gif) no-repeat 0 -48px;
 }
 
+/* 提交按钮 */
+@keyframes beat {
+    0% {transform: scale(1) rotate(225deg); box-shadow:0 0 40px #d5093c;}
+    50% {transform: scale(1.1) rotate(225deg); box-shadow:0 0 70px #d5093c;}
+    100% {transform: scale(1) rotate(225deg); box-shadow:0 0 40px #d5093c;}
+}
+
+#show-love {
+    position:absolute;
+    right: 50px;
+    bottom: 150px;
+    width:100px;
+    height:100px;
+    margin:0 auto;
+}
+
+#show-love a {
+    position:absolute;
+    left: 0;
+    top: 0px;
+    width:100px;
+    height:100px;
+    z-index: 100;
+}
+
+#show-love .heart {
+    position:absolute;
+    z-index:2;
+    background: -moz-linear-gradient(-90deg, #F50A45 0%, #d5093c 40%);
+    background: -webkit-gradient(linear, right 50%, left 50%, color-stop(0%,#F50A45), color-stop(40%,#d5093c));
+    background: -webkit-linear-gradient(-90deg, #F50A45 0%,#d5093c 40%);
+    background: linear-gradient(-90deg, #F50A45 0%,#d5093c 40%);
+    -webkit-animation: beat 0.7s ease 0s infinite normal;
+    -moz-animation: beat 0.7s ease 0s infinite normal;
+    animation: beat 0.7s ease 0s infinite normal;
+}
+#show-love .heart.center {
+    background: -moz-linear-gradient(-45deg, #B80734 0%, #d5093c 40%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#B80734), color-stop(40%,#d5093c));
+    background: -webkit-linear-gradient(-45deg, #B80734 0%,#d5093c 40%);
+    background: linear-gradient(-45deg, #B80734 0%,#d5093c 40%);
+}
+#show-love .heart.top {
+    z-index:3;
+}
+#show-love .side {
+    top:20px;
+    width:44px;
+    height:44px;
+    border-radius: 44px;
+}
+#show-love .center {
+    width:42px;
+    height:42px;
+    bottom:20px;
+    left:29px;
+    font-size:0;
+    text-indent:-9999px;
+}
+#show-love .left {
+    left:12px;
+}
+#show-love .right {
+    right:12px;
+}
 
 /*-------------------------------------返回顶部-----------------------------------------------*/
 
@@ -407,10 +550,11 @@ body {
     position: fixed;
     right: 50px;
     bottom: 50px;
-    width: 80px;
+    width: 40px;
     height: 40px;
     text-align: center;
     line-height: 40px;
+    z-index: 200;
 }
 
 #scrollTop a:hover {
@@ -421,7 +565,9 @@ body {
 }
 
 
-/*-------------------------------------growth.html----固定导航栏---------------------------*/
+/*-------------------------------------固定导航栏---------------------------------------*/
+
+/* 左侧内容区域 */
 
 #growth-content {
     width: 900px;
@@ -438,17 +584,39 @@ body {
     border: 1px dotted #0088bb;
 }
 
-#growth-content .item h2 {
-    font-size: 16px;
-    font-weight: bold;
-    border-bottom: 2px solid #0088bb;
-    margin-bottom: 10px;
-}
-
+/* item 下 直接图片铺满 */
 #growth-content .item img {
     width: 100%;
 }
 
+#growth-content .item .category h3 {
+    /*font-size: 16px;*/
+    font-weight: bold;
+    border-bottom: 2px solid #0088bb;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #0088bb;
+}
+
+.clear { zoom:1; }
+.clear:after { content:''; display:block; clear:both; }
+
+/*#growth-content .item .content img {*/
+    /*max-height: 100px;*/
+/*}*/
+#growth-content .item .content .thumbnail {
+    float: left;
+}
+#growth-content .item .content p {
+    height: 40px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*white-space:nowrap;*/
+    /*text-overflow-ellipsis: ;*/
+}
+
+/* 右侧固定导航 */
 #growth-menu {
     position: fixed;
     top: 100px;
@@ -483,13 +651,20 @@ body {
     height: 100%;
 }
 
-#nav-container {
+#wrap-container {
     min-height: 100%;
+
+    /*background: url("/public/img/photobook/1497853773628-08-白侦探.png") no-repeat;
+    background-attachment: fixed;*/
+    /*height:100%;
+    width:100%;*/
+    /*overflow: hidden;
+    background-size:cover;*/
 }
 
 .container-main {
     overflow: auto;
-    padding-bottom: 60px;
+    padding-bottom: 120px;
 }
 
 
@@ -497,11 +672,15 @@ body {
 
 footer {
     position: relative;
-    margin-top: -60px;
-    height: 60px;
-    line-height: 60px;
+    margin-top: -120px;
+    padding-top: 20px;
+    height: 120px;
     background: black;
     color: white;
     text-align: center;
-    clear: both;
+}
+
+footer div {
+    height: 40px;
+    line-height: 40px;
 }

@@ -109,10 +109,10 @@ $(function() {
     var $lovewall = $('#lovewall');
 
     // prompt 提示框
-    var oPrompt = $('.loveword_info');
-    var oImg = oPrompt.find('img');
-    var oName = oPrompt.find('h4');
-    var oP = oPrompt.find('p');
+    var $oPrompt = $('.loveword_info');
+    var oImg = $oPrompt.find('img');
+    var oName = $oPrompt.find('h4');
+    var oP = $oPrompt.find('p');
 
     $lovewall.find('img').hover(function() {
 
@@ -120,7 +120,7 @@ $(function() {
         var pos = $(this).parent().position();
         var iTop = pos.top - 10;
         var iLeft = pos.left + 60;
-        oPrompt.show().css({ 'left': iLeft, 'top': iTop });
+        $oPrompt.show().css({ 'left': iLeft, 'top': iTop });
 
         // 赋值
         oImg.attr('src', $(this).attr('src'));
@@ -128,7 +128,7 @@ $(function() {
         oP.text($(this).attr('content'));
 
     }, function () {
-        oPrompt.hide();
+        $oPrompt.hide();
     });
 
     /*
@@ -137,4 +137,70 @@ $(function() {
     $('#scrollTop').click(function(){
         $('html,body').animate({scrollTop: '0px'}, 300);
     });
+
+
+    /*
+    * 搜索
+    * */
+    var $searchI = $('#search-i');
+
+    $searchI.find('button').click( function () {
+
+        var $searchInput = $searchI.find('input');
+        var searchInfo = $searchInput.val();
+        $searchInput.val('');
+
+        if (searchInfo.length <= 0){
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/main/search',
+            data: {
+                search: searchInfo
+            },
+            dataType: 'json',
+            success: function (re) {
+                renderList(re.resources)
+            }
+        });
+    });
+
+    $searchI.find('a').click( function () {
+
+        $.ajax({
+            type: 'post',
+            url: '/main/search',
+            data: {
+                search: $(this).html()
+            },
+            dataType: 'json',
+            success: function (re) {
+                renderList(re.resources);
+            }
+        });
+    });
+
+    function renderList (resource) {
+
+        var len = resource.length;
+        if ( len > 0 ){
+
+            var htmlList = '',
+                // 模板HTML
+                htmlTemp = $("#template-search").html();
+
+            resource.forEach(function (item) {
+                laytpl(htmlTemp).render(item, function(html){
+                    htmlList += html;
+                });
+            })
+            // 添加到页面
+            $("#search-o").empty().append(htmlList);
+        }
+        else{
+            $("#search-o").empty().append('啥也没找到');
+        }
+    }
 });

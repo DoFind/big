@@ -1,0 +1,65 @@
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!--正文部分 返回的视频和图片资源-->
+
+<div class="container container-main"> 
+
+    <div class="row">
+        <div id="search-i" class="col-md-12">
+            <!-- 搜索框 -->
+            <div class="search-box input-group col-md-6">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                </span>
+            </div>
+            <!-- 常用搜索字段、推荐搜索标签 -->
+            <div class="search-tag input-group col-md-6">
+                <a href="javascript:;">大侦探</a> &nbsp;
+                <a href="javascript:;">战斗吧</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- 输出列表的父级 -->
+        <div id="search-o" class="col-md-12"></div>
+
+        <!-- 输出的列表模型 -->
+        <script id="template-search" type="text/html">
+            @# if ( d.resType == 'album' ) { @
+            <div class="content">
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <a href="/main/album?id=@d._id.toString()@"><img src="/public/img/photobook/@d.albumPath[0]@" alt="poster"></a>
+                        <div class="caption">
+                            <h4>@d.title@</h4>
+                            <p>@d.summary@</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @# } else { @
+            <div class="content">
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <a href="/main/vedio?id=@d._id.toString()@"><img src="/public/img/poster/@d.poster@" alt="poster"></a>
+                        <div class="caption">
+                            <h4>@d.title@</h4>
+                            <p>@d.summary@</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @# } @
+        </script>
+    </div>
+</div>
+
+<script src="/public/js/laytpl.js"></script>
+
+{% endblock %}

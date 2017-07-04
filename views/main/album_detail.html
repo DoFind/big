@@ -30,19 +30,7 @@
         </div>
     </div>
 
-
-    <!--<div class="swiper-container gallery-thumbs">
-        <div class="swiper-wrapper" style="transform: translate3d(-200px, 0px, 0px); transition-duration: 0ms;">
-            {% for path in curView.albumPath %}
-            <div class="swiper-slide" style="text-align: center; margin: 10px;">
-                <img src="/public/img/photobook/{{path}}" style="height: 80px">
-            </div>
-            {% endfor %}
-        </div>
-    </div>-->
-
     <!--留言-->
-
     {% include 'comments.html' %}
 
 </div>
@@ -60,14 +48,6 @@
         paginationType : 'bullets',
         paginationClickable : true,
     })
-
-//    var galleryThumbs = new Swiper('.gallery-thumbs', {
-//        centeredSlides: true,
-//        slidesPreView: 'auto',
-//        slideToClickedSlide: true,
-//    })
-//    galleryTop.params.control = galleryThumbs;
-//    galleryThumbs.params.control = galleryTop;
 </script>
 
 {% endblock %}

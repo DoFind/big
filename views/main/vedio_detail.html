@@ -19,7 +19,7 @@
         <div class="col-md-8">
 
             {% if curView.bili.length > 0 %}
-            <!--优先用B站视频链接，没有广告啊-->
+            <!--优先用B站视频链接，没有广告啊。。手机上怎么办？？？-->
             <embed src="{{curView.bili}}" type="application/x-shockwave-flash" width="720" height="510" allowFullScreen="true" align="middle" quality="high"/>
             {% elseif curView.flash.length > 0 %}
             <!--html代码-->
@@ -59,12 +59,16 @@
         <div class="col-md-8 vgroup-list">
             <ul>
                 {% for item in series %}
-                <li class="pull-left">
-                    <span>{{loop.index}}</span><br>
-                    <a href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">
-                        {{item.listTitle}}
-                    </a>
-                </li>
+                    {% if curView._id.toString() == item._id.toString() %}
+                    <li class="pull-left active">
+                    {% else %}
+                    <li class="pull-left">
+                    {% endif %}
+                        <span>{{loop.index}}</span><br>
+                        <a href="/main/vedio?id={{item._id.toString()}}&bSeries=true&parentID={{item.parentRes.toString()}}">
+                            {{item.listTitle}}
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </div>

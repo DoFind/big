@@ -184,7 +184,7 @@
         left: 90px
     }
     .VivaTimeline dl dd .time {
-        left: 20px
+        left: 10px
     }
     .VivaTimeline dl dd.pos-left .time {
         padding: 10px 0;
@@ -210,13 +210,13 @@
         width: 73%;
         margin-right: 4%;
     }
-    /*
-    .VivaTimeline dl dd .events .events-body {
-        display: none;
-    }
-    .VivaTimeline dl dd .events .events-footer {
-        display: none;
-    }
+   /*  
+   .VivaTimeline dl dd .events .events-body {
+       display: none;
+   }
+   .VivaTimeline dl dd .events .events-footer {
+       display: none;
+   }
     */
 }
 

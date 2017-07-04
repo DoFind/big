@@ -19,14 +19,6 @@ router.use(function (req, res, next) {
         picCategories: [],
         vedioCategories: []
     }
-    // 导航栏分类目录
-    /*Category.find({resType: 'album'}).then(function(picCategories) {
-        data.picCategories = picCategories;
-        return Category.find({resType: 'vedio'});
-    }).then(function(vedioCategories) {
-        data.vedioCategories = vedioCategories;
-        next();
-    });*/
 
     // 这个最好也保存在req中吧，不这么频繁获取。
     // 一次性获取，不分两次
@@ -45,6 +37,7 @@ router.use(function (req, res, next) {
 router.get('/', function (req, res, next) {
 
     var cat = req.query.category || '';
+
 
     if(cat == ''){
         // 主页
@@ -65,12 +58,33 @@ router.get('/', function (req, res, next) {
     }
 })
 
+router.get('/main/vediolist', function(req,res,next){
+
+    Category.find({resType: 'vedio'}, { name: 1, resource: 1}).populate('resource').then(function (cat) {
+
+        data.categories = cat;
+        res.render('main/vediolist', data);
+    });
+})
+
 /*
 * 搜索
 * */
-router.get('/main/search', function (req, res, next) {
 
-    data.search = req.query.search || '';
+router.get('/main/search', function (req, res) {
+
+    Category.find({resType: 'album'}).then(function(picCategories) {
+        data.picCategories = picCategories;
+        return Category.find({resType: 'vedio'});
+    }).then(function(vedioCategories) {
+        data.vedioCategories = vedioCategories;
+        res.render('main/search', data);
+    });
+})
+
+router.post('/main/search', function (req, res, next) {
+
+    data.search = req.body.search || '';
 
     if (data.search == ''){
         return;
@@ -86,7 +100,8 @@ router.get('/main/search', function (req, res, next) {
     Resource.where(where).find().populate('category').sort({ time: -1}).then(function (re) {
 
         data.resources = re;
-        res.render('main/index', data);
+        res.json(data);
+        // res.render('main/index', data);
     })
 })
 
@@ -200,7 +215,6 @@ router.post('/main/lover', function (req, res) {
 
     var content = req.body.content;
     var name = req.userInfo._id;
-    console.log(name);
 
     if(!name){
         res.json({
@@ -234,9 +248,15 @@ router.post('/main/lover', function (req, res) {
 * */
 router.get('/main/growth', function (req, res) {
 
-    console.log(data);
-    res.render('main/growth', data);
+    Category.find({resType: 'album'}).then(function(picCategories) {
+        data.picCategories = picCategories;
+        return Category.find({resType: 'vedio'});
+    }).then(function(vedioCategories) {
+        data.vedioCategories = vedioCategories;
+        res.render('main/growth', data);
+    });
 })
+
 
 module.exports = router;
 

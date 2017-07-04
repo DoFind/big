@@ -1,0 +1,56 @@
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<!-- 分类显示所有资源 -->
+
+<div class="container container-main">
+    <div class="row">
+        
+        <div class="col-md-12">
+
+            <div id="growth-content">
+
+                {% for cat in categories %}
+                <div class="item" id="item{{loop.index}}">
+                    <div class="category">
+                        <h3>{{cat.name}}</h3>
+                    </div>
+                    <div class="content clear">
+                        {% for item in cat.resource %}
+                        <div class="col-md-4">
+                            <div class="thumbnail">
+                                <img src="/public/img/poster/{{item.poster}}" alt="poster">
+                                <div class="caption">
+                                    <h4>{{item.title}}</h4>
+                                    <p>{{item.time | date('Y-m-d')}}<br>{{item.summary}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="growth-menu">
+            <ul>
+                {% for cat in categories %}
+            
+                    {% if loop.index == 1%}
+                    <li><a class="current" href="#item{{loop.index}}">{{cat.name}}</a></li>
+                    {% else %}
+                    <li><a href="#item{{loop.index}}">{{cat.name}}</a></li>
+                    {% endif%}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/public/js/fixednav.js"></script> 
+{% endblock %}
+

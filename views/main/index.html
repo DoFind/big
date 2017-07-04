@@ -9,6 +9,17 @@
         <!--<div class="swiper-slide"><img src="/public/img/res/banner/pub01.jpg" alt="欢乐颂"></div>-->
         <!--<div class="swiper-slide"><img src="/public/img/res/banner/pub02.jpg" alt="姐姐饿了"></div>-->
         <!--<div class="swiper-slide"><img src="/public/img/res/banner/pub03.jpg" alt="奇葩说"></div>-->
+        
+    
+        <!-- 搜索栏 -->
+        <!-- <div class="col-sm-4 navbar-right">
+            <form action="/main/search" method="get" class="navbar-btn input-group pull-right">
+                <input type="text" name="search" class="form-control" placeholder="Search for..."/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </span>
+            </form>
+        </div> -->
     </div>
     <div class="swiper-pagination"></div>
     <div class="swiper-button-prev swiper-button-white"></div>
@@ -55,7 +66,8 @@
                         <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">
-                                <div class="events-header">{{item.title}}..<span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{item.PV}}</div>
+                                <!--<span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{item.PV}}-->
+                                <div class="events-header">{{item.title}}</div>
                                 <div class="events-body">
                                     <li class="row"><a href="/main/vedio?id={{item._id.toString()}}"><img src="/public/img/poster/{{item.poster}}" class="img-rounded" alt="vedio"></a></li>
                                 </div>
@@ -73,7 +85,8 @@
                             <div class="circ"></div>
                             <div class="time">{{item.time|date('Y-m-d')}}</div>
                             <div class="events">
-                                <div class="events-header">{{item.title}}..<span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{item.PV}}</div>
+                                <!--..<span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>{{item.PV}}-->
+                                <div class="events-header">{{item.title}}</div>
                                 <div class="events-body" data-toggle="" data-target="#album">
                                     {% for album in item.albumPath %}
                                     <li class="row"><a href="/main/album?id={{item._id.toString()}}"><img class="img-rounded" src="/public/img/photobook/{{album}}" alt="img"></a></li>

@@ -10,7 +10,6 @@ $(document).ready(function() {
 
         // 滚动条滚动距离顶部的距离
         var top = $(document).scrollTop();
-        console.log('鼠标滚动：'+top);
         var menu = $('#growth-menu');
 
         // find的效率比下面的写法高

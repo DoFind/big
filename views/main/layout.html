@@ -3,11 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>白二爷的专属空间</title>
+    <title>白小爷</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="/public/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="/public/css/swiper-3.4.2.min.css" type="text/css" />
@@ -16,157 +14,154 @@
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/swiper-3.4.2.jquery.min.js"></script>
     <script src="/public/js/main.js"></script>
-
-    <!-- 		网站标签页图标
-    <link href="img/100du.ico" rel="shortcut icon" />
-     -->
-
+    <!-- 网站标签页图标 -->
+    <link href="/public/img/res/road_block.ico" rel="shortcut icon" />
+    
 </head>
 
 <body>
 
-    <div id="nav-container">
-        <!--导航栏-->
-        <nav class="navbar navbar-static-top navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <button class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/" class="navbar-brand">小白</a>
-            </div>
-
-            <div id="menu" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-left">
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            动如脱兔-动态白<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% for item in vedioCategories %}
-                            <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            静若处子-静态白<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% for item in picCategories %}
-                            <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    <li><a href="/main/lover">快来表“白”上墙</a></li>
-                    <li><a href="/main/growth">小白成长史</a></li>
-                </ul>
-
-                <!--登录 注册-->
-                <ul class="nav navbar-nav navbar-right">
-                    {% if userInfo._id %}
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <!-- 这个div是为了footer可以一直显示在底部 -->
+    <div id="wrap-container">
+    <!--  -->
+        <!-- 导航栏 -->
+        <nav class="navbar navbar-default navbar-inverse">
+        <!-- navbar-static-top navbar-inverse -->
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/" class="navbar-brand">小白</a>
+                </div>
+                <div id="menu" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            “动”白
+                            <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for item in vedioCategories %}
+                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            “静”亭<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for item in picCategories %}
+                                <li><a href="/?category={{item._id.toString()}}">{{item.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li><a href="/main/lover">“裱”白</a></li>
+                        <li><a href="/main/vediolist">视频列表</a></li>
+                        <li><a href="/main/growth">官博发布的行程单</a></li>
+                        <li><a href="/main/search">搜索</a></li>
+                    </ul>
+                    <!-- 登录 注册 -->
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if userInfo._id %}
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             {{userInfo.username}}<span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            {% if userInfo.isAdmin %}
-                            <li class="admin"><a href="/admin">管理</a></li>
-                            {% endif %}
-                            <li id="logout"><a href="javascript:;">退出</a></li>
-                        </ul>
-                    </li>
-                    {% else %}
-                    <li><a data-toggle="modal" data-target="#login">登录</a ></li>
-                    <li><a data-toggle="modal" data-target="#register">注册</a ></li>
-                    {% endif %}
-
-                </ul>
-
-                <!--搜索栏-->
-                <!--<div class="col-sm-4 navbar-right">-->
-                    <!--<form action="/main/search" method="get" class="navbar-btn input-group pull-right">-->
-                        <!--<input type="text" name="search" class="form-control" placeholder="Search for..."/>-->
-                        <!--<span class="input-group-btn">-->
-                            <!--<button class="btn btn-primary" type="submit">Search</button>-->
-                        <!--</span>-->
-                    <!--</form>-->
-                <!--</div>-->
-
+                            <ul class="dropdown-menu">
+                                {% if userInfo.isAdmin %}
+                                <li class="admin"><a href="/admin">管理</a></li>
+                                {% endif %}
+                                <li id="logout"><a href="javascript:;">退出</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a data-toggle="modal" data-target="#login">登录</a></li>
+                        <li><a data-toggle="modal" data-target="#register">注册</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <!-- 页面弹出框部分  登录、注册页面 -->
+        <div id="login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-heading">
+                    Login
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="loginLabel">Login</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group ">
+                                <label>用户名:</label><input type="text" class="form-control username">
+                                <label>密码:</label><input type="password" class="form-control password">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <label class="alert-danger colWarning pull-left"></label>
+                        <input type="button" value="登录" class="btn btn-primary pull-right login">
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-
-        <!--页面弹出框部分  登录、注册页面-->
-        <div id="login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <!--<div class="modal-heading">-->
-                <!--Login-->
-                <!--<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-            <!--</div>-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="loginLabel">Login</h4>
+    
+        <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-heading">
+                    hhhh
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="registerLabel">Register</h4>
+                    </div>
+                    <div class="modal-body">
                         <div class="form-group ">
                             <label>用户名:</label><input type="text" class="form-control username">
                             <label>密码:</label><input type="password" class="form-control password">
+                            <label>确认:</label><input type="password" class="form-control repassword">
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <label class="alert-danger colWarning pull-left"></label>
-                    <input type="button" value="登录" class="btn btn-primary pull-right login">
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <!--<div class="modal-heading">-->
-                <!--hhhh-->
-                <!--<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-            <!--</div>-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="registerLabel">Register</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group ">
-                        <label>用户名:</label><input type="text" class="form-control username">
-                        <label>密码:</label><input type="password" class="form-control password">
-                        <label>确认:</label><input type="password" class="form-control repassword">
+                    </div>
+                    <div class="modal-footer form-group">
+                        <label class="alert-danger colWarning pull-left"></label>
+                        <input type="button" value="注册" class="btn btn-primary pull-right register">
                     </div>
                 </div>
-                <div class="modal-footer form-group">
-                    <label class="alert-danger colWarning pull-left"></label>
-                    <input type="button" value="注册" class="btn btn-primary pull-right register">
-                </div>
             </div>
         </div>
-    </div>
-
-        {% block content %} {% endblock %}
-    </div>
+        
+    {% block content %} {% endblock %}
+    </div>   
 
     <!--返回顶部-->
     <div id="scrollTop">
         <a href="#">Back</a>
     </div>
-
+    
     <!--页脚-->
     <footer>
-        飞鸽链接：
-        <a href="http://weibo.com/u/2112496475">白小爷微博</a>
-        <span> | </span>
-        <a href="http://weibo.com/u/5648781841">白boss工作室微博</a>
-        <span> | </span>
-        <a href="http://space.bilibili.com/56709800/#!/">B站小白官方后援团</a>
+        <div>
+            飞鸽链接：
+            <a href="http://weibo.com/u/2112496475" target="_blank">白小爷微博</a>
+            <span> | </span>
+            <a href="http://weibo.com/u/5648781841" target="_blank">白boss工作室微博</a>
+            <span> | </span>
+            <a href="http://space.bilibili.com/56709800/#!/" target="_blank">B站小白官方后援团</a>
+        </div>
+        <div class="copyright textCenter">
+            Copyright © bjtstudio.com 版权所有 | 京ICP备08102442号
+        </div>
     </footer>
 </body>
+
 </html>
